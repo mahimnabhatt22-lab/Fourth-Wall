@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fourth wall</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--h:230;--h2:270;--bg:#06060c;--ink:#f3f1fa;--dim:rgba(243,241,250,.62);--glass:rgba(255,255,255,.07);--edge:rgba(255,255,255,.17);color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Instrument Sans",system-ui,sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(var(--s1,60%) 50% at 15% 10%,hsl(var(--h) 92% 44%/.6),transparent 70%),radial-gradient(var(--s2,50%) 45% at 90% 85%,hsl(var(--h2) 90% 42%/.5),transparent 70%)}
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
+#stars i{position:absolute;border-radius:50%;background:#fff;animation:tw 3.5s ease-in-out infinite}
+@keyframes tw{0%,100%{opacity:.15}50%{opacity:1}}
+@media (prefers-reduced-motion:reduce){#stars i{animation:none;opacity:.6}}
+main{max-width:1040px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top,0px)) 20px 130px}
+h1,h2,h3,.num{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 18px 40px rgba(0,0,0,.35)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.brand{font-size:22px;font-weight:800;margin-bottom:26px}
+.hero{padding:34px 28px;margin-bottom:30px}
+.hero h2{font-size:clamp(34px,7vw,64px);font-weight:800;line-height:1.02;letter-spacing:-.02em;max-width:14ch}
+.hero p,.dim{color:var(--dim)}
+.hero p{margin:14px 0 0;max-width:48ch}
+.sec{font-size:20px;font-weight:800;margin:6px 0 12px}
+.rs{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 18px;margin-bottom:12px}
+.rs.wrap{flex-wrap:wrap;overflow:visible}
+.pc{flex:0 0 150px;width:150px;padding:0;overflow:hidden;text-align:left}
+.pc img,.pc .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.pc .ph{display:flex;align-items:flex-end;padding:12px;font:800 18px/1.1 "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
+.pc span{display:block;padding:8px 10px 11px;font-size:13px;line-height:1.3}
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:6px;border-radius:999px;z-index:4}
+.dock button{background:none;border:0;border-radius:999px;padding:10px 22px;color:var(--dim)}
+.dock button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
+.dock #logbtn{background:rgba(255,255,255,.92);color:#0a0a12;font-weight:500}
+.seg{display:inline-flex;padding:4px;gap:2px;border-radius:999px;margin-bottom:16px}
+.seg button{background:none;border:0;padding:7px 16px;border-radius:999px;color:var(--dim)}
+.seg button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:30px}
+.stat{padding:20px 22px}.stat small{color:var(--dim)}
+.num{font-size:32px;font-weight:800;margin-top:4px;line-height:1.1}
+.dir{display:flex;gap:16px;align-items:center}
+.face{width:68px;height:68px;border-radius:50%;flex:none;display:grid;place-items:center;object-fit:cover;font:800 24px "Bricolage Grotesque",system-ui,sans-serif;background:rgba(255,255,255,.14);border:1px solid var(--edge)}
+.sil{background:radial-gradient(circle at 50% 36%,rgba(255,255,255,.4) 0 20%,transparent 21%),radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.35) 0 44%,transparent 45%),rgba(255,255,255,.06);filter:blur(2.5px)}
+.dir .num{font-size:22px}.msg{font-size:15px;margin:4px 0}
+.me{display:flex;align-items:center;gap:16px;margin-bottom:22px}.me .face{width:76px;height:76px;font-size:30px}.me h2{font-size:30px}
+#ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,3,8,.62);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:6}
+#ov.on{display:flex}
+#panel{width:100%;max-width:760px;max-height:100%;overflow:auto;padding:24px;background:rgba(24,22,38,.86)}
+#panel h2{font-size:26px;margin-bottom:14px}
+#q{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;color:var(--ink);font:inherit;padding:12px 14px;margin-bottom:16px}
+.detail{display:grid;grid-template-columns:210px 1fr;gap:24px}
+.detail img,.detail .ph{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:18px;display:block}
+.detail .ph{display:flex;align-items:flex-end;padding:14px;font:800 22px "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
+@media (max-width:620px){.detail{grid-template-columns:1fr}.detail img,.detail .ph{max-width:220px}}
+.meta{color:var(--dim);margin:6px 0}.over{margin:12px 0;font-size:15px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.links div,.links a{background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;padding:8px 14px;color:var(--ink);text-decoration:none;font-size:14px}
+.links small{display:block;color:var(--dim);font-size:12px}
+.acts{display:flex;gap:10px;margin-top:16px}
+.btn{background:rgba(255,255,255,.92);color:#0a0a12;border:0;border-radius:999px;padding:10px 22px;font-weight:500}
+.ghost{background:none;border:1px solid var(--edge);border-radius:999px;padding:10px 20px}
+</style>
+</head>
+<body>
+<div id="stars" aria-hidden="true"></div>
+<main id="app"></main>
+<nav class="dock glass" aria-label="Main">
+<button data-v="home" aria-pressed="true">Home</button><button id="logbtn">Log a film</button><button data-v="me" aria-pressed="false">Me</button>
+</nav>
+<div id="ov" role="dialog" aria-modal="true"><div id="panel" class="glass"></div></div>
+
+<script>
+var G={Horror:355,Thriller:268,Drama:218,Comedy:46,Romance:328,"Science Fiction":190,Action:18,Animation:150,Documentary:100,Mystery:245,Fantasy:290,Crime:8,Adventure:30,Family:170,History:35,War:5,Western:25,Music:310};
+var films=[],view="home",period="month",upcoming=null,cur=null,timer=null;
+try{films=JSON.parse(localStorage.getItem("fw_films")||"[]")}catch(e){films=[]}
+function save(){try{localStorage.setItem("fw_films",JSON.stringify(films))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function mostCommon(l){var m={},b=null;l.forEach(function(k){m[k]=(m[k]||0)+1;if(!b||m[k]>m[b])b=k});return b}
+function hue(g){return G[g]!==undefined?G[g]:230}
+function img(p,s){return p?"https://image.tmdb.org/t/p/"+s+p:""}
+function api(p,q){return fetch("/api/tmdb?p="+encodeURIComponent(p)+(q?"&q="+encodeURIComponent(q):"")).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+(poster?'<img loading="lazy" alt="" src="'+img(poster,"w342")+'">':'<div class="ph">'+esc(title)+'</div>')+'<span>'+esc(title)+'</span></button>'}
+function sorted(){return films.slice().sort(function(a,b){return b.date<a.date?-1:b.date>a.date?1:b.at-a.at})}
+function inPeriod(f){var n=new Date(),d=new Date(f.date+"T00:00:00");if(d.getFullYear()!==n.getFullYear())return false;if(period==="year")return true;if(period==="month")return d.getMonth()===n.getMonth();return Math.floor(d.getMonth()/3)===Math.floor(n.getMonth()/3)}
+
+function paint(){
+ var stars=$("stars"),st=document.documentElement.style;
+ if(!films.length){
+  if(!stars.children.length){for(var i=0;i<110;i++){var s=document.createElement("i");s.style.left=Math.random()*100+"%";s.style.top=Math.random()*100+"%";s.style.animationDelay=Math.random()*3.5+"s";s.style.width=s.style.height=(Math.random()<.2?3:2)+"px";stars.appendChild(s)}}
+  st.setProperty("--h",230);st.setProperty("--h2",270);st.setProperty("--s1","60%");st.setProperty("--s2","50%");return null}
+ stars.innerHTML="";
+ var recent=sorted().slice(0,12),gm={};
+ recent.forEach(function(f){var g=f.genres[0]||"Drama";gm[g]=(gm[g]||0)+1});
+ var gk=Object.keys(gm).sort(function(a,b){return gm[b]-gm[a]});
+ st.setProperty("--h",hue(gk[0]));st.setProperty("--h2",gk[1]!==undefined?hue(gk[1]):hue(gk[0])+40);
+ var sh=gk[1]!==undefined?gm[gk[0]]/(gm[gk[0]]+gm[gk[1]]):.75;
+ st.setProperty("--s1",(30+55*sh)+"%");st.setProperty("--s2",(30+55*(1-sh))+"%");
+ return gk[0]}
+
+function dirBox(){
+ var m={},best=null,c=0,photo="";
+ films.forEach(function(f){if(f.director){m[f.director]=(m[f.director]||0)+1;if(f.dphoto)photo=photo||"";}});
+ var n=Object.keys(m);n.forEach(function(k){if(m[k]>c){c=m[k];best=k}});
+ if(best&&c>=3){
+  var ph=(films.filter(function(f){return f.director===best&&f.dphoto})[0]||{}).dphoto;
+  var ini=best.split(" ").map(function(w){return w[0]}).join("").slice(0,2);
+  return'<div class="stat glass dir">'+(ph?'<img class="face" alt="" src="'+img(ph,"w185")+'">':'<div class="face">'+esc(ini)+'</div>')+'<div><small>Most-watched director</small><div class="num">'+esc(best)+'</div><small>'+c+' films</small></div></div>'}
+ var msg=!n.length?"Log a film to start.":c>=2?(3-c)+" more film by "+best+" to unlock.":"Watch 3 films by one director to unlock.";
+ return'<div class="stat glass dir"><div class="face sil"></div><div><small>Most-watched director</small><div class="msg">'+esc(msg)+'</div><small>'+n.length+(n.length===1?" director":" directors")+' so far</small></div></div>'}
+
+function render(){
+ var tg=paint(),app=$("app"),h='<div class="brand">Fourth wall</div>';
+ [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===view)});
+ if(view==="home"){
+  h+=films.length?'<section class="glass hero"><h2>Mostly '+esc((tg||"film").toLowerCase())+' lately.</h2><p>'+films.length+(films.length===1?" film":" films")+' logged so far.</p></section>'
+   :'<section class="glass hero"><h2>Your sky is empty.</h2><p>Tap Log a film to add the first one. The page takes on the colour of your taste.</p></section>';
+  if(films.length)h+='<h2 class="sec">Recently logged</h2><div class="rs">'+sorted().slice(0,14).map(function(f){return pc(f.tid,f.title,f.poster)}).join("")+'</div>';
+  h+='<h2 class="sec">Coming soon</h2><div class="rs">'+(upcoming===null?'<p class="dim">Loading…</p>':upcoming.length?upcoming.map(function(m){return pc(m.id,m.title,m.poster_path)}).join(""):'<p class="dim">Couldn’t load upcoming films right now.</p>')+'</div>';
+ }else{
+  var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
+  h+='<div class="me"><div class="face">M</div><div><h2>Your page</h2><span class="dim">Everything you’ve logged</span></div></div>';
+  h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
+  h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
+  h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
+ app.innerHTML=h}
+
+function show(){$("ov").classList.add("on")}
+function hide(){$("ov").classList.remove("on")}
+function openSearch(){
+ $("panel").innerHTML='<h2>Log a film</h2><input id="q" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show();$("q").focus();
+ $("q").oninput=function(){clearTimeout(timer);var v=this.value.trim();if(v.length<2){$("res").innerHTML="";return}
+  timer=setTimeout(function(){api("search/movie",v).then(function(d){$("res").innerHTML=(d.results||[]).slice(0,12).map(function(m){return pc(m.id,m.title+(m.release_date?" ("+m.release_date.slice(0,4)+")":""),m.poster_path)}).join("")||'<p class="dim">No films found.</p>'}).catch(function(){$("res").innerHTML='<p class="dim">Search isn’t working right now.</p>'})},350)}}
+function openDetail(id){
+ $("panel").innerHTML='<p class="dim">Loading…</p>';show();
+ api("movie/"+id).then(function(m){
+  var crew=(m.credits&&m.credits.crew)||[],d=crew.filter(function(c){return c.job==="Director"})[0],w=crew.filter(function(c){return c.job==="Screenplay"||c.job==="Writer"})[0];
+  cur={tid:m.id,title:m.title,year:(m.release_date||"").slice(0,4),genres:(m.genres||[]).map(function(g){return g.name}),director:d?d.name:"",dphoto:d?d.profile_path||"":"",writer:w?w.name:"",poster:m.poster_path||"",score:m.vote_average?m.vote_average.toFixed(1):""};
+  var logged=films.some(function(f){return f.tid===cur.tid}),qs=encodeURIComponent(cur.title+" "+cur.year);
+  $("panel").innerHTML='<div class="detail">'+(cur.poster?'<img alt="" src="'+img(cur.poster,"w500")+'">':'<div class="ph">'+esc(cur.title)+'</div>')+'<div><h2>'+esc(cur.title)+(cur.year?" ("+esc(cur.year)+")":"")+'</h2>'+
+   '<div class="meta">'+esc(cur.genres.join(" · "))+(m.runtime?" · "+m.runtime+" min":"")+'</div>'+
+   '<div class="meta">'+(cur.director?"Directed by "+esc(cur.director):"")+(cur.writer?"<br>Written by "+esc(cur.writer):"")+'</div>'+
+   '<p class="over">'+esc((m.overview||"").slice(0,320))+'</p>'+
+   '<div class="links"><div><small>TMDB</small>'+(cur.score||"—")+'</div><a href="https://www.imdb.com/find/?q='+qs+'" target="_blank" rel="noopener"><small>IMDb</small>Open</a><a href="https://letterboxd.com/search/'+qs+'/" target="_blank" rel="noopener"><small>Letterboxd</small>Open</a><a href="https://www.google.com/search?q='+qs+'+moctale" target="_blank" rel="noopener"><small>Moctale</small>Search</a></div>'+
+   '<div class="acts">'+(logged?'<button class="ghost" data-act="remove">Remove from my log</button>':'<button class="btn" data-act="log">Log it</button>')+'<button class="ghost" data-act="close">Close</button></div></div></div>'
+ }).catch(function(){$("panel").innerHTML='<p>Couldn’t load that film.</p><div class="acts"><button class="ghost" data-act="close">Close</button></div>'})}
+
+document.addEventListener("click",function(e){
+ var t=e.target;
+ if(t.id==="ov"||t.closest("[data-act=close]")){hide();return}
+ if(t.closest("#logbtn")){openSearch();return}
+ var v=t.closest("[data-v]");if(v){view=v.dataset.v;render();window.scrollTo(0,0);return}
+ var p=t.closest("[data-p]");if(p){period=p.dataset.p;render();return}
+ var a=t.closest("[data-act]");
+ if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();films.push(cur);save();hide();render()}
+  else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();hide();render()}return}
+ var c=t.closest("[data-id]");if(c)openDetail(+c.dataset.id)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
+render();
+api("movie/upcoming").then(function(d){upcoming=(d.results||[]).filter(function(m){return m.poster_path}).slice(0,14)}).catch(function(){upcoming=[]}).then(function(){if(view==="home")render()});
+</script>
+</body>
+</html>
