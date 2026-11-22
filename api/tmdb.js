@@ -1,10 +1,10 @@
-// Asks TMDB for movie data on behalf of the page, so the secret token never reaches the browser.
+// Asks TMDB for movie and person data on behalf of the page, so the secret token never reaches the browser.
 module.exports = async function handler(req, res) {
   const token = process.env.TMDB_TOKEN;
   if (!token) return res.status(500).json({ error: "TMDB_TOKEN is not set in Vercel" });
 
   const p = String(req.query.p || "");
-  const allowed = /^(search\/movie|search\/keyword|discover\/movie|movie\/\d+|movie\/\d+\/recommendations)$/;
+  const allowed = /^(search\/movie|search\/keyword|search\/person|discover\/movie|movie\/\d+|movie\/\d+\/recommendations)$/;
   if (!allowed.test(p)) return res.status(400).json({ error: "Not allowed" });
 
   const q = req.query, params = new URLSearchParams({ language: "en-US", include_adult: "false" });

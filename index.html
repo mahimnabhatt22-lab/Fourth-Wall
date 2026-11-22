@@ -4,38 +4,71 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fourth wall</title>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Cinzel:wght@600;700;800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--h:230;--h2:270;--bg:#06060c;--ink:#f3f1fa;--dim:rgba(243,241,250,.62);--glass:rgba(255,255,255,.07);--edge:rgba(255,255,255,.17);color-scheme:dark}
+@property --h{syntax:"<number>";inherits:true;initial-value:230}
+@property --h2{syntax:"<number>";inherits:true;initial-value:270}
+@property --s1{syntax:"<percentage>";inherits:true;initial-value:60%}
+@property --s2{syntax:"<percentage>";inherits:true;initial-value:50%}
+
+:root{--h:230;--h2:270;--bg:#06060c;--ink:#f3f1fa;--dim:rgba(243,241,250,.62);--glass:rgba(255,255,255,.07);--edge:rgba(255,255,255,.17);color-scheme:dark;transition:--h 1.1s cubic-bezier(.22,1,.36,1),--h2 1.1s cubic-bezier(.22,1,.36,1),--s1 1.1s ease,--s2 1.1s ease}
 *,*::before,*::after{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Instrument Sans",system-ui,sans-serif;overflow-x:hidden}
 body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(var(--s1,60%) 50% at 15% 10%,hsl(var(--h) 92% 44%/.6),transparent 70%),radial-gradient(var(--s2,50%) 45% at 90% 85%,hsl(var(--h2) 90% 42%/.5),transparent 70%)}
 #stars{position:fixed;inset:0;z-index:-1;pointer-events:none}
 #stars i{position:absolute;border-radius:50%;background:#fff;animation:tw 3.5s ease-in-out infinite}
 @keyframes tw{0%,100%{opacity:.15}50%{opacity:1}}
-@media (prefers-reduced-motion:reduce){#stars i{animation:none;opacity:.6}}
+@media (prefers-reduced-motion:reduce){#stars i,.gas-cloud{animation:none!important}#stars i{opacity:.6}}
+
 main{max-width:1100px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top,0px)) 20px 140px}
-@media (min-width:1001px){main{max-width:none;margin:0 0 0 210px;padding-right:44px}}
+@media (min-width:1001px){main{max-width:none;margin:0 0 0 218px;padding-right:44px}}
+.view-stage{animation:viewIn .36s cubic-bezier(.22,1,.36,1) both}
+@keyframes viewIn{from{opacity:0;transform:translateY(10px) scale(.992)}to{opacity:1;transform:translateY(0) scale(1)}}
+
 h1,h2,h3,.num{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0}
 .glass{background:var(--glass);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border:1px solid var(--edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 18px 40px rgba(0,0,0,.35)}
-button{font:inherit;color:inherit;cursor:pointer}
+button{font:inherit;color:inherit;cursor:pointer;transition:transform .2s cubic-bezier(.22,1,.36,1),background .25s ease,border-color .25s ease,color .25s ease}
+button:active{transform:scale(.97)}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.brand{font-size:22px;font-weight:800;margin-bottom:26px}
+
+/* Grand Cinema Masthead */
+.brand{font-family:"Cinzel",Georgia,serif;font-size:clamp(30px,5.2vw,50px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;line-height:1.05;margin:4px 0 26px;background:linear-gradient(180deg,#ffffff 15%,rgba(243,241,250,.68) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 10px 34px rgba(0,0,0,.45)}
 .pg{font-size:34px;font-weight:800;margin-bottom:16px}
-.hero{padding:34px 28px;margin-bottom:30px;max-width:900px}
-.hero h2{font-size:clamp(34px,7vw,64px);font-weight:800;line-height:1.02;letter-spacing:-.02em;max-width:14ch}
+
+/* Hero + Right Square Mood Avatar Slot */
+.hero-row{display:flex;align-items:stretch;gap:16px;margin-bottom:30px;max-width:1040px}
+.hero{flex:1;padding:34px 28px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.hero h2{font-size:clamp(32px,6vw,60px);font-weight:800;line-height:1.02;letter-spacing:-.02em;max-width:14ch}
 .hero p,.dim{color:var(--dim)}.hero p{margin:14px 0 0;max-width:48ch}
+
+.mood-card{flex:0 0 196px;width:196px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;position:relative;overflow:hidden;border-radius:24px}
+.mood-card:hover{border-color:rgba(255,255,255,.36);transform:translateY(-2px)}
+.mood-card::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 50% 35%,hsl(var(--h) 85% 58%/.25),transparent 68%);pointer-events:none}
+.mood-lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);position:relative;z-index:1}
+.mood-orb{width:92px;height:92px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(255,255,255,.28);box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 28px hsl(var(--h) 85% 55%/.35);display:grid;place-items:center;background:rgba(255,255,255,.09);position:relative;z-index:1}
+.mood-orb img{width:100%;height:100%;object-fit:cover;display:block}
+.mood-orb svg{width:54px;height:54px;display:block}
+.mood-name{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:15px;line-height:1.15;position:relative;z-index:1}
+.mood-sub{font-size:11px;color:var(--dim);position:relative;z-index:1}
+@media (max-width:680px){.hero-row{flex-direction:column}.mood-card{flex:none;width:100%;flex-direction:row;text-align:left;padding:16px 20px;gap:14px}.mood-orb{width:64px;height:64px;flex:none}.mood-meta{flex:1;min-width:0}}
+
 .sec{font-size:20px;font-weight:800;margin:6px 0 12px}
 .rs{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 18px;margin-bottom:12px}
 .rs.wrap{flex-wrap:wrap;overflow:visible}
 .pc{flex:0 0 150px;width:150px;padding:0;overflow:hidden;text-align:left}
+.pc:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.32)}
 .pc img,.pc .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
 .pc .ph{display:flex;align-items:flex-end;padding:12px;font:800 18px/1.1 "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
 .pc span{display:block;padding:8px 10px 11px;font-size:13px;line-height:1.3}
+
+/* Navigation Dock & Animated FAB */
 .dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:6px;border-radius:999px;z-index:4}
 .dock button{background:none;border:0;border-radius:999px;padding:10px 24px;color:var(--dim)}
 .dock button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
-.fab{position:fixed;right:26px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.94);color:#0a0a12;border:0;font-size:34px;line-height:1;z-index:5;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 40px hsl(var(--h) 90% 55%/.5)}
+.fab{position:fixed;right:26px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.94);color:#0a0a12;border:0;font-size:34px;line-height:1;z-index:5;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 40px hsl(var(--h) 90% 55%/.5);transition:transform .38s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .25s ease}
+.fab:hover{transform:scale(1.06)}
+.fab.open{transform:rotate(135deg) scale(1.04);background:#fff}
+
 .seg{display:inline-flex;flex-wrap:wrap;padding:4px;gap:2px;border-radius:24px;margin-bottom:18px}
 .seg button{background:none;border:0;padding:7px 16px;border-radius:999px;color:var(--dim)}
 .seg button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
@@ -43,31 +76,64 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .stat{padding:20px 22px}.stat small{color:var(--dim)}
 .num{font-size:32px;font-weight:800;margin-top:4px;line-height:1.1}
 .dir{display:flex;gap:16px;align-items:center}
-.face{width:68px;height:68px;border-radius:50%;flex:none;display:grid;place-items:center;object-fit:cover;font:800 24px "Bricolage Grotesque",system-ui,sans-serif;background:rgba(255,255,255,.14);border:1px solid var(--edge)}
+.face{width:68px;height:68px;border-radius:50%;flex:none;display:grid;place-items:center;object-fit:cover;overflow:hidden;font:800 24px "Bricolage Grotesque",system-ui,sans-serif;background:rgba(255,255,255,.14);border:1px solid var(--edge)}
+.face img{width:100%;height:100%;object-fit:cover;display:block}
+.face svg{width:42px;height:42px;display:block}
 .sil{background:radial-gradient(circle at 50% 36%,rgba(255,255,255,.4) 0 20%,transparent 21%),radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.35) 0 44%,transparent 45%),rgba(255,255,255,.06);filter:blur(2.5px)}
 .dir .num{font-size:22px}.msg{font-size:15px;margin:4px 0}
 .me{display:flex;align-items:center;gap:16px;margin-bottom:22px}.me .face{width:76px;height:76px;font-size:30px}.me h2{font-size:30px}
-.side{position:fixed;left:20px;top:20px;bottom:100px;width:172px;padding:18px 16px;display:none;flex-direction:column;gap:14px;overflow:auto;z-index:2}
+.avatar-trigger{padding:0;cursor:pointer;position:relative}
+.avatar-trigger:hover{border-color:rgba(255,255,255,.45);transform:scale(1.04)}
+
+/* Sidebar & Sealed Glass Gas-Chamber Pipe */
+.side{position:fixed;left:20px;top:20px;bottom:100px;width:182px;padding:18px 16px;display:none;flex-direction:column;gap:14px;overflow:auto;z-index:2}
 @media (min-width:1001px){.side{display:flex}}
-.side .who{display:flex;align-items:center;gap:10px}.side .who .face{width:44px;height:44px;font-size:18px}.side b{display:block;font-size:15px;line-height:1.2}.side small{color:var(--dim)}
+.side .who{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left;width:100%}.side .who .face{width:44px;height:44px;font-size:18px}.side .who .face svg{width:28px;height:28px}.side b{display:block;font-size:15px;line-height:1.2}.side small{color:var(--dim)}
 .side h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-family:"Instrument Sans",sans-serif;font-weight:500}
-.meter{display:flex;gap:14px;flex:1;min-height:200px}
-.tube{width:34px;border-radius:999px;border:1px solid var(--edge);background:rgba(255,255,255,.05);display:flex;flex-direction:column-reverse;overflow:hidden;box-shadow:inset 0 0 12px rgba(0,0,0,.4)}
-.tube i{display:block;width:100%;box-shadow:0 0 18px currentColor}
-.legend{display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:13px;min-width:0}
-.legend div{display:flex;align-items:center;gap:7px}.legend em{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal}
+
+.meter{display:flex;gap:14px;flex:1;min-height:220px;align-items:stretch}
+.pipe-wrap{position:relative;width:44px;flex:none;display:flex;align-items:center;justify-content:center}
+/* Sealed Glass Pipe (closed rounded caps top & bottom, specular refraction, inner gas chamber) */
+.pipe{position:relative;width:40px;height:100%;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.03) 32%,rgba(255,255,255,.02) 68%,rgba(255,255,255,.13) 100%);border:1.5px solid rgba(255,255,255,.34);box-shadow:inset 0 6px 12px rgba(255,255,255,.22),inset 0 -6px 12px rgba(255,255,255,.18),inset 3px 0 8px rgba(255,255,255,.2),inset -3px 0 10px rgba(0,0,0,.55),0 10px 26px rgba(0,0,0,.45);overflow:hidden;isolation:isolate}
+/* Sealed glass end-cap thickness rings */
+.pipe::before{content:"";position:absolute;inset:3px;border-radius:999px;border:1px solid rgba(255,255,255,.16);pointer-events:none;z-index:4}
+/* Vertical specular glass highlight streak */
+.pipe::after{content:"";position:absolute;top:12px;bottom:12px;left:6px;width:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 45%,rgba(255,255,255,.35));filter:blur(.4px);pointer-events:none;z-index:5}
+/* Volumetric Gas Clouds inside the sealed pipe */
+.gas-chamber{position:absolute;inset:4px;border-radius:999px;overflow:hidden;z-index:1}
+.gas-cloud{position:absolute;left:-35%;right:-35%;border-radius:50%;filter:blur(11px);mix-blend-mode:screen;opacity:.88;animation:gasDrift var(--dur,7s) ease-in-out infinite alternate;animation-delay:var(--del,0s)}
+@keyframes gasDrift{0%{transform:translateY(-8%) translateX(-6%) scale(1)}50%{transform:translateY(6%) translateX(8%) scale(1.12)}100%{transform:translateY(-4%) translateX(-4%) scale(.96)}}
+
+.legend{display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:13px;min-width:0;flex:1}
+.legend div{display:flex;align-items:center;gap:7px}.legend em{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal;box-shadow:0 0 8px currentColor}
 .legend span{color:var(--dim);margin-left:auto}
+
 .gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;max-width:1000px}
 .gb{padding:26px 18px;text-align:left;font:800 20px "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(135deg,hsl(var(--gh) 85% 48%/.45),rgba(255,255,255,.05) 75%)}
+.gb:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.34)}
 .bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}.bar h2{font-size:26px}
 .chipsrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
 .chip{background:rgba(255,255,255,.07);border:1px solid var(--edge);border-radius:999px;padding:6px 14px;font-size:14px}
 .chip[aria-pressed=true]{background:rgba(255,255,255,.9);color:#0a0a12}
-#ov{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(3,3,8,.62);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:6}
-#ov.on{display:flex}
-#panel{width:100%;max-width:760px;max-height:100%;overflow:auto;padding:24px;background:rgba(24,22,38,.86)}
+
+/* Modal Overlay & Panel Animation */
+#ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,3,8,.66);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:6;opacity:0;pointer-events:none;transition:opacity .28s ease}
+#ov.on{opacity:1;pointer-events:auto}
+#panel{width:100%;max-width:760px;max-height:100%;overflow:auto;padding:24px;background:rgba(24,22,38,.9);transform:translateY(16px) scale(.97);transition:transform .34s cubic-bezier(.22,1,.36,1)}
+#ov.on #panel{transform:translateY(0) scale(1)}
 #panel h2{font-size:26px;margin-bottom:14px}
-#q{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;color:var(--ink);font:inherit;padding:12px 14px;margin-bottom:16px}
+.inp{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;color:var(--ink);font:inherit;padding:12px 14px;margin-bottom:16px}
+
+/* Avatar Picker Grid */
+.av-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px;margin-top:8px}
+.av-item{background:rgba(255,255,255,.06);border:1px solid var(--edge);border-radius:18px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.av-item:hover{background:rgba(255,255,255,.13);transform:translateY(-2px)}
+.av-item[aria-pressed=true]{background:rgba(255,255,255,.2);border-color:#fff}
+.av-item .av-pic{width:56px;height:56px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2)}
+.av-item .av-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.av-item .av-pic svg{width:36px;height:36px}
+.av-item span{font-size:12px;line-height:1.2;font-weight:500}
+
 .detail{display:grid;grid-template-columns:210px 1fr;gap:24px}
 .detail img,.detail .ph{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:18px;display:block}
 .detail .ph{display:flex;align-items:flex-end;padding:14px;font:800 22px "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
@@ -107,9 +173,29 @@ Animation:["Anime","Stop motion","Adult animation"],
 Documentary:["Nature","Music documentary","True crime","Political documentary"]};
 var CO=[["","Worldwide"],["IN","India"],["US","USA"],["GB","UK"],["KR","Korea"],["JP","Japan"],["FR","France"],["ES","Spain"]];
 var CL={IN:"Indian",US:"Hollywood",GB:"British",KR:"Korean",JP:"Japanese",FR:"French",ES:"Spanish",DE:"German",IT:"Italian"};
-var films=[],view="home",period="month",cur=null,timer=null,rows=null,rowsKey="__",ex={country:"",genre:null,sub:null,showSubs:false,page:1,items:[],more:false,loading:false};
+
+/* Curated Cinema Persona / Mood Icons (Custom Vector Helmets/Masks + TMDB Cinema Icons) */
+var PRESET_AVATARS=[
+ {id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M16 28c0-11 7-18 16-18s16 7 16 18v12c0 8-6 14-16 14s-16-6-16-14V28z" fill="#f4f5f8"/><path d="M19 26h26l-3 5H34l-2-2-2 2h-8l-3-5z" fill="#14161f"/><path d="M23 39c3-2 15-2 18 0l-2 4H25l-2-4z" fill="#14161f"/><path d="M14 31h4v10h-4zM46 31h4v10h-4z" fill="#cfd3de"/></svg>'},
+ {id:"hellboy",name:"Hellboy",tag:"Right Hand of Doom",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="18" fill="#d93829"/><ellipse cx="22" cy="18" rx="6" ry="3.5" fill="#d8b998" stroke="#7a1c14" stroke-width="1.5"/><ellipse cx="42" cy="18" rx="6" ry="3.5" fill="#d8b998" stroke="#7a1c14" stroke-width="1.5"/><path d="M21 31l8 2M43 31l-8 2" stroke="#1b0908" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="34" r="2" fill="#ffcf40"/><circle cx="39" cy="34" r="2" fill="#ffcf40"/><path d="M24 44c4-2 12-2 16 0" stroke="#1b0908" stroke-width="2.5" stroke-linecap="round"/></svg>'},
+ {id:"hulk",name:"Hulk",tag:"Smash Mode",svg:'<svg viewBox="0 0 64 64" fill="none"><rect x="15" y="18" width="34" height="34" rx="12" fill="#46a349"/><path d="M15 24c3-8 31-8 34 0-5-3-29-3-34 0z" fill="#182418"/><path d="M21 31l8 2M43 31l-8 2" stroke="#132914" stroke-width="2.8" stroke-linecap="round"/><rect x="23" y="41" width="18" height="6" rx="2" fill="#f5f7f5"/><path d="M27 41v6M32 41v6M37 41v6" stroke="#132914" stroke-width="1.3"/></svg>'},
+ {id:"ironman",name:"Iron Man",tag:"Genius Mode",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M17 26c0-10 6-16 15-16s15 6 15 16v13c0 8-6 15-15 15s-15-7-15-15V26z" fill="#c82828"/><path d="M21 24l5 3h12l5-3v13l-5 11H26l-5-11V24z" fill="#f2b830"/><path d="M22 31h7v3h-7zM35 31h7v3h-7z" fill="#7df9ff"/></svg>'},
+ {id:"spiderman",name:"Spider-Man",tag:"Friendly Neighbourhood",svg:'<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="32" rx="17" ry="21" fill="#d92b3a"/><path d="M20 27c5 1 8 4 9 8-4 1-8-1-9-8zM44 27c-5 1-8 4-9 8 4 1 8-1 9-8z" fill="#fff" stroke="#12131a" stroke-width="2.2"/></svg>'},
+ {id:"vader",name:"Darth Vader",tag:"Dark Side",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M14 44l5-24c2-7 7-10 13-10s11 3 13 10l5 24-18 8-18-8z" fill="#1c1e26"/><circle cx="25" cy="31" r="4" fill="#090a0f" stroke="#454a5c" stroke-width="1.5"/><circle cx="39" cy="31" r="4" fill="#090a0f" stroke="#454a5c" stroke-width="1.5"/><path d="M26 42l6-4 6 4v5H26v-5z" fill="#323644"/></svg>'},
+ {id:"batman",name:"Batman",tag:"Noir Vigilante",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M18 12l4 11h20l4-11 2 22c0 10-7 18-16 18s-16-8-16-18l2-22z" fill="#232634"/><path d="M21 37h22v7c0 4-5 8-11 8s-11-4-11-8v-7z" fill="#e5c2a3"/><path d="M21 31l7 2-7 1zM43 31l-7 2 7 1z" fill="#fff"/></svg>'},
+ {id:"deadpool",name:"Deadpool",tag:"Breaking the 4th Wall",svg:'<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="32" rx="17" ry="21" fill="#c92434"/><ellipse cx="24" cy="31" rx="5" ry="7" fill="#14151c"/><ellipse cx="40" cy="31" rx="5" ry="7" fill="#14151c"/><ellipse cx="24" cy="31" rx="2.5" ry="1.6" fill="#fff"/><ellipse cx="40" cy="31" rx="2.5" ry="1.6" fill="#fff"/></svg>'},
+ {id:"joker",name:"Joker",tag:"Agent of Chaos",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="17" fill="#f2f0f5"/><path d="M16 24c4-10 28-10 32 0-6-4-26-4-32 0z" fill="#2da854"/><path d="M21 39c4 7 18 7 22 0-5 3-17 3-22 0z" stroke="#d92638" stroke-width="3.2" stroke-linecap="round"/><circle cx="25" cy="30" r="2.2" fill="#16161e"/><circle cx="39" cy="30" r="2.2" fill="#16161e"/></svg>'},
+ {id:"totoro",name:"Totoro",tag:"Cozy & Rainy",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M22 10l3 11h-6l3-11zM42 10l3 11h-6l3-11z" fill="#7d848d"/><ellipse cx="32" cy="37" rx="18" ry="17" fill="#7d848d"/><ellipse cx="32" cy="41" rx="13" ry="11" fill="#ece8dc"/><circle cx="24" cy="28" r="3" fill="#fff"/><circle cx="40" cy="28" r="3" fill="#fff"/><circle cx="24" cy="28" r="1.4" fill="#111"/><circle cx="40" cy="28" r="1.4" fill="#111"/><path d="M27 37l2-2 2 2M33 37l2-2 2 2" stroke="#7d848d" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+ {id:"alien",name:"Xenomorph",tag:"Midnight Sci-Fi",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M14 34c0-13 10-21 23-21 9 0 15 5 15 12 0 11-11 23-24 23-8 0-14-6-14-14z" fill="#1d202b" stroke="#626980" stroke-width="1.4"/><path d="M19 39h13v5H19z" fill="#cfd6e6"/></svg>'},
+ {id:"clapper",name:"Director",tag:"Cinephile",svg:'<svg viewBox="0 0 64 64" fill="none"><rect x="14" y="26" width="36" height="24" rx="5" fill="#272938" stroke="#8a90a8" stroke-width="1.5"/><path d="M14 26l34-9 2 6-34 9-2-6z" fill="#f3f1fa"/><path d="M21 24l3-6M31 21l3-6M41 18l3-6" stroke="#181924" stroke-width="2.5"/></svg>'}
+];
+
+var films=[],view="home",period="month",cur=null,timer=null,avTimer=null,rows=null,rowsKey="__",ex={country:"",genre:null,sub:null,showSubs:false,page:1,items:[],more:false,loading:false};
+var avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
 try{films=JSON.parse(localStorage.getItem("fw_films")||"[]")}catch(e){films=[]}
+try{var savedAv=JSON.parse(localStorage.getItem("fw_avatar")||"null");if(savedAv&&savedAv.name)avatar=savedAv}catch(e){}
 function save(){try{localStorage.setItem("fw_films",JSON.stringify(films))}catch(e){}}
+function saveAv(){try{localStorage.setItem("fw_avatar",JSON.stringify(avatar))}catch(e){}}
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
@@ -123,6 +209,12 @@ function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+
 function sorted(){return films.slice().sort(function(a,b){return b.date<a.date?-1:b.date>a.date?1:b.at-a.at})}
 function inPeriod(f){var n=new Date(),d=new Date(f.date+"T00:00:00");if(d.getFullYear()!==n.getFullYear())return false;if(period==="year")return true;if(period==="month")return d.getMonth()===n.getMonth();return Math.floor(d.getMonth()/3)===Math.floor(n.getMonth()/3)}
 function cname(c){if(CL[c])return CL[c];try{return new Intl.DisplayNames(["en"],{type:"region"}).of(c)}catch(e){return c}}
+
+function avatarGraphic(av){
+ av=av||avatar;
+ if(av.type==="tmdb"&&av.img)return'<img alt="" src="'+img(av.img,"w185")+'">';
+ var p=PRESET_AVATARS.filter(function(x){return x.id===av.id})[0]||PRESET_AVATARS[0];
+ return p.svg}
 
 function paint(){
  var stars=$("stars"),st=document.documentElement.style;
@@ -138,14 +230,24 @@ function paint(){
  st.setProperty("--s1",(30+55*sh)+"%");st.setProperty("--s2",(30+55*(1-sh))+"%");
  return mostCommon(recent.map(function(f){return f.genres[0]}))}
 
+/* Sealed Borosilicate Glass Pipe with Volumetric Gas Clouds */
 function side(){
  var el=$("side"),n=films.length;
- var h='<div class="who"><div class="face">M</div><div><b>Your page</b><small>'+n+(n===1?" film":" films")+'</small></div></div><h3>Taste meter</h3>';
- if(!n){el.innerHTML=h+'<p class="dim" style="font-size:14px">Log films and this fills with the colours of your taste.</p>';return}
+ var h='<button class="who" data-avopen="1" title="Change cinema avatar"><div class="face">'+avatarGraphic()+'</div><div><b>'+esc(avatar.name)+'</b><small>'+n+(n===1?" film":" films")+'</small></div></button><h3>Taste meter</h3>';
+ if(!n){
+  h+='<div class="meter"><div class="pipe-wrap"><div class="pipe"><div class="gas-chamber"><div class="gas-cloud" style="top:15%;height:55%;background:radial-gradient(circle,hsla(230,85%,60%,.28),transparent 72%);--dur:8s;--del:0s"></div><div class="gas-cloud" style="top:45%;height:50%;background:radial-gradient(circle,hsla(270,85%,60%,.24),transparent 72%);--dur:9s;--del:-3s"></div></div></div></div><p class="dim" style="font-size:13px;align-self:center">Log films and gases of your taste swirl inside.</p></div>';
+  el.innerHTML=h;return}
  var cnt={},tot=0;sorted().slice(0,12).forEach(function(f){var g=f.genres[0]||"Drama";cnt[g]=(cnt[g]||0)+1;tot++});
  var ks=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]});
- h+='<div class="meter"><div class="tube">'+ks.map(function(g){var c="hsl("+hue(g)+" 85% 55%)";return'<i style="height:'+(cnt[g]/tot*100)+'%;background:linear-gradient(90deg,'+c+',hsl('+hue(g)+' 90% 68%));color:hsl('+hue(g)+' 85% 55%/.45)"></i>'}).join("")+'</div><div class="legend">'+
-  ks.slice(0,6).map(function(g){return'<div><em style="background:hsl('+hue(g)+' 85% 55%)"></em>'+esc(g)+'<span>'+Math.round(cnt[g]/tot*100)+'%</span></div>'}).join("")+'</div></div>';
+ var cursor=0,clouds=[];
+ ks.forEach(function(g,idx){
+  var share=cnt[g]/tot,gh=hue(g);
+  var topPct=Math.max(-8,cursor*88-6);
+  var heightPct=Math.max(34,share*82+24);
+  cursor+=share;
+  clouds.push('<div class="gas-cloud" style="top:'+topPct.toFixed(1)+'%;height:'+heightPct.toFixed(1)+'%;background:radial-gradient(ellipse at 50% 50%,hsla('+gh+',95%,62%,.9) 0%,hsla('+gh+',90%,48%,.45) 52%,transparent 76%);--dur:'+(6.5+idx*1.3)+'s;--del:'+(-idx*1.7)+'s"></div>')});
+ h+='<div class="meter"><div class="pipe-wrap"><div class="pipe"><div class="gas-chamber">'+clouds.join("")+'</div></div></div><div class="legend">'+
+  ks.slice(0,6).map(function(g){var c="hsl("+hue(g)+" 85% 58%)";return'<div><em style="background:'+c+';color:'+c+'"></em>'+esc(g)+'<span>'+Math.round(cnt[g]/tot*100)+'%</span></div>'}).join("")+'</div></div>';
  el.innerHTML=h}
 
 function dirBox(){
@@ -168,9 +270,9 @@ function exploreHTML(){
  return h+(ex.more?'<button class="ghost" data-more="1">Load more</button>':"")}
 function loadExplore(reset){
  if(reset){ex.page=1;ex.items=[]}
- ex.loading=true;render();
- function run(kw){return api("discover/movie",{genre:GID[ex.genre],country:ex.country,kw:kw,page:ex.page}).then(function(d){ex.items=ex.items.concat((d.results||[]).filter(function(m){return m.poster_path}));ex.more=(d.page||1)<(d.total_pages||1)&&ex.page<5;ex.loading=false;render()})}
- (ex.sub?api("search/keyword",{q:ex.sub}).then(function(d){var ids=(d.results||[]).slice(0,3).map(function(k){return k.id}).join("|");if(!ids){ex.items=[];ex.more=false;ex.loading=false;render();return}return run(ids)}):run("")).catch(function(){ex.items=[];ex.more=false;ex.loading=false;render()})}
+ ex.loading=true;render(true);
+ function run(kw){return api("discover/movie",{genre:GID[ex.genre],country:ex.country,kw:kw,page:ex.page}).then(function(d){ex.items=ex.items.concat((d.results||[]).filter(function(m){return m.poster_path}));ex.more=(d.page||1)<(d.total_pages||1)&&ex.page<5;ex.loading=false;render(true)})}
+ (ex.sub?api("search/keyword",{q:ex.sub}).then(function(d){var ids=(d.results||[]).slice(0,3).map(function(k){return k.id}).join("|");if(!ids){ex.items=[];ex.more=false;ex.loading=false;render(true);return}return run(ids)}):run("")).catch(function(){ex.items=[];ex.more=false;ex.loading=false;render(true)})}
 
 function loadRows(){
  var key=films.map(function(f){return f.tid}).join(",");if(key===rowsKey)return;rowsKey=key;rows=null;
@@ -184,35 +286,62 @@ function loadRows(){
   if(s[1])defs.push({t:"Because you liked "+s[1].title,p:"movie/"+s[1].tid+"/recommendations",o:{}});
   if(tg&&c2&&GID[tg])defs.push({t:cname(c2)+" "+tg.toLowerCase()+" you might like",p:"discover/movie",o:{genre:GID[tg],country:c2}});
   if(tg&&GID[tg])defs.push({t:tg+" from around the world",p:"discover/movie",o:{genre:GID[tg]}})}
- Promise.all(defs.map(function(d){return api(d.p,d.o).then(function(r){var t=today();return{t:d.t,items:(r.results||[]).filter(function(m){return m.poster_path&&!have[m.id]&&(!m.release_date||m.release_date<=t)}).slice(0,16)}}).catch(function(){return{t:d.t,items:[]}})})).then(function(r){if(key!==rowsKey)return;rows=r.filter(function(x){return x.items.length});if(view==="home")render()})}
+ Promise.all(defs.map(function(d){return api(d.p,d.o).then(function(r){var t=today();return{t:d.t,items:(r.results||[]).filter(function(m){return m.poster_path&&!have[m.id]&&(!m.release_date||m.release_date<=t)}).slice(0,16)}}).catch(function(){return{t:d.t,items:[]}})})).then(function(r){if(key!==rowsKey)return;rows=r.filter(function(x){return x.items.length});if(view==="home")render(true)})}
 
-function render(){
+function render(noAnim){
  var tg=paint(),app=$("app"),h="";side();
  [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===view)});
  if(view==="home"){
-  h='<div class="brand">Fourth wall</div>';
+  h='<h1 class="brand">Fourth wall</h1>';
+  h+='<div class="hero-row">';
   h+=films.length?'<section class="glass hero"><h2>Mostly '+esc((tg||"film").toLowerCase())+' lately.</h2><p>'+films.length+(films.length===1?" film":" films")+' logged so far.</p></section>'
    :'<section class="glass hero"><h2>Your sky is empty.</h2><p>Tap the + to log the first film you’ve watched. The page takes on the colour of your taste.</p></section>';
+  h+='<button class="glass mood-card" data-avopen="1" aria-label="Change today\'s cinema mood"><span class="mood-lbl">Today\'s Mood</span><div class="mood-orb">'+avatarGraphic()+'</div><div class="mood-meta"><div class="mood-name">'+esc(avatar.name)+'</div><div class="mood-sub">'+esc(avatar.tag||"Tap to switch")+'</div></div></button>';
+  h+='</div>';
   if(films.length)h+='<h2 class="sec">Recently logged</h2><div class="rs">'+sorted().slice(0,16).map(function(f){return pc(f.tid,f.title,f.poster)}).join("")+'</div>';
   if(rows===null)h+='<p class="dim">Finding films for you…</p>';
   else h+=rows.map(function(r){return'<h2 class="sec">'+esc(r.t)+'</h2><div class="rs">'+r.items.map(function(m){return pc(m.id,m.title,m.poster_path)}).join("")+'</div>'}).join("");
  }else if(view==="explore"){h=exploreHTML()}
  else{
   var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
-  h='<div class="me"><div class="face">M</div><div><h2>Your page</h2><span class="dim">Everything you’ve logged</span></div></div>';
+  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div></div>';
   h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
   h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
   h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
- app.innerHTML=h}
+ app.innerHTML='<div class="'+(noAnim?"":"view-stage")+'">'+h+'</div>'}
 
-function show(){$("ov").classList.add("on")}
-function hide(){$("ov").classList.remove("on")}
+function show(isLog){$("ov").classList.add("on");if(isLog)$("logbtn").classList.add("open")}
+function hide(){$("ov").classList.remove("on");$("logbtn").classList.remove("open")}
+
+function openAvatarPicker(){
+ var presetsHTML=PRESET_AVATARS.map(function(p){
+  var active=avatar.type==="preset"&&avatar.id===p.id;
+  return'<button class="av-item" data-avpreset="'+p.id+'" aria-pressed="'+active+'"><div class="av-pic">'+p.svg+'</div><span>'+esc(p.name)+'</span></button>'}).join("");
+ $("panel").innerHTML='<h2>Choose your cinema mood</h2><p class="dim" style="margin:-6px 0 14px;font-size:14px">Pick an iconic character mask or search any actor, director, or cinema icon from TMDB.</p>'+
+  '<input id="avq" class="inp" placeholder="Search any actor, director, or cinema icon…" autocomplete="off" aria-label="Search cinema icons">'+
+  '<div id="av-results"></div>'+
+  '<div class="sec" style="font-size:15px;margin-top:8px">Iconic Masks & Personas</div>'+
+  '<div class="av-grid">'+presetsHTML+'</div>'+
+  '<div class="acts"><button class="ghost" data-act="close">Done</button></div>';
+ show(false);
+ $("avq").oninput=function(){
+  clearTimeout(avTimer);var v=this.value.trim();
+  if(v.length<2){$("av-results").innerHTML="";return}
+  avTimer=setTimeout(function(){
+   api("search/person",{q:v}).then(function(d){
+    var ppl=(d.results||[]).filter(function(p){return p.profile_path}).slice(0,12);
+    $("av-results").innerHTML=ppl.length?'<div class="sec" style="font-size:15px">TMDB Icons</div><div class="av-grid" style="margin-bottom:18px">'+ppl.map(function(p){
+     var role=p.known_for_department||"Cinema Icon";
+     return'<button class="av-item" data-avtmdb="'+esc(p.profile_path)+'" data-avname="'+esc(p.name)+'" data-avtag="'+esc(role)+'"><div class="av-pic"><img loading="lazy" alt="" src="'+img(p.profile_path,"w185")+'"></div><span>'+esc(p.name)+'</span></button>'}).join("")+'</div>':'<p class="dim" style="font-size:14px">No portraits found for "'+esc(v)+'".</p>'
+   }).catch(function(){$("av-results").innerHTML=''})},350)}}
+
 function openSearch(){
- $("panel").innerHTML='<h2>Log a film</h2><input id="q" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show();$("q").focus();
+ $("panel").innerHTML='<h2>Log a film</h2><input id="q" class="inp" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show(true);$("q").focus();
  $("q").oninput=function(){clearTimeout(timer);var v=this.value.trim();if(v.length<2){$("res").innerHTML="";return}
   timer=setTimeout(function(){api("search/movie",{q:v}).then(function(d){$("res").innerHTML=(d.results||[]).slice(0,12).map(function(m){return pc(m.id,m.title+(m.release_date?" ("+m.release_date.slice(0,4)+")":""),m.poster_path)}).join("")||'<p class="dim">No films found.</p>'}).catch(function(){$("res").innerHTML='<p class="dim">Search isn’t working right now.</p>'})},350)}}
+
 function openDetail(id){
- $("panel").innerHTML='<p class="dim">Loading…</p>';show();
+ $("panel").innerHTML='<p class="dim">Loading…</p>';show(false);
  api("movie/"+id).then(function(m){
   var crew=(m.credits&&m.credits.crew)||[],d=crew.filter(function(c){return c.job==="Director"})[0],w=crew.filter(function(c){return c.job==="Screenplay"||c.job==="Writer"})[0],pcn=(m.production_countries||[])[0];
   cur={tid:m.id,title:m.title,year:(m.release_date||"").slice(0,4),genres:(m.genres||[]).map(function(g){return g.name}),director:d?d.name:"",dphoto:d?d.profile_path||"":"",writer:w?w.name:"",poster:m.poster_path||"",score:m.vote_average?m.vote_average.toFixed(1):"",country:pcn?pcn.iso_3166_1:"",lang:m.original_language||""};
@@ -228,21 +357,26 @@ function openDetail(id){
 document.addEventListener("click",function(e){
  var t=e.target;
  if(t.id==="ov"||t.closest("[data-act=close]")){hide();return}
- if(t.closest("#logbtn")){openSearch();return}
- var v=t.closest("[data-v]");if(v){view=v.dataset.v;render();window.scrollTo(0,0);return}
- var p=t.closest("[data-p]");if(p){period=p.dataset.p;render();return}
- var c=t.closest("[data-c]");if(c){ex.country=c.dataset.c;if(ex.genre)loadExplore(true);else render();return}
+ if(t.closest("#logbtn")){if($("ov").classList.contains("on")&&$("logbtn").classList.contains("open"))hide();else openSearch();return}
+ if(t.closest("[data-avopen]")){openAvatarPicker();return}
+ var avp=t.closest("[data-avpreset]");
+ if(avp){var f=PRESET_AVATARS.filter(function(x){return x.id===avp.dataset.avpreset})[0];if(f){avatar={type:"preset",id:f.id,name:f.name,tag:f.tag,img:""};saveAv();hide();render(true)}return}
+ var avt=t.closest("[data-avtmdb]");
+ if(avt){avatar={type:"tmdb",id:"",name:avt.dataset.avname,tag:avt.dataset.avtag,img:avt.dataset.avtmdb};saveAv();hide();render(true);return}
+ var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v){view=v.dataset.v;render(false);window.scrollTo({top:0,behavior:"smooth"})}return}
+ var p=t.closest("[data-p]");if(p){period=p.dataset.p;render(true);return}
+ var c=t.closest("[data-c]");if(c){ex.country=c.dataset.c;if(ex.genre)loadExplore(true);else render(true);return}
  var g=t.closest("[data-g]");if(g){ex.genre=g.dataset.g;ex.sub=null;ex.showSubs=false;loadExplore(true);return}
- if(t.closest("[data-back]")){ex.genre=null;ex.sub=null;render();return}
- if(t.closest("[data-subs]")){ex.showSubs=!ex.showSubs;render();return}
+ if(t.closest("[data-back]")){ex.genre=null;ex.sub=null;render(true);return}
+ if(t.closest("[data-subs]")){ex.showSubs=!ex.showSubs;render(true);return}
  var s=t.closest("[data-s]");if(s){ex.sub=ex.sub===s.dataset.s?null:s.dataset.s;loadExplore(true);return}
  if(t.closest("[data-more]")){ex.page++;loadExplore(false);return}
  var a=t.closest("[data-act]");
- if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();films.push(cur);save();hide();loadRows();render()}
-  else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();hide();loadRows();render()}return}
+ if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();films.push(cur);save();hide();loadRows();render(true)}
+  else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();hide();loadRows();render(true)}return}
  var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
-render();loadRows();
+render(false);loadRows();
 </script>
 </body>
 </html>
