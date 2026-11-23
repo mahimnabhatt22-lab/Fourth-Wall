@@ -571,7 +571,7 @@ function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t
 function drawAuth(err,keep){
  var up=authMode==="up";
  $("authbox").innerHTML=logoHTML()+'<h1 class="brand" style="margin:0 0 10px;font-size:30px">Fourth wall</h1><h2>'+(up?"Create your account":"Welcome back")+'</h2><p class="dim" style="margin:6px 0 18px;font-size:14px">'+(up?"You start with an empty sky. Everything you log stays in your account.":"Sign in to see the films you have logged.")+'</p>'+
-  '<form id="authf"><input id="au" class="inp" placeholder="Username" autocomplete="username" maxlength="24" aria-label="Username"><input id="ap" class="inp" type="password" placeholder="Password" autocomplete="'+(up?"new-password":"current-password")+'" aria-label="Password"><div class="err" role="alert">'+esc(err||"")+'</div><button class="btn" type="submit" style="width:100%">'+(up?"Create account":"Sign in")+'</button></form>'+
+  '<form id="authf"><input id="au" class="inp" placeholder="Username" autocomplete="username" maxlength="40" aria-label="Username"><input id="ap" class="inp" type="password" placeholder="Password" autocomplete="'+(up?"new-password":"current-password")+'" aria-label="Password"><div class="err" role="alert">'+esc(err||"")+'</div><button class="btn" type="submit" style="width:100%">'+(up?"Create account":"Sign in")+'</button></form>'+
   '<button class="ghost" data-authmode="1" style="margin-top:12px;width:100%">'+(up?"I already have an account":"Create a new account")+'</button>';
  var u=$("au");u.value=keep||"";(keep?$("ap"):u).focus()}
 function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");authMode=Object.keys(accts()).length?"in":"up";drawAuth("")}
@@ -587,8 +587,8 @@ document.addEventListener("submit",function(e){
  if(e.target.id!=="authf")return;e.preventDefault();
  var n=$("au").value.trim().toLowerCase(),p=$("ap").value,all=accts(),up=authMode==="up";
  function bad(m){drawAuth(m,n)}
- if(!/^[a-z0-9_.-]{3,24}$/.test(n))return bad("Use 3 to 24 letters, numbers, dots, dashes or underscores for the username.");
- if(p.length<6)return bad("Use at least 6 characters for the password.");
+ if(!n)return bad("Enter a username.");
+ if(!p)return bad("Enter a password.");
  if(up&&all[n])return bad("That username is taken. Sign in instead.");
  if(!up&&!all[n])return bad("No account with that username. Create one instead.");
  var salt=up?Math.random().toString(36).slice(2)+Date.now().toString(36):all[n].s;
