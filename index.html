@@ -579,7 +579,8 @@ function render(noAnim){
   if(rows===null)h+='<p class="dim">Finding films for you…</p>';
   else h+=rows.map(function(r){return'<h2 class="sec">'+esc(r.t)+'</h2>'+carouselRow(r.items.map(function(m){return pc(m.id,m.title,m.poster_path)}).join(""))}).join("");
  }else if(view==="explore"){h=exploreHTML()}
- else if(view==="dna"){h=dnaHTML()}
+ else if(view==="universes"){h=universesHTML()}
+ else if(view==="cinemography"){h=cinematographyHTML()}
  else{
   var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
   h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><button class="ghost" data-signout="1" style="margin-left:auto">Sign out</button></div>';
