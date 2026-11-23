@@ -1,0 +1,1818 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fourth wall</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Cinzel:wght@600;700;800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+@property --h{syntax:"<number>";inherits:true;initial-value:230}
+@property --h2{syntax:"<number>";inherits:true;initial-value:270}
+@property --s1{syntax:"<percentage>";inherits:true;initial-value:62%}
+@property --s2{syntax:"<percentage>";inherits:true;initial-value:52%}
+@property --a1{syntax:"<number>";inherits:true;initial-value:0.65}
+@property --a2{syntax:"<number>";inherits:true;initial-value:0.52}
+
+:root{--h:230;--h2:270;--s1:62%;--s2:52%;--a1:0.65;--a2:0.52;--bg:#05050b;--ink:#f3f1fa;--dim:rgba(243,241,250,.64);--glass:rgba(255,255,255,.075);--edge:rgba(255,255,255,.17);color-scheme:dark;transition:--h 1.2s cubic-bezier(.22,1,.36,1),--h2 1.2s cubic-bezier(.22,1,.36,1),--s1 1.2s ease,--s2 1.2s ease,--a1 1.2s ease,--a2 1.2s ease}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font:400 16px/1.5 "Instrument Sans",system-ui,sans-serif;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;background:
+  radial-gradient(var(--s1,62%) 52% at 12% 10%,hsl(var(--h) 96% 48%/var(--a1,.65)),transparent 70%),
+  radial-gradient(var(--s2,52%) 48% at 90% 86%,hsl(var(--h2) 94% 46%/var(--a2,.52)),transparent 70%),
+  radial-gradient(40% 35% at 62% 28%,hsl(var(--h2) 85% 36%/.22),transparent 72%)}
+
+/* Distant Blurry Deep-Space Stars */
+#stars{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+#stars i{position:absolute;border-radius:50%;background:#fff;animation:tw var(--td,4.5s) ease-in-out infinite;animation-delay:var(--dl,0s)}
+@keyframes tw{0%,100%{opacity:var(--lo,.14)}50%{opacity:var(--hi,.65)}}
+@media (prefers-reduced-motion:reduce){
+  #stars i,.band::after,.bub{animation:none!important}
+  .row-track,.pc,.gb,.mood-card,#panel,#ov,.fab,.view-stage{transition:none!important;animation:none!important}
+}
+
+main{max-width:1100px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top,0px)) 20px 140px}
+@media (min-width:1001px){main{max-width:none;margin:0 0 0 218px;padding-right:44px}}
+.view-stage{animation:viewIn .36s cubic-bezier(.22,1,.36,1) backwards}
+.view-stage.still{animation:none}
+.view-stage.leave{animation:none;opacity:0;transform:translateY(-8px);transition:opacity .15s ease-out,transform .15s ease-out}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+h1,h2,h3,.num{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0}
+.glass{background:var(--glass);backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);border:1px solid var(--edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 18px 40px rgba(0,0,0,.38)}
+button{font:inherit;color:inherit;cursor:pointer;transition:transform .26s cubic-bezier(.22,1,.36,1),background .28s ease,border-color .28s ease,color .28s ease,box-shadow .28s ease}
+button:active{transform:scale(.965)}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;outline-offset:2px}
+
+/* Grand Cinema Masthead */
+.brand{font-family:"Cinzel",Georgia,serif;font-size:clamp(30px,5.2vw,50px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;line-height:1.05;margin:4px 0 26px;background:linear-gradient(180deg,#ffffff 15%,rgba(243,241,250,.68) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-shadow:0 10px 34px rgba(0,0,0,.45)}
+.pg{font-size:34px;font-weight:800;margin-bottom:16px}
+
+/* Hero + Right Square Mood Avatar Slot */
+.hero-row{display:flex;align-items:stretch;gap:16px;margin-bottom:30px;max-width:1040px}
+.hero{flex:1;padding:34px 28px;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.hero h2{font-size:clamp(32px,6vw,60px);font-weight:800;line-height:1.02;letter-spacing:-.02em;max-width:14ch}
+.hero p,.dim{color:var(--dim)}.hero p{margin:14px 0 0;max-width:48ch}
+
+.mood-card{flex:0 0 196px;width:196px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;position:relative;overflow:hidden;border-radius:24px}
+.mood-card:hover{border-color:rgba(255,255,255,.38);transform:translateY(-3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 22px 44px rgba(0,0,0,.45)}
+.mood-card::before{content:"";position:absolute;inset:-20%;background:radial-gradient(circle at 50% 35%,hsl(var(--h) 85% 58%/.28),transparent 68%);pointer-events:none}
+.mood-lbl{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);position:relative;z-index:1}
+.mood-orb{width:92px;height:92px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(255,255,255,.28);box-shadow:0 10px 26px rgba(0,0,0,.45),0 0 28px hsl(var(--h) 85% 55%/.35);display:grid;place-items:center;background:rgba(255,255,255,.09);position:relative;z-index:1;transition:transform .34s cubic-bezier(.22,1,.36,1)}
+.mood-card:hover .mood-orb{transform:scale(1.05)}
+.mood-orb img{width:100%;height:100%;object-fit:cover;display:block}
+.mood-orb svg{width:56px;height:56px;display:block}
+.mood-name{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:15px;line-height:1.15;position:relative;z-index:1}
+.mood-sub{font-size:11px;color:var(--dim);position:relative;z-index:1}
+@media (max-width:680px){.hero-row{flex-direction:column}.mood-card{flex:none;width:100%;flex-direction:row;text-align:left;padding:16px 20px;gap:14px}.mood-orb{width:64px;height:64px;flex:none}.mood-meta{flex:1;min-width:0}}
+
+.sec{font-size:20px;font-weight:800;margin:8px 0 12px}
+
+/* Scrollbar-Free Horizontal Rows + Curved Cylindrical Right-Arrow Carousel */
+.row-shell{position:relative;margin-bottom:16px;perspective:1100px}
+.row-track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:6px 48px 14px 2px;scrollbar-width:none;-ms-overflow-style:none;transform-style:preserve-3d;transition:transform .46s cubic-bezier(.22,1,.36,1)}
+.row-track::-webkit-scrollbar{display:none;width:0;height:0}
+.row-track.curving{transform:rotateY(-5deg);will-change:transform}
+
+.row-next{position:absolute;right:6px;top:44%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(14,14,24,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.26);color:#fff;display:grid;place-items:center;z-index:3;box-shadow:0 8px 24px rgba(0,0,0,.55);opacity:.9}
+.row-next:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.55);transform:translateY(-50%) scale(1.08);opacity:1}
+.row-next:active{transform:translateY(-50%) scale(.95)}
+.row-next svg{width:18px;height:18px;stroke:currentColor;stroke-width:2.3;fill:none}
+
+.rs{display:flex;gap:14px;overflow-x:auto;padding:4px 2px 18px;margin-bottom:12px;scrollbar-width:none;-ms-overflow-style:none}
+.rs::-webkit-scrollbar{display:none}
+.rs.wrap{flex-wrap:wrap;overflow:visible}
+
+.pc{flex:0 0 150px;width:150px;padding:0;overflow:hidden;text-align:left;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.pc:hover{transform:translateY(-4px)}
+.pc img,.pc .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.22,1,.36,1)}
+.pc:hover img{transform:scale(1.035)}
+.pc .ph{display:flex;align-items:flex-end;padding:12px;font:800 18px/1.1 "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
+.pc span{display:block;padding:9px 10px 11px;font-size:13px;line-height:1.3}
+
+/* Navigation Dock & Animated FAB */
+.dock{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:4px;padding:6px;border-radius:999px;z-index:4}
+.dock button{background:none;border:0;border-radius:999px;padding:10px 24px;color:var(--dim)}
+.dock button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
+.fab{position:fixed;right:26px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.94);color:#0a0a12;border:0;font-size:34px;line-height:1;z-index:5;box-shadow:0 10px 30px rgba(0,0,0,.45),0 0 40px hsl(var(--h) 90% 55%/.5);transition:transform .42s cubic-bezier(.34,1.56,.64,1),box-shadow .35s ease,background .25s ease}
+.fab:hover{transform:scale(1.07)}
+.fab.open{transform:rotate(135deg) scale(1.04);background:#fff}
+
+.seg{display:inline-flex;flex-wrap:wrap;padding:4px;gap:2px;border-radius:24px;margin-bottom:20px}
+.seg button{background:none;border:0;padding:7px 16px;border-radius:999px;color:var(--dim)}
+.seg button[aria-pressed=true]{background:rgba(255,255,255,.16);color:var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-bottom:30px;max-width:1000px}
+.stat{padding:20px 22px}.stat small{color:var(--dim)}
+.num{font-size:32px;font-weight:800;margin-top:4px;line-height:1.1}
+.dir{display:flex;gap:16px;align-items:center}
+.face{width:68px;height:68px;border-radius:50%;flex:none;display:grid;place-items:center;object-fit:cover;overflow:hidden;font:800 24px "Bricolage Grotesque",system-ui,sans-serif;background:rgba(255,255,255,.14);border:1px solid var(--edge)}
+.face img{width:100%;height:100%;object-fit:cover;display:block}
+.face svg{width:42px;height:42px;display:block}
+.sil{background:radial-gradient(circle at 50% 36%,rgba(255,255,255,.4) 0 20%,transparent 21%),radial-gradient(ellipse at 50% 100%,rgba(255,255,255,.35) 0 44%,transparent 45%),rgba(255,255,255,.06);filter:blur(2.5px)}
+.dir .num{font-size:22px}.msg{font-size:15px;margin:4px 0}
+.me{display:flex;align-items:center;gap:16px;margin-bottom:22px}.me .face{width:76px;height:76px;font-size:30px}.me h2{font-size:30px}
+.avatar-trigger{padding:0;cursor:pointer;position:relative}
+.avatar-trigger:hover{border-color:rgba(255,255,255,.45);transform:scale(1.04)}
+
+/* Sidebar & Sealed Glass Gas-Chamber Pipe */
+.side{position:fixed;left:20px;top:20px;bottom:100px;width:182px;padding:18px 16px;display:none;flex-direction:column;gap:14px;overflow:auto;z-index:2;scrollbar-width:none}
+.side::-webkit-scrollbar{display:none}
+@media (min-width:1001px){.side{display:flex}}
+.side .who{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left;width:100%}.side .who .face{width:44px;height:44px;font-size:18px}.side .who .face svg{width:28px;height:28px}.side b{display:block;font-size:15px;line-height:1.2}.side small{color:var(--dim)}
+.side h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-family:"Instrument Sans",sans-serif;font-weight:500}
+
+.meter{display:flex;gap:14px;flex:1;min-height:240px;align-items:stretch}
+.tube{position:relative;width:50px;flex:none;display:flex;flex-direction:column;align-items:center}
+.rim{width:50px;height:9px;flex:none;border-radius:5px;border:2px solid rgba(255,255,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.08));position:relative;z-index:6;margin-bottom:-2px}
+.pipe{position:relative;width:40px;flex:1;border:2px solid rgba(255,255,255,.55);border-top:0;border-radius:0 0 20px 20px;background:rgba(255,255,255,.05);overflow:hidden;isolation:isolate;box-shadow:0 12px 26px rgba(0,0,0,.45),inset 0 -8px 14px rgba(255,255,255,.12)}
+.pipe::before{content:"";position:absolute;z-index:5;left:5px;top:10px;bottom:24px;width:5px;border-radius:5px;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.15) 70%,rgba(255,255,255,.4));pointer-events:none}
+.pipe::after{content:"";position:absolute;z-index:5;right:5px;top:16px;bottom:32px;width:2px;border-radius:2px;background:rgba(255,255,255,.3);pointer-events:none}
+.fill{position:absolute;left:0;right:0;bottom:0;top:12%;display:flex;flex-direction:column;z-index:1}
+.fill.empty{opacity:.45}
+.band{position:relative;flex:var(--f,1) 1 0;min-height:16px;overflow:hidden;background:linear-gradient(90deg,hsl(var(--c) 100% 46%),hsl(var(--c) 100% 62%) 45%,hsl(var(--c) 100% 50%))}
+.band+.band{margin-top:-12px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%)}
+.band::after{content:"";position:absolute;inset:-20% -40%;background:radial-gradient(ellipse at 30% 40%,rgba(255,255,255,.4),transparent 55%);animation:wisp var(--dur,7s) ease-in-out infinite alternate}
+@keyframes wisp{from{transform:translateX(-18%)}to{transform:translateX(18%)}}
+.bub{position:absolute;bottom:8px;left:var(--x,10px);width:var(--sz,5px);height:var(--sz,5px);border-radius:50%;background:rgba(255,255,255,.8);z-index:3;opacity:0;animation:rise var(--bd,5s) linear infinite;animation-delay:var(--bl,0s)}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(-190px);opacity:0}}
+
+.legend{display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:13px;min-width:0;flex:1}
+.legend div{display:flex;align-items:center;gap:7px}.legend em{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal;box-shadow:0 0 8px currentColor}
+.legend span{color:var(--dim);margin-left:auto}
+
+/* Explore Page: Collectible Poster/Square-Card Genre Grid */
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:16px;max-width:1040px}
+.gb{aspect-ratio:4/5;padding:18px;text-align:left;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;background:linear-gradient(155deg,hsl(var(--gh) 88% 46%/.46),rgba(14,14,24,.65) 78%);transition:transform .36s cubic-bezier(.22,1,.36,1),border-color .3s ease,box-shadow .36s ease}
+.gb::before{content:"";position:absolute;width:130px;height:130px;right:-26px;top:-26px;border-radius:50%;background:radial-gradient(circle,hsl(var(--gh) 95% 65%/.55),transparent 70%);filter:blur(8px);pointer-events:none;transition:transform .45s ease}
+.gb:hover{transform:translateY(-5px) scale(1.015);border-color:rgba(255,255,255,.4);box-shadow:inset 0 1px 0 rgba(255,255,255,.32),0 22px 42px rgba(0,0,0,.48)}
+.gb:hover::before{transform:scale(1.22)}
+.gb-top{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.gb-dot{width:12px;height:12px;border-radius:50%;background:hsl(var(--gh) 92% 64%);box-shadow:0 0 14px hsl(var(--gh) 92% 60%)}
+.gb-tag{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim)}
+.gb-bot{position:relative;z-index:1}
+.gb-name{display:block;font:800 22px/1.12 "Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.01em}
+.gb-sub{display:block;font-size:12px;color:var(--dim);margin-top:5px}
+
+.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:14px}.bar h2{font-size:26px}
+.chipsrow{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.chip{background:rgba(255,255,255,.07);border:1px solid var(--edge);border-radius:999px;padding:6px 14px;font-size:14px}
+.chip[aria-pressed=true]{background:rgba(255,255,255,.9);color:#0a0a12}
+
+/* Modal Overlay & Panel Animation */
+#ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(3,3,8,.68);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);padding:calc(16px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));z-index:6;opacity:0;pointer-events:none;transition:opacity .3s ease}
+#ov.on{opacity:1;pointer-events:auto}
+#panel{width:100%;max-width:780px;max-height:100%;overflow:auto;padding:24px;background:rgba(22,20,36,.92);transform:translateY(18px) scale(.965);transition:transform .38s cubic-bezier(.22,1,.36,1)}
+#ov.on #panel{transform:translateY(0) scale(1)}
+#panel h2{font-size:26px;margin-bottom:14px}
+.inp{width:100%;background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;color:var(--ink);font:inherit;padding:12px 14px;margin-bottom:16px}
+
+/* Avatar Picker Grid */
+.av-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px;margin-top:8px}
+.av-item{background:rgba(255,255,255,.06);border:1px solid var(--edge);border-radius:18px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center}
+.av-item:hover{background:rgba(255,255,255,.14);transform:translateY(-2px)}
+.av-item[aria-pressed=true]{background:rgba(255,255,255,.22);border-color:#fff}
+.av-item .av-pic{width:56px;height:56px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2)}
+.av-item .av-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.av-item .av-pic svg{width:38px;height:38px}
+.av-item span{font-size:12px;line-height:1.2;font-weight:500}
+.av-item small{font-size:10px;color:var(--dim);line-height:1.1}
+
+.detail{display:grid;grid-template-columns:210px 1fr;gap:24px}
+.detail img,.detail .ph{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:18px;display:block}
+.detail .ph{display:flex;align-items:flex-end;padding:14px;font:800 22px "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
+@media (max-width:620px){.detail{grid-template-columns:1fr}.detail img,.detail .ph{max-width:220px}}
+.meta{color:var(--dim);margin:6px 0}.over{margin:12px 0;font-size:15px}
+.links{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.links div,.links a{background:rgba(255,255,255,.08);border:1px solid var(--edge);border-radius:14px;padding:8px 14px;color:var(--ink);text-decoration:none;font-size:14px}
+.links small{display:block;color:var(--dim);font-size:12px}
+.acts{display:flex;gap:10px;margin-top:16px}
+.btn{background:rgba(255,255,255,.92);color:#0a0a12;border:0;border-radius:999px;padding:10px 22px;font-weight:500}
+.ghost{background:none;border:1px solid var(--edge);border-radius:999px;padding:9px 18px}
+
+.pc.glass,.stat.glass,.gb.glass{backdrop-filter:none;-webkit-backdrop-filter:none}
+.pc.glass,.stat.glass{background:rgba(30,28,50,.66)}
+body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility:hidden}
+.logo{display:block;height:clamp(56px,9vw,84px);width:auto;max-width:100%;flex:none}
+.brandrow{display:flex;align-items:center;gap:16px;margin:4px 0 26px}.brandrow .brand{margin:0}
+#authbox .logo{height:120px;margin:0 auto 10px}
+#auth{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
+#auth.on{display:flex}
+#authbox{width:100%;max-width:380px;padding:28px;text-align:center}
+
+#authbox h2{font-size:24px}
+.err{color:#ff9a9a;font-size:13px;min-height:18px;margin:-6px 0 10px;text-align:left}
+.full{width:100%!important;height:100%!important}
+.cv-prev{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:1.5px solid rgba(255,255,255,.3)}
+.cv-prev svg{width:100%;height:100%;display:block}
+.cv-lbl{font-size:13px;color:var(--dim);margin:12px 0 6px}
+.cv-row{display:flex;flex-wrap:wrap;gap:8px}
+.cv-row .chip{text-transform:capitalize}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.25);padding:0}
+.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+#av-cats{margin-top:6px}
+
+/* Cinema DNA View */
+.dna-wrap{display:flex;flex-direction:column;gap:16px;max-width:none;width:100%}
+.dna-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.dna-prog{height:3px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:4px}
+.dna-prog i{display:block;height:100%;background:linear-gradient(90deg,hsl(var(--h) 92% 62%),hsl(var(--h2) 92% 62%));transition:width .25s ease}
+.dna-stage{position:relative;height:82vh;min-height:680px;max-height:1120px;overflow:hidden;padding:0;background:radial-gradient(ellipse at 50% 48%,rgba(164,67,220,.24),transparent 64%),radial-gradient(ellipse at 12% 12%,rgba(240,48,94,.19),transparent 52%),radial-gradient(ellipse at 86% 78%,rgba(25,185,210,.16),transparent 48%),radial-gradient(ellipse at 48% 55%,rgba(255,255,255,.035),transparent 70%),rgba(5,5,13,.94)}
+.dna-canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.dna-canvas.dragging{cursor:grabbing}
+.dna-hud-tl{position:absolute;left:14px;top:14px;display:flex;flex-direction:column;gap:8px;z-index:2;pointer-events:none}
+.dna-badge{background:rgba(12,12,22,.72);border:1px solid var(--edge);border-radius:999px;padding:6px 12px;font-size:12px;color:var(--dim);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dna-hud-tr{position:absolute;right:14px;top:14px;display:flex;flex-direction:column;gap:6px;z-index:2}
+.dna-zbtn{width:36px;height:36px;border-radius:12px;background:rgba(14,14,26,.78);border:1px solid var(--edge);display:grid;place-items:center;font-size:18px;line-height:1}
+.dna-zbtn:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4)}
+.dna-hud-bl{position:absolute;left:14px;bottom:14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;z-index:2}
+.dna-pill{background:rgba(14,14,26,.78);border:1px solid var(--edge);border-radius:999px;padding:6px 13px;font-size:12px}
+.dna-pill:hover{background:rgba(255,255,255,.16)}
+.dna-pill[aria-pressed=true]{background:rgba(255,255,255,.9);color:#0a0a12;border-color:transparent}
+.dna-hud-br{position:absolute;right:14px;bottom:14px;width:128px;height:92px;border-radius:14px;overflow:hidden;border:1px solid var(--edge);background:rgba(8,8,16,.82);z-index:2;pointer-events:none}
+.dna-hud-br canvas{display:block;width:100%;height:100%}
+.dna-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:24px;pointer-events:none}
+.dna-seed{width:18px;height:18px;border-radius:50%;background:radial-gradient(circle,#fff 0%,hsl(var(--h) 95% 65%) 55%,transparent 100%);box-shadow:0 0 28px hsl(var(--h) 95% 60%/.85)}
+.dna-list{padding:20px;display:flex;flex-direction:column;gap:18px}
+.dna-grp h3{font-size:17px;margin-bottom:8px}
+.dna-grp-items{display:flex;flex-wrap:wrap;gap:8px}
+.dna-chip{background:rgba(255,255,255,.07);border:1px solid var(--edge);border-radius:999px;padding:6px 12px;font-size:13px}
+.dna-chip:hover{background:rgba(255,255,255,.16)}
+
+.dna-layout{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(440px,.92fr);gap:22px;align-items:stretch}
+.dna-main{min-width:0;display:flex;flex-direction:column;gap:12px}
+.dna-profile{padding:32px 32px;display:flex;flex-direction:column;gap:22px;min-width:0;background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));border-color:rgba(255,255,255,.16)}
+.dna-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(225,197,255,.82);font-weight:700}
+.dna-profile h2{font-size:clamp(25px,3vw,38px);line-height:1.02;letter-spacing:-.035em}
+.dna-mantra{font:italic 500 16px/1.5 "Bricolage Grotesque",sans-serif;color:#e3c7ff}
+.dna-copy{font-size:15px;line-height:1.88;color:rgba(246,242,251,.86);max-width:68ch;margin:8px 0 0}
+.dna-insight{border-top:1px solid rgba(255,255,255,.12);padding-top:19px}
+.dna-insight b{display:block;font:700 11px "Bricolage Grotesque",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#e8d5ff;margin-bottom:8px}
+.dna-tags{display:flex;flex-wrap:wrap;gap:7px}
+.dna-tag{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);border-radius:999px;padding:6px 10px;font-size:11px;color:rgba(250,245,255,.86)}
+.dna-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.dna-stat{padding:11px 9px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.09)}
+.dna-stat strong{display:block;font:800 23px/1 "Bricolage Grotesque",sans-serif}
+.dna-stat span{display:block;font-size:10px;color:var(--dim);margin-top:5px}
+.dna-subgenres{padding:15px 17px}
+.dna-subgenres h3{font-size:13px;margin-bottom:10px}
+.dna-tools{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
+.dna-share{background:transparent;color:rgba(248,242,255,.78);border:1px solid rgba(255,255,255,.14);font-weight:500;box-shadow:none;padding:9px 14px;letter-spacing:.01em}
+.dna-share:hover{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.24);color:#fff}
+.dna-key{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--dim)}
+.dna-key span{display:inline-flex;align-items:center;gap:5px}
+.dna-key i{width:7px;height:7px;border-radius:50%;display:inline-block}
+@media(max-width:1100px){.dna-layout{grid-template-columns:1fr}.dna-profile{display:grid;grid-template-columns:1fr 1fr;align-items:start}.dna-profile .dna-profile-intro{grid-row:span 2}.dna-stage{height:72vh}}
+@media(max-width:620px){.dna-profile{display:flex;padding:21px;gap:18px}.dna-stage{height:66vh;min-height:460px}.dna-stats{grid-template-columns:repeat(3,1fr)}.dna-tools{align-items:flex-start}.dna-share{width:auto}.dna-copy{font-size:14px;line-height:1.8}}
+@media (max-width:620px){
+  .dna-stage{height:64vh;min-height:420px}
+  .dna-hud-br{width:96px;height:72px}
+  .dock button{padding:10px 15px;font-size:14px}
+}
+</style>
+</head>
+<body class="locked">
+<div id="stars" aria-hidden="true"></div>
+<aside class="side glass" id="side" aria-label="Taste meter"></aside>
+<main id="app"></main>
+<nav class="dock glass" aria-label="Main">
+<button data-v="home" aria-pressed="true">Home</button><button data-v="explore" aria-pressed="false">Explore</button><button data-v="dna" aria-pressed="false">DNA</button><button data-v="me" aria-pressed="false">Me</button>
+</nav>
+<button class="fab" id="logbtn" aria-label="Log a film">+</button>
+<div id="ov" role="dialog" aria-modal="true"><div id="panel" class="glass"></div></div>
+<div id="auth"><div id="authbox" class="glass"></div></div>
+<script>
+var GID={Action:28,Adventure:12,Animation:16,Comedy:35,Crime:80,Documentary:99,Drama:18,Family:10751,Fantasy:14,History:36,Horror:27,Music:10402,Mystery:9648,Romance:10749,"Science Fiction":878,Thriller:53,War:10752,Western:37};
+var G={Horror:355,War:8,Action:18,Western:28,Adventure:32,History:38,Comedy:48,Documentary:95,Family:125,Animation:150,Music:165,"Science Fiction":182,Drama:222,Mystery:250,Thriller:268,Fantasy:300,Crime:285,Romance:328};
+var GTAG={Action:"Adrenaline",Adventure:"Odyssey",Animation:"Crafted Worlds",Comedy:"Levity",Crime:"Underworld",Documentary:"Real Stories",Drama:"Human Depth",Family:"Shared Wonder",Fantasy:"Myth & Magic",History:"Past Echoes",Horror:"Midnight Dread",Music:"Rhythm & Soul",Mystery:"Enigma",Romance:"Heartstrings","Science Fiction":"Future Visions",Thriller:"Pulse & Tension",War:"Frontlines",Western:"Frontier"};
+var SUB={Horror:["Psychological horror","Folk horror","Body horror","Slasher","Supernatural horror","Found footage","Gothic horror","Zombie","Haunted house"],
+Thriller:["Psychological thriller","Neo-noir","Crime thriller","Political thriller","Conspiracy","Revenge","Heist"],
+Comedy:["Dark comedy","Romantic comedy","Satire","Parody","Slapstick","Mockumentary","Coming-of-age"],
+Drama:["Coming-of-age","Courtroom drama","Family drama","Biopic","Social realism","Sports drama"],
+Action:["Martial arts","Spy","Superhero","Disaster","Revenge","Heist"],
+Romance:["Romantic drama","Tragic romance","Teen romance","Period romance"],
+"Science Fiction":["Cyberpunk","Space opera","Dystopia","Time travel","Post-apocalyptic","Alien invasion"],
+Fantasy:["Dark fantasy","Fairy tale","Sword and sorcery","Magical realism","Mythology"],
+Mystery:["Whodunit","Detective","Neo-noir","Conspiracy"],
+Crime:["Gangster","Heist","True crime","Prison"],
+Animation:["Anime","Stop motion","Adult animation"],
+Documentary:["Nature","Music documentary","True crime","Political documentary"]};
+var CO=[["","Worldwide"],["IN","India"],["US","USA"],["GB","UK"],["KR","Korea"],["JP","Japan"],["FR","France"],["ES","Spain"]];
+var CL={IN:"Indian",US:"Hollywood",GB:"British",KR:"Korean",JP:"Japanese",FR:"French",ES:"Spanish",DE:"German",IT:"Italian"};
+
+/* Expanded Cinema Persona & Mood Icons */
+var PRESET_AVATARS=[
+ {id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M16 28c0-11 7-18 16-18s16 7 16 18v12c0 8-6 14-16 14s-16-6-16-14V28z" fill="#f4f5f8"/><path d="M19 26h26l-3 5H34l-2-2-2 2h-8l-3-5z" fill="#14161f"/><path d="M23 39c3-2 15-2 18 0l-2 4H25l-2-4z" fill="#14161f"/><path d="M14 31h4v10h-4zM46 31h4v10h-4z" fill="#cfd3de"/></svg>'},
+ {id:"starlord",name:"Star-Lord",tag:"Guardians · Awesome Mix",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M17 26c0-10 6-16 15-16s15 6 15 16v14c0 7-6 13-15 13s-15-6-15-13V26z" fill="#7c5642"/><circle cx="24" cy="30" r="5" fill="#e63946" stroke="#2b1d16" stroke-width="2"/><circle cx="40" cy="30" r="5" fill="#e63946" stroke="#2b1d16" stroke-width="2"/><rect x="23" y="40" width="18" height="6" rx="3" fill="#3a3d4a"/></svg>'},
+ {id:"groot",name:"Groot",tag:"Guardians · I Am Groot",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M19 14l4 8 4-9 5 9 5-9 4 9 4-8 2 24c0 9-6 15-15 15s-15-6-15-15l2-24z" fill="#8b6239"/><circle cx="25" cy="33" r="3" fill="#17120c"/><circle cx="39" cy="33" r="3" fill="#17120c"/><path d="M27 42c3 2 7 2 10 0" stroke="#3d2916" stroke-width="2.2" stroke-linecap="round"/><path d="M44 17c3-2 6 0 5 3-2 2-5 1-5-3z" fill="#52b788"/></svg>'},
+ {id:"rocket",name:"Rocket",tag:"Guardians · Tactical Chaos",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M16 16l8 9h16l8-9 2 19c0 9-7 16-18 16s-18-7-18-16l2-19z" fill="#7f6a58"/><path d="M18 30c4-3 10-3 12 1-3 3-9 3-12-1zM46 30c-4-3-10-3-12 1 3 3 9 3 12-1z" fill="#231f20"/><circle cx="25" cy="30" r="2" fill="#f77f00"/><circle cx="39" cy="30" r="2" fill="#f77f00"/><ellipse cx="32" cy="40" rx="5" ry="3.5" fill="#d9c7b8"/><circle cx="32" cy="39" r="2" fill="#111"/></svg>'},
+ {id:"moonknight",name:"Moon Knight",tag:"Fist of Khonshu",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M14 34c0-13 8-22 18-22s18 9 18 22l-4 17H18l-4-17z" fill="#e9ecf5"/><path d="M20 24l12-6 12 6-3 22H23l-3-22z" fill="#1b1d29"/><path d="M22 32l7 2-7 1zM42 32l-7 2 7 1z" fill="#ffffff"/><path d="M32 14a4 4 0 1 0 3 6.5A3.2 3.2 0 1 1 32 14z" fill="#ffd166"/></svg>'},
+ {id:"harrypotter",name:"Harry Potter",tag:"The Boy Who Lived",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="35" r="16" fill="#f1c7a6"/><path d="M16 31c1-12 31-12 32 0-4-6-28-6-32 0z" fill="#1f1b18"/><path d="M33 23l-2 4h3l-2 4" stroke="#e63946" stroke-width="1.8" stroke-linecap="round"/><circle cx="25" cy="35" r="5" stroke="#18181f" stroke-width="2"/><circle cx="39" cy="35" r="5" stroke="#18181f" stroke-width="2"/><path d="M30 35h4" stroke="#18181f" stroke-width="2"/></svg>'},
+ {id:"hermione",name:"Hermione",tag:"Brightest Witch",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M13 38c0-14 7-23 19-23s19 9 19 23c0 7-4 12-9 13H22c-5-1-9-6-9-13z" fill="#6b4423"/><circle cx="32" cy="36" r="14" fill="#f2cbb0"/><circle cx="27" cy="35" r="2" fill="#2b1d12"/><circle cx="37" cy="35" r="2" fill="#2b1d12"/><path d="M28 42c2.5 2 5.5 2 8 0" stroke="#9e4747" stroke-width="2" stroke-linecap="round"/></svg>'},
+ {id:"flyingjatt",name:"Flying Jatt",tag:"Indian Hero · Turban Power",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M16 28c0-10 7-17 16-17s16 7 16 17v4H16v-4z" fill="#219ebc"/><path d="M18 24l14 6 14-6" stroke="#023047" stroke-width="2"/><circle cx="32" cy="21" r="3" fill="#ffb703"/><path d="M18 32h28v11c0 6-6 10-14 10s-14-4-14-10V32z" fill="#f1c7a6"/><path d="M19 32h26v6H19z" fill="#219ebc"/><path d="M22 34h7v2.5h-7zM35 34h7v2.5h-7z" fill="#fff"/></svg>'},
+ {id:"krrish",name:"Krrish",tag:"Indian Hero · Masked",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="17" fill="#e5b899"/><path d="M15 29c2-12 32-12 34 0-5-5-29-5-34 0z" fill="#14141c"/><path d="M17 30h30l-3 9-12-3-12 3-3-9z" fill="#181922" stroke="#495057" stroke-width="1.2"/><path d="M22 33h7v2.5h-7zM35 33h7v2.5h-7z" fill="#f8f9fa"/></svg>'},
+ {id:"raone",name:"Ra.One",tag:"Ra.One · Crimson Core",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M17 27c0-10 6-16 15-16s15 6 15 16v13c0 8-6 14-15 14s-15-6-15-14V27z" fill="#231924"/><path d="M21 31l8 2-8 1zM43 31l-8 2 8 1z" fill="#ff2a4b"/><circle cx="32" cy="43" r="4.5" fill="#ff2a4b" stroke="#ff8fa3" stroke-width="1.4"/></svg>'},
+ {id:"gone",name:"G.One",tag:"Ra.One · HART Blue",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="17" fill="#e8be9e"/><path d="M16 28c2-11 30-11 32 0-5-5-27-5-32 0z" fill="#1b1d26"/><circle cx="26" cy="33" r="2" fill="#1b1d26"/><circle cx="38" cy="33" r="2" fill="#1b1d26"/><circle cx="32" cy="45" r="4.5" fill="#00d4ff" stroke="#caf0f8" stroke-width="1.5"/></svg>'},
+ {id:"hellboy",name:"Hellboy",tag:"Right Hand of Doom",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="18" fill="#d93829"/><ellipse cx="22" cy="18" rx="6" ry="3.5" fill="#d8b998" stroke="#7a1c14" stroke-width="1.5"/><ellipse cx="42" cy="18" rx="6" ry="3.5" fill="#d8b998" stroke="#7a1c14" stroke-width="1.5"/><path d="M21 31l8 2M43 31l-8 2" stroke="#1b0908" stroke-width="2.6" stroke-linecap="round"/><circle cx="25" cy="34" r="2" fill="#ffcf40"/><circle cx="39" cy="34" r="2" fill="#ffcf40"/><path d="M24 44c4-2 12-2 16 0" stroke="#1b0908" stroke-width="2.5" stroke-linecap="round"/></svg>'},
+ {id:"hulk",name:"Hulk",tag:"Smash Mode",svg:'<svg viewBox="0 0 64 64" fill="none"><rect x="15" y="18" width="34" height="34" rx="12" fill="#46a349"/><path d="M15 24c3-8 31-8 34 0-5-3-29-3-34 0z" fill="#182418"/><path d="M21 31l8 2M43 31l-8 2" stroke="#132914" stroke-width="2.8" stroke-linecap="round"/><rect x="23" y="41" width="18" height="6" rx="2" fill="#f5f7f5"/><path d="M27 41v6M32 41v6M37 41v6" stroke="#132914" stroke-width="1.3"/></svg>'},
+ {id:"ironman",name:"Iron Man",tag:"Genius Mode",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M17 26c0-10 6-16 15-16s15 6 15 16v13c0 8-6 15-15 15s-15-7-15-15V26z" fill="#c82828"/><path d="M21 24l5 3h12l5-3v13l-5 11H26l-5-11V24z" fill="#f2b830"/><path d="M22 31h7v3h-7zM35 31h7v3h-7z" fill="#7df9ff"/></svg>'},
+ {id:"spiderman",name:"Spider-Man",tag:"Friendly Neighbourhood",svg:'<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="32" rx="17" ry="21" fill="#d92b3a"/><path d="M20 27c5 1 8 4 9 8-4 1-8-1-9-8zM44 27c-5 1-8 4-9 8 4 1 8-1 9-8z" fill="#fff" stroke="#12131a" stroke-width="2.2"/></svg>'},
+ {id:"vader",name:"Darth Vader",tag:"Dark Side",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M14 44l5-24c2-7 7-10 13-10s11 3 13 10l5 24-18 8-18-8z" fill="#1c1e26"/><circle cx="25" cy="31" r="4" fill="#090a0f" stroke="#454a5c" stroke-width="1.5"/><circle cx="39" cy="31" r="4" fill="#090a0f" stroke="#454a5c" stroke-width="1.5"/><path d="M26 42l6-4 6 4v5H26v-5z" fill="#323644"/></svg>'},
+ {id:"batman",name:"Batman",tag:"Noir Vigilante",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M18 12l4 11h20l4-11 2 22c0 10-7 18-16 18s-16-8-16-18l2-22z" fill="#232634"/><path d="M21 37h22v7c0 4-5 8-11 8s-11-4-11-8v-7z" fill="#e5c2a3"/><path d="M21 31l7 2-7 1zM43 31l-7 2 7 1z" fill="#fff"/></svg>'},
+ {id:"deadpool",name:"Deadpool",tag:"Breaking the 4th Wall",svg:'<svg viewBox="0 0 64 64" fill="none"><ellipse cx="32" cy="32" rx="17" ry="21" fill="#c92434"/><ellipse cx="24" cy="31" rx="5" ry="7" fill="#14151c"/><ellipse cx="40" cy="31" rx="5" ry="7" fill="#14151c"/><ellipse cx="24" cy="31" rx="2.5" ry="1.6" fill="#fff"/><ellipse cx="40" cy="31" rx="2.5" ry="1.6" fill="#fff"/></svg>'},
+ {id:"joker",name:"Joker",tag:"Agent of Chaos",svg:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="34" r="17" fill="#f2f0f5"/><path d="M16 24c4-10 28-10 32 0-6-4-26-4-32 0z" fill="#2da854"/><path d="M21 39c4 7 18 7 22 0-5 3-17 3-22 0z" stroke="#d92638" stroke-width="3.2" stroke-linecap="round"/><circle cx="25" cy="30" r="2.2" fill="#16161e"/><circle cx="39" cy="30" r="2.2" fill="#16161e"/></svg>'},
+ {id:"totoro",name:"Totoro",tag:"Cozy & Rainy",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M22 10l3 11h-6l3-11zM42 10l3 11h-6l3-11z" fill="#7d848d"/><ellipse cx="32" cy="37" rx="18" ry="17" fill="#7d848d"/><ellipse cx="32" cy="41" rx="13" ry="11" fill="#ece8dc"/><circle cx="24" cy="28" r="3" fill="#fff"/><circle cx="40" cy="28" r="3" fill="#fff"/><circle cx="24" cy="28" r="1.4" fill="#111"/><circle cx="40" cy="28" r="1.4" fill="#111"/><path d="M27 37l2-2 2 2M33 37l2-2 2 2" stroke="#7d848d" stroke-width="1.6" stroke-linecap="round"/></svg>'},
+ {id:"alien",name:"Xenomorph",tag:"Midnight Sci-Fi",svg:'<svg viewBox="0 0 64 64" fill="none"><path d="M14 34c0-13 10-21 23-21 9 0 15 5 15 12 0 11-11 23-24 23-8 0-14-6-14-14z" fill="#1d202b" stroke="#626980" stroke-width="1.4"/><path d="M19 39h13v5H19z" fill="#cfd6e6"/></svg>'},
+ {id:"clapper",name:"Director",tag:"Cinephile",svg:'<svg viewBox="0 0 64 64" fill="none"><rect x="14" y="26" width="36" height="24" rx="5" fill="#272938" stroke="#8a90a8" stroke-width="1.5"/><path d="M14 26l34-9 2 6-34 9-2-6z" fill="#f3f1fa"/><path d="M21 24l3-6M31 21l3-6M41 18l3-6" stroke="#181924" stroke-width="2.5"/></svg>'}
+];
+
+/* ---- More avatars ---- */
+function SV(b){return'<svg viewBox="0 0 64 64" fill="none">'+b+'</svg>'}
+function FC(o){
+ var s=o.s||"#f1c7a6",e=o.e||"#1b1b22",hh=o.h||"",b="";
+ if(o.l&&hh)b+='<path d="M12 38c0-17 6-26 20-26s20 9 20 26v16H12z" fill="'+hh+'"/>';
+ b+='<circle cx="32" cy="35" r="16" fill="'+s+'"/>';
+ if(hh)b+='<path d="M15 33C15 20 22 12 32 12S49 20 49 33C43 27 21 27 15 33z" fill="'+hh+'"/>';
+ b+='<circle cx="26" cy="36" r="2.2" fill="'+e+'"/><circle cx="38" cy="36" r="2.2" fill="'+e+'"/>';
+ if(o.m!==0)b+='<path d="'+(o.m||"M27 44q5 3 10 0")+'" stroke="'+(o.mc||"#8a3a3a")+'" stroke-width="2" stroke-linecap="round"/>';
+ return SV(b+(o.x||""))}
+function A(id,name,tag,cat,svg){PRESET_AVATARS.push({id:id,name:name,tag:tag,cat:cat,svg:svg})}
+function CM(b,a,l){return SV('<rect x="6" y="24" width="40" height="22" rx="3" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="46" y="28" width="12" height="14" rx="2" fill="#14151b" stroke="'+a+'" stroke-width="1.6"/><circle cx="52" cy="35" r="4" fill="'+l+'"/><rect x="14" y="15" width="26" height="9" rx="2" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="10" y="30" width="14" height="4" fill="'+a+'"/><rect x="10" y="38" width="22" height="3" fill="'+a+'" opacity=".6"/><path d="M20 46v8M32 46v8" stroke="'+a+'" stroke-width="3"/>')}
+function SLR(b,a,g){return SV('<path d="M24 24l3-8h10l3 8" fill="'+a+'"/><rect x="8" y="22" width="48" height="26" rx="4" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="8" y="22" width="48" height="7" rx="3" fill="'+a+'"/><circle cx="32" cy="38" r="10" fill="#101218" stroke="'+a+'" stroke-width="2.4"/><circle cx="32" cy="38" r="5" fill="#2a4d8a"/><circle cx="30" cy="36" r="1.6" fill="#fff" opacity=".8"/>'+(g?'<rect x="9" y="30" width="8" height="18" rx="3" fill="'+a+'" opacity=".5"/>':'<rect x="12" y="24" width="6" height="3" fill="#d3262e"/>'))}
+
+var CATOF={stormtrooper:"Sci-Fi",vader:"Sci-Fi",alien:"Sci-Fi",hellboy:"Horror",starlord:"Marvel",groot:"Marvel",rocket:"Marvel",moonknight:"Marvel",hulk:"Marvel",ironman:"Marvel",spiderman:"Marvel",deadpool:"Marvel",batman:"DC",joker:"DC",totoro:"Animation",clapper:"Cameras & gear",flyingjatt:"Indian cinema",krrish:"Indian cinema",raone:"Indian cinema",gone:"Indian cinema",harrypotter:"Wizarding world",hermione:"Wizarding world"};
+PRESET_AVATARS.forEach(function(p){p.cat=CATOF[p.id]||"More"});
+
+/* Wizarding world */
+var WZ="Wizarding world";
+A("ron","Ron Weasley","Loyal Best Friend",WZ,FC({h:"#d9622b",x:'<g fill="#c47a4a"><circle cx="28" cy="41" r=".9"/><circle cx="32" cy="42" r=".9"/><circle cx="36" cy="41" r=".9"/></g>'}));
+A("dumbledore","Dumbledore","Headmaster",WZ,FC({s:"#f2d3bb",h:"#eceaf0",l:1,m:0,x:'<path d="M19 43c2 11 7 15 13 15s11-4 13-15c-4 4-22 4-26 0z" fill="#eceaf0"/><circle cx="26" cy="36" r="4.6" stroke="#c9a24a" stroke-width="1.4"/><circle cx="38" cy="36" r="4.6" stroke="#c9a24a" stroke-width="1.4"/>'}));
+A("snape","Snape","Half-Blood Prince",WZ,FC({s:"#e6cdb8",h:"#15131a",l:1,m:"M28 45h8"}));
+A("hagrid","Hagrid","Keeper of Keys",WZ,FC({s:"#e3b08c",h:"#3a2a22",l:1,m:0,x:'<path d="M17 41c3 13 11 16 15 16s12-3 15-16c-4 4-26 4-30 0z" fill="#3a2a22"/><circle cx="32" cy="41" r="2.4" fill="#c9786a"/>'}));
+A("voldemort","Voldemort","He Who Must Not Be Named",WZ,FC({s:"#d7dbd2",e:"#d62828",m:"M28 45h8",x:'<path d="M30 40l2 3 2-3" stroke="#6b7266" stroke-width="1.4" stroke-linecap="round"/>'}));
+A("draco","Draco Malfoy","Slytherin Pride",WZ,FC({s:"#f4dccb",h:"#efe3b2",m:"M28 44q5-2 10 0"}));
+A("luna","Luna Lovegood","Spectrespecs On",WZ,FC({s:"#f3d3bd",h:"#e8d9a0",l:1,e:"#6a8bd8",x:'<circle cx="24" cy="36" r="5.5" stroke="#ff5aa5" stroke-width="2"/><circle cx="40" cy="36" r="5.5" stroke="#ffd23f" stroke-width="2"/><path d="M29.5 36h5" stroke="#9b59ff" stroke-width="1.8"/>'}));
+A("neville","Neville","Brave Gardener",WZ,FC({s:"#f1cdb4",h:"#6b4a2d",x:'<circle cx="23" cy="42" r="3" fill="#f08a8a" opacity=".5"/><circle cx="41" cy="42" r="3" fill="#f08a8a" opacity=".5"/>'}));
+A("mcgonagall","McGonagall","Transfiguration",WZ,FC({s:"#efd0b8",h:"#3b3b4a",m:"M28 44h8",x:'<rect x="21" y="32" width="9" height="7" rx="1.5" stroke="#222" stroke-width="1.5"/><rect x="34" y="32" width="9" height="7" rx="1.5" stroke="#222" stroke-width="1.5"/><path d="M8 28h48l-4 3H12z" fill="#2c6b4a"/><path d="M19 28L32 3l13 25z" fill="#2c6b4a"/>'}));
+A("sirius","Sirius Black","Padfoot",WZ,FC({s:"#e8cdb3",h:"#1f1b20",l:1}));
+A("bellatrix","Bellatrix","Mad as a Hatter",WZ,FC({s:"#e8d4d0",h:"#18141c",l:1,mc:"#6d1a30",m:"M27 44q5 4 10 0"}));
+A("dobby","Dobby","Dobby Is Free",WZ,SV('<path d="M14 26c-12-4-12 12-2 16zM50 26c12-4 12 12 2 16z" fill="#c9b79c"/><ellipse cx="32" cy="36" rx="14" ry="16" fill="#d6c5ab"/><circle cx="25" cy="34" r="5" fill="#9fe0a8"/><circle cx="39" cy="34" r="5" fill="#9fe0a8"/><circle cx="25" cy="34" r="2" fill="#111"/><circle cx="39" cy="34" r="2" fill="#111"/><path d="M28 45q4 3 8 0" stroke="#6b5a45" stroke-width="2"/>'));
+A("hedwig","Hedwig","Snowy Messenger",WZ,SV('<path d="M17 26l3-12 9 8zM47 26l-3-12-9 8z" fill="#e1dccf"/><ellipse cx="32" cy="36" rx="17" ry="18" fill="#f4f1ea"/><circle cx="25" cy="32" r="6" fill="#fff" stroke="#d6cfbd"/><circle cx="39" cy="32" r="6" fill="#fff" stroke="#d6cfbd"/><circle cx="25" cy="32" r="3.4" fill="#f5a623"/><circle cx="39" cy="32" r="3.4" fill="#f5a623"/><circle cx="25" cy="32" r="1.5" fill="#111"/><circle cx="39" cy="32" r="1.5" fill="#111"/><path d="M32 36l-3.5 5h7z" fill="#e8a33d"/><path d="M24 48h4M31 50h2M36 48h4" stroke="#bfb8a6" stroke-width="1.6"/>'));
+A("dementor","Dementor","Soul Chill",WZ,SV('<path d="M32 8c-11 0-17 8-17 20v26l5-5 4 6 4-6 4 6 4-6 5 5V28c0-12-6-20-17-20z" fill="#1c1c26"/><ellipse cx="32" cy="28" rx="9" ry="11" fill="#08080c"/><ellipse cx="32" cy="38" rx="3.5" ry="5" fill="#2e2e3d"/>'));
+A("sortinghat","Sorting Hat","Gryffindor!",WZ,SV('<path d="M8 52h48l-7-5C47 40 44 30 38 14c-2-6-8-4-9 0-3 14-8 26-20 33z" fill="#8c6a43"/><path d="M24 36q4-3 8 0M34 36q4-3 8 0" stroke="#3a2614" stroke-width="2" stroke-linecap="round"/><path d="M26 44q6 4 12 0" stroke="#3a2614" stroke-width="2.2" stroke-linecap="round"/>'));
+
+/* Marvel + Guardians + Avengers */
+A("gamora","Gamora","Deadliest Woman",
+ "Marvel",FC({s:"#6fc27a",h:"#1a1a26",l:1,m:"M28 44q4 2 8 0"}));
+A("drax","Drax","The Destroyer","Marvel",FC({s:"#a05a4a",m:"M27 44h10",x:'<path d="M20 28h8M36 28h8M26 25v6M38 25v6" stroke="#6f2f26" stroke-width="2.4" stroke-linecap="round"/>'}));
+A("nebula","Nebula","Cyborg Sister","Marvel",FC({s:"#4a7fd9",e:"#f1f1ff",m:"M28 44h8",x:'<path d="M20 30h10M34 30h10M32 20v10" stroke="#2c4ea0" stroke-width="2"/><circle cx="43" cy="36" r="4" fill="#bfc6d8"/>'}));
+A("mantis","Mantis","Empath","Marvel",FC({s:"#c8d99a",h:"#1d1a14",l:1,x:'<path d="M26 14L22 4M38 14l4-10" stroke="#1d1a14" stroke-width="2"/><circle cx="22" cy="4" r="2" fill="#ff7bd5"/><circle cx="42" cy="4" r="2" fill="#ff7bd5"/>'}));
+A("captainamerica","Captain America","Shield Bearer","Marvel",SV('<path d="M14 38C14 22 21 12 32 12s18 10 18 26v4H14z" fill="#2b5fb8"/><path d="M20 36h24v10c0 5-5 9-12 9s-12-4-12-9z" fill="#f1c7a6"/><path d="M32 16l2 5h5l-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3h5z" fill="#fff"/><circle cx="26" cy="41" r="1.8" fill="#222"/><circle cx="38" cy="41" r="1.8" fill="#222"/><path d="M27 48q5 3 10 0" stroke="#8a3a3a" stroke-width="2"/><path d="M14 38l-4 4M50 38l4 4" stroke="#fff" stroke-width="3"/>'));
+A("thor","Thor","God of Thunder","Marvel",FC({s:"#f0cdb0",h:"#e6c46a",l:1,e:"#3f88e8",m:0,x:'<path d="M18 26l8-5 6 4 6-4 8 5" stroke="#aab2c0" stroke-width="3" stroke-linecap="round"/><path d="M20 43c3 8 21 8 24 0-4 3-20 3-24 0z" fill="#e6c46a"/>'}));
+A("blackwidow","Black Widow","Red Room","Marvel",FC({s:"#f1cfba",h:"#b8321f",l:1,mc:"#a02030"}));
+A("hawkeye","Hawkeye","Never Misses","Marvel",FC({s:"#e7c3a3",h:"#3a2c24",m:"M28 44h8",x:'<path d="M18 33h28v6H18z" fill="#4b2a8a"/><circle cx="26" cy="36" r="2.2" fill="#fff"/><circle cx="38" cy="36" r="2.2" fill="#fff"/>'}));
+A("blackpanther","Black Panther","Wakanda Forever","Marvel",SV('<path d="M16 22l4-12 8 8h8l8-8 4 12c2 6 2 12 0 18l-4 12H20l-4-12c-2-6-2-12 0-18z" fill="#15151d"/><path d="M22 32l8 3-8 2zM42 32l-8 3 8 2z" fill="#fff"/><path d="M26 22h12M26 44l6 4 6-4" stroke="#8a8fb0" stroke-width="2"/>'));
+A("doctorstrange","Doctor Strange","Sorcerer Supreme","Marvel",FC({s:"#e8c3a3",h:"#2a2224",m:0,x:'<path d="M15 33c-1 8 0 12 3 14M49 33c1 8 0 12-3 14" stroke="#e9e9f0" stroke-width="3.4"/><path d="M23 44c3 3 15 3 18 0" stroke="#2a2224" stroke-width="3"/><path d="M13 53l10-6h18l10 6v6H13z" fill="#c63b2f"/>'}));
+A("scarletwitch","Scarlet Witch","Chaos Magic","Marvel",FC({s:"#f0cdb8",h:"#8a3a22",l:1,x:'<path d="M18 24l2-10 6 6 6-8 6 8 6-6 2 10z" fill="#c42a3a"/>'}));
+A("vision","Vision","Mind Stone","Marvel",SV('<circle cx="32" cy="35" r="17" fill="#d44a4a"/><path d="M15 31C15 18 22 12 32 12s17 6 17 19c-6-6-28-6-34 0z" fill="#3fb36a"/><circle cx="32" cy="24" r="3.4" fill="#ffd23f"/><circle cx="26" cy="37" r="2.4" fill="#fff"/><circle cx="38" cy="37" r="2.4" fill="#fff"/><path d="M28 45h8" stroke="#7a1f1f" stroke-width="2"/>'));
+A("thanos","Thanos","Inevitable","Marvel",FC({s:"#a88bd4",m:"M27 45q5-3 10 0",mc:"#4a2a6e",x:'<path d="M23 27q9-4 18 0M20 40v6M44 40v6" stroke="#6e4fa8" stroke-width="2.2" stroke-linecap="round"/>'}));
+A("loki","Loki","Glorious Purpose","Marvel",FC({s:"#eed0bc",h:"#14161a",l:1,e:"#3aa66a",m:"M27 44q5 2 10-1",x:'<path d="M20 14c-2-8 4-10 8-6M44 14c2-8-4-10-8-6" stroke="#d4a82f" stroke-width="3.4" stroke-linecap="round"/>'}));
+A("doctordoom","Doctor Doom","Victor Von Doom","Marvel",SV('<path d="M14 24c0-10 8-16 18-16s18 6 18 16v26H14z" fill="#2f5a47"/><path d="M20 24h24v22c0 5-5 9-12 9s-12-4-12-9z" fill="#aeb3bd"/><path d="M24 33h6v2h-6zM34 33h6v2h-6z" fill="#0c0f12"/><path d="M26 44h12M30 40l2 4 2-4" stroke="#6d7380" stroke-width="2"/>'));
+A("venom","Venom","We Are Venom","Marvel",SV('<path d="M12 38C12 18 20 10 32 10s20 8 20 28c0 10-8 16-20 16s-20-6-20-16z" fill="#0d0d12"/><path d="M19 28c4-2 8 1 9 6-4 2-9 0-9-6zM45 28c-4-2-8 1-9 6 4 2 9 0 9-6z" fill="#fff"/><path d="M20 42c4 8 20 8 24 0-4 3-20 3-24 0z" fill="#fff"/><path d="M26 44v4M32 45v5M38 44v4" stroke="#0d0d12" stroke-width="1.6"/>'));
+A("wolverine","Wolverine","Snikt","Marvel",SV('<path d="M17 24L10 6l14 9zM47 24l7-18-14 9z" fill="#2b4aa8"/><circle cx="32" cy="35" r="16" fill="#f0c9a8"/><path d="M15 33C15 20 22 13 32 13S49 20 49 33C43 27 21 27 15 33z" fill="#2b4aa8"/><path d="M21 31l8 4-8 1zM43 31l-8 4 8 1z" fill="#fff"/><path d="M16 38l6 8M48 38l-6 8" stroke="#2a1d14" stroke-width="3.5"/><path d="M27 45h10" stroke="#8a3a3a" stroke-width="2"/>'));
+
+/* DC */
+A("superman","Superman","Man of Steel","DC",FC({s:"#f1cdb0",h:"#15151c",x:'<path d="M30 13q4 4 8 1" stroke="#15151c" stroke-width="2.5" stroke-linecap="round"/>'}));
+A("wonderwoman","Wonder Woman","Amazon Princess","DC",FC({s:"#f0cbb0",h:"#2a1a14",l:1,x:'<path d="M18 22l14-6 14 6" stroke="#f2c500" stroke-width="3.4" stroke-linecap="round"/><path d="M32 17l1.6 3.2 3.4.5-2.5 2.4.6 3.4L32 24.8l-3.1 1.7.6-3.4-2.5-2.4 3.4-.5z" fill="#d3262e"/>'}));
+A("harley","Harley Quinn","Mistress of Mayhem","DC",FC({s:"#f3dfe3",h:"#f4f4fb",l:1,x:'<circle cx="11" cy="30" r="7" fill="#ff3d8b"/><circle cx="53" cy="30" r="7" fill="#27c2f0"/>'}));
+
+/* Horror */
+A("annabelle","Annabelle","Possessed Porcelain","Horror",FC({s:"#efe6dc",h:"#4a3426",l:1,e:"#0b0b10",mc:"#9c2f3a",x:'<circle cx="22" cy="42" r="3" fill="#e79a9a" opacity=".6"/><circle cx="42" cy="42" r="3" fill="#e79a9a" opacity=".6"/><path d="M23 12l-9-3v9zM41 12l9-3v9z" fill="#fff"/><path d="M34 20l-3 6 3 3" stroke="#9a8b7e" stroke-width="1"/>'}));
+A("chucky","Chucky","Hi, I am Chucky","Horror",FC({s:"#e9b79a",h:"#c0551f",e:"#2d6fd1",mc:"#8a1f1f",m:"M26 44q6 3 12 0",x:'<path d="M20 28l9 10M23 27l-1 6M26 29l-1 6" stroke="#7a2a2a" stroke-width="1.6" stroke-linecap="round"/><path d="M42 42l5-4M43 45l5-2" stroke="#7a2a2a" stroke-width="1.6"/>'}));
+A("nun","The Nun","Valak","Horror",SV('<path d="M14 54V30c0-14 7-20 18-20s18 6 18 20v24z" fill="#101014"/><path d="M20 30c0-8 5-13 12-13s12 5 12 13v10c0 8-5 12-12 12s-12-4-12-12z" fill="#ddd9d0"/><path d="M22 26h20" stroke="#fff" stroke-width="3"/><path d="M24 33h6v3h-6zM34 33h6v3h-6z" fill="#0c0c10"/><circle cx="27" cy="34.5" r="1" fill="#d6a400"/><circle cx="37" cy="34.5" r="1" fill="#d6a400"/><path d="M26 45q6 2 12 0" stroke="#6b1f2a" stroke-width="2.2"/>'));
+A("pennywise","Pennywise","We All Float","Horror",FC({s:"#f3eee6",e:"#f2c500",mc:"#d3262e",m:"M24 43q8 8 16 0",x:'<circle cx="12" cy="26" r="7" fill="#e0502a"/><circle cx="52" cy="26" r="7" fill="#e0502a"/><path d="M26 38v9M38 38v9" stroke="#d3262e" stroke-width="2"/><circle cx="32" cy="39" r="2.4" fill="#d3262e"/>'}));
+A("ghostface","Ghostface","Scream","Horror",SV('<path d="M14 54V20c0-8 8-12 18-12s18 4 18 12v34z" fill="#0b0b0e"/><path d="M21 16h22c1 14 0 28-5 38h-12c-5-10-6-24-5-38z" fill="#efeee8"/><path d="M24 22c1 8 3 12 5 14-3 0-6-6-5-14zM40 22c-1 8-3 12-5 14 3 0 6-6 5-14z" fill="#0b0b0e"/><ellipse cx="32" cy="46" rx="3.6" ry="6.5" fill="#0b0b0e"/>'));
+A("jason","Jason","Camp Crystal Lake","Horror",SV('<path d="M16 20c0-8 7-12 16-12s16 4 16 12v24c0 8-6 12-16 12s-16-4-16-12z" fill="#e8e4d6"/><ellipse cx="25" cy="28" rx="3.5" ry="4" fill="#111"/><ellipse cx="39" cy="28" rx="3.5" ry="4" fill="#111"/><path d="M32 8v12M24 14l3 5M40 14l-3 5" stroke="#c0392b" stroke-width="2.4"/><g fill="#111"><circle cx="26" cy="42" r="1.6"/><circle cx="32" cy="45" r="1.6"/><circle cx="38" cy="42" r="1.6"/><circle cx="29" cy="49" r="1.6"/><circle cx="35" cy="49" r="1.6"/></g>'));
+A("freddy","Freddy Krueger","One, Two, Freddy Is Coming","Horror",SV('<ellipse cx="32" cy="38" rx="16" ry="18" fill="#c9825f"/><path d="M12 25h40l-4 4H16z" fill="#5a3a22"/><path d="M18 25c0-9 6-15 14-15s14 6 14 15z" fill="#5a3a22"/><path d="M18 22h28v3H18z" fill="#a8261f"/><circle cx="26" cy="36" r="2.4" fill="#111"/><circle cx="38" cy="36" r="2.4" fill="#111"/><path d="M22 41l6 4M42 34l-4 6" stroke="#8a4a35" stroke-width="2.2"/><path d="M26 46q6 3 12 0" stroke="#5a1f1f" stroke-width="2"/>'));
+A("michael","Michael Myers","The Shape","Horror",SV('<path d="M14 38c0-16 7-26 18-26s18 10 18 26v14H14z" fill="#4a3a30"/><ellipse cx="32" cy="38" rx="14" ry="17" fill="#e9e6dd"/><path d="M18 28C20 17 26 14 32 14s12 3 14 14c-4-6-24-6-28 0z" fill="#4a3a30"/><ellipse cx="25" cy="35" rx="4" ry="3" fill="#0b0b0e"/><ellipse cx="39" cy="35" rx="4" ry="3" fill="#0b0b0e"/><path d="M28 47h8" stroke="#bdb8aa" stroke-width="2"/>'));
+A("billy","Billy the Puppet","I Want to Play a Game","Horror",SV('<circle cx="32" cy="36" r="17" fill="#f1ece2"/><path d="M15 33C15 20 22 12 32 12S49 20 49 33C43 27 21 27 15 33z" fill="#17171d"/><circle cx="23" cy="43" r="4.2" fill="#d3262e"/><circle cx="41" cy="43" r="4.2" fill="#d3262e"/><circle cx="25" cy="34" r="4" fill="#111"/><circle cx="39" cy="34" r="4" fill="#111"/><circle cx="25" cy="34" r="1.6" fill="#d3262e"/><circle cx="39" cy="34" r="1.6" fill="#d3262e"/><path d="M24 48h16l-2 6H26z" fill="#fff" stroke="#111" stroke-width="1.4"/>'));
+A("samara","Samara","Seven Days","Horror",FC({s:"#d9ddd5",h:"#141418",l:1,m:"M28 45h8",e:"#0b0b10",x:'<path d="M26 16c-1 14-3 24-8 32M38 16c1 14 3 24 8 32" stroke="#141418" stroke-width="5" stroke-linecap="round"/>'}));
+A("megan","M3GAN","Friend Mode","Horror",FC({s:"#f3e1d6",h:"#6a4a32",e:"#3b2a1a",m:"M28 44h8",mc:"#a8574a",x:'<path d="M16 36v10M48 36v10" stroke="#6a4a32" stroke-width="5"/>'}));
+A("pinhead","Pinhead","Cenobite","Horror",SV('<circle cx="32" cy="34" r="18" fill="#d6d2cc"/><path d="M18 34h28M32 18v32M22 24l20 20M42 24L22 44" stroke="#4a4a52" stroke-width="1.4"/><g fill="#c8c8d6"><circle cx="24" cy="34" r="1.8"/><circle cx="32" cy="34" r="1.8"/><circle cx="40" cy="34" r="1.8"/><circle cx="32" cy="26" r="1.8"/><circle cx="32" cy="42" r="1.8"/></g>'));
+
+/* Sci-Fi */
+A("yoda","Yoda","Do or Do Not","Sci-Fi",SV('<path d="M4 34c9-5 13-3 17 2l-3 6zM60 34c-9-5-13-3-17 2l3 6z" fill="#9ab973"/><ellipse cx="32" cy="36" rx="14" ry="16" fill="#9ab973"/><circle cx="25" cy="34" r="3.4" fill="#fff"/><circle cx="39" cy="34" r="3.4" fill="#fff"/><circle cx="25" cy="34" r="1.6" fill="#3a2614"/><circle cx="39" cy="34" r="1.6" fill="#3a2614"/><path d="M22 27q3-2 6 0M36 27q3-2 6 0M26 45q6 3 12 0" stroke="#5e7a3e" stroke-width="1.8" stroke-linecap="round"/>'));
+A("mandalorian","The Mandalorian","This Is the Way","Sci-Fi",SV('<path d="M14 40C14 22 21 12 32 12s18 10 18 28v10H14z" fill="#8a9099" stroke="#4a4f58" stroke-width="1.5"/><path d="M20 28h24v6H35v12h-6V34h-9z" fill="#0c0e14"/><path d="M20 22q12-6 24 0" stroke="#4a4f58" stroke-width="2"/>'));
+A("r2d2","R2-D2","Beep Boop","Sci-Fi",SV('<path d="M16 28c0-10 7-16 16-16s16 6 16 16v26H16z" fill="#e9edf5" stroke="#9aa3c7" stroke-width="1.5"/><path d="M16 36h32M16 46h32" stroke="#2a62c9" stroke-width="5"/><circle cx="32" cy="24" r="5" fill="#14151b" stroke="#2a62c9" stroke-width="2"/><circle cx="32" cy="24" r="1.6" fill="#e63946"/>'));
+
+/* Cameras & gear */
+var CG="Cameras & gear";
+A("imax","IMAX Camera","70mm Giant",CG,CM("#e8ecf5","#3a4a6b","#2f7bff"));
+A("handcrank","Hand-Crank Camera","Silent Era",CG,SV('<rect x="20" y="30" width="26" height="20" rx="2" fill="#6b4a2d" stroke="#d9b36b" stroke-width="1.5"/><circle cx="26" cy="20" r="9" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><circle cx="42" cy="20" r="9" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><path d="M46 40h8M54 40v-8" stroke="#d9b36b" stroke-width="2.4"/><circle cx="54" cy="31" r="2" fill="#d9b36b"/><path d="M20 36h-9v8h9z" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><path d="M26 50l-4 8M40 50l4 8" stroke="#8c6a43" stroke-width="2.4"/>'));
+A("slr35","35mm Film Camera","Shoot on Film",CG,SLR("#2b2e3d","#c9ced9",0));
+A("alexa","ARRI Alexa","Digital Cinema",CG,CM("#1f2230","#6f7694","#2f7bff"));
+A("redcam","RED Camera","Digital Cinema",CG,CM("#c01f2b","#ffb3b8","#ff5a5a"));
+A("digicine","Digital Cine Camera","Pixels at Work",CG,CM("#2b2e3d","#c9ced9","#6dd4c0"));
+A("dslr","DSLR","Indie Shooter",CG,SLR("#14151b","#6f7694",1));
+A("camcorder","Camcorder","Home Video",CG,SV('<rect x="10" y="22" width="36" height="22" rx="5" fill="#34384a" stroke="#aeb3bd" stroke-width="1.5"/><rect x="46" y="26" width="10" height="14" rx="2" fill="#14151b" stroke="#aeb3bd" stroke-width="1.5"/><circle cx="51" cy="33" r="3" fill="#5ab0ff"/><rect x="16" y="26" width="14" height="14" rx="2" fill="#10131c"/><circle cx="40" cy="28" r="2" fill="#ff3b3b"/><path d="M18 44v6h22v-6" stroke="#aeb3bd" stroke-width="2.4"/>'));
+A("super8","Super 8","Home Movies",CG,SV('<rect x="12" y="24" width="34" height="22" rx="3" fill="#9a5a2a" stroke="#f1d7a8" stroke-width="1.6"/><circle cx="28" cy="35" r="7" fill="#1b1410" stroke="#f1d7a8" stroke-width="1.6"/><circle cx="28" cy="35" r="3" fill="#6a8bd8"/><rect x="46" y="28" width="9" height="14" rx="2" fill="#6b3d1b"/><rect x="18" y="14" width="22" height="10" rx="2" fill="#6b3d1b" stroke="#f1d7a8" stroke-width="1.4"/><circle cx="24" cy="19" r="2" fill="#f1d7a8"/>'));
+A("actioncam","Action Cam","Small and Rugged",CG,SV('<rect x="14" y="20" width="36" height="28" rx="5" fill="#1b1d26" stroke="#7a8099" stroke-width="1.6"/><circle cx="32" cy="34" r="9" fill="#0c0e14" stroke="#7a8099" stroke-width="2"/><circle cx="32" cy="34" r="4" fill="#4f7cff"/><rect x="18" y="24" width="8" height="4" rx="1" fill="#2c2f3d"/><circle cx="44" cy="25" r="1.6" fill="#ff3b3b"/><path d="M22 48v6h20v-6" stroke="#7a8099" stroke-width="3"/>'));
+A("polaroid","Instant Camera","Instant Film",CG,SV('<rect x="10" y="18" width="44" height="34" rx="6" fill="#f2efe6" stroke="#cfc9b8" stroke-width="1.5"/><rect x="10" y="18" width="44" height="12" rx="6" fill="#d7d2c2"/><circle cx="32" cy="38" r="9" fill="#1b1d26" stroke="#8a90a8" stroke-width="2.4"/><circle cx="32" cy="38" r="4" fill="#5a3a9a"/><rect x="14" y="22" width="10" height="5" rx="1" fill="#e63946"/><rect x="42" y="22" width="8" height="5" rx="1" fill="#9fb4ff"/>'));
+A("filmstrip","Film Strip","Frame by Frame",CG,SV('<g transform="rotate(-18 32 32)"><rect x="2" y="18" width="60" height="28" rx="2" fill="#15151d"/><path d="M4 22h56M4 42h56" stroke="#f3f1fa" stroke-width="3" stroke-dasharray="4 4"/><rect x="8" y="26" width="14" height="12" fill="#5a6ad1"/><rect x="25" y="26" width="14" height="12" fill="#d96a8a"/><rect x="42" y="26" width="14" height="12" fill="#e6b94a"/></g>'));
+A("filmreel","Film Reel","Reel Life",CG,SV('<circle cx="32" cy="32" r="22" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="2"/><circle cx="32" cy="32" r="5" fill="#0c0e14" stroke="#aeb3bd" stroke-width="1.6"/><g fill="#0c0e14"><circle cx="32" cy="17" r="5"/><circle cx="45" cy="25" r="5"/><circle cx="45" cy="39" r="5"/><circle cx="32" cy="47" r="5"/><circle cx="19" cy="39" r="5"/><circle cx="19" cy="25" r="5"/></g>'));
+A("projector","Projector","Projection Booth",CG,SV('<rect x="10" y="26" width="34" height="20" rx="3" fill="#3a3f52" stroke="#aeb3bd" stroke-width="1.6"/><circle cx="20" cy="18" r="10" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="1.6"/><circle cx="36" cy="18" r="10" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="1.6"/><path d="M44 32l14-6v18l-14-6z" fill="#ffe9a8" opacity=".85"/>'));
+A("lens","Prime Lens","Sharp Focus",CG,SV('<circle cx="32" cy="32" r="24" fill="#14151b" stroke="#aeb3bd" stroke-width="2"/><circle cx="32" cy="32" r="16" fill="#1d2233" stroke="#6f7694" stroke-width="2"/><circle cx="32" cy="32" r="8" fill="#2f7bff" opacity=".8"/><circle cx="27" cy="27" r="3" fill="#fff" opacity=".7"/>'));
+A("chair","Director Chair","Action!",CG,SV('<path d="M18 22h28v8H18zM16 34h32v6H16z" fill="#c63b2f"/><path d="M18 30l-2 26M46 30l2 26M20 40l24 14M44 40L20 54" stroke="#d9b36b" stroke-width="3"/>'));
+A("popcorn","Popcorn","Snack Break",CG,SV('<g fill="#fff3c9"><circle cx="22" cy="24" r="6"/><circle cx="32" cy="20" r="7"/><circle cx="42" cy="24" r="6"/><circle cx="27" cy="16" r="5"/><circle cx="38" cy="16" r="5"/></g><path d="M18 28h28l-4 26H22z" fill="#e63946"/><path d="M26 28l2 26M32 28v26M38 28l-2 26" stroke="#fff" stroke-width="3"/>'));
+A("glasses3d","3D Glasses","Pop-Out Mood",CG,SV('<rect x="8" y="26" width="22" height="16" rx="4" fill="#ff3b3b" stroke="#f3f1fa" stroke-width="2"/><rect x="34" y="26" width="22" height="16" rx="4" fill="#22d3ee" stroke="#f3f1fa" stroke-width="2"/><path d="M8 28L4 22M56 28l4-6M30 34h4" stroke="#f3f1fa" stroke-width="3"/>'));
+A("ticket","Movie Ticket","Admit One",CG,SV('<path d="M8 22h48v8a4 4 0 0 0 0 8v8H8v-8a4 4 0 0 0 0-8z" fill="#e8b94a"/><path d="M40 22v26" stroke="#8a5a14" stroke-width="2" stroke-dasharray="3 3"/><path d="M16 32h16M16 38h12" stroke="#8a5a14" stroke-width="2.4"/>'));
+PRESET_AVATARS.forEach(function(p){if(p.id==="clapper")p.cat=CG});
+
+var films=[],view="home",period="month",cur=null,timer=null,avTimer=null,rows=null,rowsKey="__",ex={country:"",genre:null,sub:null,showSubs:false,page:1,items:[],more:false,loading:false};
+var avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
+var user=null;function ukey(k){return"fw_u_"+user+"_"+k}
+function save(){if(!user)return;try{localStorage.setItem(ukey("films"),JSON.stringify(films))}catch(e){}}
+function saveAv(){if(!user)return;try{localStorage.setItem(ukey("avatar"),JSON.stringify(avatar))}catch(e){}}
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
+function mostCommon(l){var m={},b=null;l.forEach(function(k){if(!k)return;m[k]=(m[k]||0)+1;if(!b||m[k]>m[b])b=k});return b}
+function hue(g){return G[g]!==undefined?G[g]:230}
+function mix(hs,ws){var x=0,y=0;hs.forEach(function(h,i){var a=h*Math.PI/180,w=ws?ws[i]:1;x+=w*Math.cos(a);y+=w*Math.sin(a)});return(Math.atan2(y,x)*180/Math.PI+360)%360}
+function filmHue(f){return mix(f.genres.slice(0,3).map(hue),[1,.8,.5])}
+function img(p,s){return p?"https://image.tmdb.org/t/p/"+s+p:""}
+function api(p,o){var q="p="+encodeURIComponent(p);for(var k in o||{})if(o[k]!==undefined&&o[k]!=="")q+="&"+k+"="+encodeURIComponent(o[k]);return fetch("/api/tmdb?"+q).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+(poster?'<img loading="lazy" decoding="async" alt="" src="'+img(poster,"w342")+'">':'<div class="ph">'+esc(title)+'</div>')+'<span>'+esc(title)+'</span></button>'}
+function carouselRow(innerHTML){
+ return'<div class="row-shell"><div class="row-track">'+innerHTML+'</div><button class="row-next" type="button" data-rownext="1" aria-label="Scroll row right"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>'}
+function sorted(){return films.slice().sort(function(a,b){return b.date<a.date?-1:b.date>a.date?1:b.at-a.at})}
+function inPeriod(f){var n=new Date(),d=new Date(f.date+"T00:00:00");if(d.getFullYear()!==n.getFullYear())return false;if(period==="year")return true;if(period==="month")return d.getMonth()===n.getMonth();return Math.floor(d.getMonth()/3)===Math.floor(n.getMonth()/3)}
+function cname(c){if(CL[c])return CL[c];try{return new Intl.DisplayNames(["en"],{type:"region"}).of(c)}catch(e){return c}}
+
+function avatarGraphic(av){
+ av=av||avatar;
+ if(av.type==="tmdb"&&av.img)return'<img alt="" src="'+img(av.img,"w185")+'">';
+ if(av.type==="custom"&&av.cfg)return customSVG(av.cfg);
+ var p=PRESET_AVATARS.filter(function(x){return x.id===av.id})[0]||PRESET_AVATARS[0];
+ return p.svg}
+
+/* Distant Blurry Starfield + Deep Contrast Genre Aura */
+function ensureStars(){
+ var stars=$("stars");
+ if(stars.children.length)return;
+ for(var i=0;i<40;i++){
+  var s=document.createElement("i"),far=i%3!==0;
+  s.className=far?"far":"mid";
+  s.style.left=(Math.random()*98+1).toFixed(2)+"%";
+  s.style.top=(Math.random()*98+1).toFixed(2)+"%";
+  var sz=far?(Math.random()*1.8+1.6):(Math.random()*1.6+2.2);
+  s.style.width=s.style.height=sz.toFixed(1)+"px";
+  s.style.setProperty("--td",(4.2+Math.random()*5).toFixed(1)+"s");
+  s.style.setProperty("--dl",(-Math.random()*6).toFixed(1)+"s");
+  s.style.setProperty("--lo",far?".10":".18");
+  s.style.setProperty("--hi",far?".42":".68");
+  stars.appendChild(s)}}
+
+function paint(){
+ ensureStars();
+ var st=document.documentElement.style;
+ if(!films.length){
+  st.setProperty("--h",230);st.setProperty("--h2",270);
+  st.setProperty("--s1","62%");st.setProperty("--s2","52%");
+  st.setProperty("--a1","0.62");st.setProperty("--a2","0.50");
+  return null}
+ var recent=sorted().slice(0,12),bins={};
+ recent.forEach(function(f){var h=filmHue(f),b=Math.round(h/30)%12;(bins[b]=bins[b]||[]).push(h)});
+ var bk=Object.keys(bins).sort(function(a,b){return bins[b].length-bins[a].length});
+ var c1=mix(bins[bk[0]]);
+ /* Ensure strong contrasting second hue even if only one genre cluster exists */
+ var c2=bk[1]!==undefined?mix(bins[bk[1]]):(c1+135)%360;
+ if(Math.abs(((c2-c1+540)%360)-180)>135)c2=(c1+130)%360;
+ var n1=bins[bk[0]].length,n2=bk[1]!==undefined?bins[bk[1]].length:0;
+ var dominance=Math.min(1,n1/Math.max(1,recent.length));
+ var sh=n2?n1/(n1+n2):.78;
+ st.setProperty("--h",c1.toFixed(1));
+ st.setProperty("--h2",c2.toFixed(1));
+ st.setProperty("--s1",(36+54*sh).toFixed(1)+"%");
+ st.setProperty("--s2",(34+52*(1-sh)).toFixed(1)+"%");
+ st.setProperty("--a1",(0.54+0.26*dominance).toFixed(2));
+ st.setProperty("--a2",(0.44+0.20*(1-dominance*0.4)).toFixed(2));
+ return mostCommon(recent.map(function(f){return f.genres[0]}))}
+
+/* Test tube taste meter */
+function side(){
+ var el=$("side"),n=films.length;
+ var h='<button class="who" data-avopen="1" title="Change cinema avatar"><div class="face">'+avatarGraphic()+'</div><div><b>'+esc(avatar.name)+'</b><small>'+n+(n===1?" film":" films")+'</small></div></button><h3>Taste meter</h3>';
+ var bubs="";for(var i=0;i<6;i++)bubs+='<i class="bub" style="--x:'+(7+i*5.5)+'px;--sz:'+(3+i%3*2)+'px;--bd:'+(4+i*.9).toFixed(1)+'s;--bl:'+(-i*1.3).toFixed(1)+'s"></i>';
+ function tube(bands){return'<div class="tube"><div class="rim"></div><div class="pipe"><div class="fill'+(n?"":" empty")+'">'+bands+'</div>'+bubs+'</div></div>'}
+ if(!n){h+='<div class="meter">'+tube('<div class="band" style="--c:230;--f:1;--dur:8s"></div><div class="band" style="--c:275;--f:1;--dur:9s"></div>')+'<p class="dim" style="font-size:13px;align-self:center">Log films and your taste fills the tube.</p></div>'}
+ else{
+  var cnt={},tot=0;sorted().slice(0,12).forEach(function(f){var g=f.genres[0]||"Drama";cnt[g]=(cnt[g]||0)+1;tot++});
+  var ks=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]});
+  h+='<div class="meter">'+tube(ks.map(function(g,i){return'<div class="band" style="--c:'+hue(g)+';--f:'+(cnt[g]/tot).toFixed(3)+';--dur:'+(6+i*1.2).toFixed(1)+'s"></div>'}).join(""))+'<div class="legend">'+ks.slice(0,6).map(function(g){var c="hsl("+hue(g)+" 85% 58%)";return'<div><em style="background:'+c+';color:'+c+'"></em>'+esc(g)+'<span>'+Math.round(cnt[g]/tot*100)+'%</span></div>'}).join("")+'</div></div>'}
+ if(el._h!==h){el._h=h;el.innerHTML=h}}
+
+function dirBox(){
+ var m={},best=null,c=0;
+ films.forEach(function(f){if(f.director)m[f.director]=(m[f.director]||0)+1});
+ var n=Object.keys(m);n.forEach(function(k){if(m[k]>c){c=m[k];best=k}});
+ if(best&&c>=3){
+  var ph=(films.filter(function(f){return f.director===best&&f.dphoto})[0]||{}).dphoto;
+  var ini=best.split(" ").map(function(w){return w[0]}).join("").slice(0,2);
+  return'<div class="stat glass dir">'+(ph?'<img class="face" alt="" src="'+img(ph,"w185")+'">':'<div class="face">'+esc(ini)+'</div>')+'<div><small>Most-watched director</small><div class="num">'+esc(best)+'</div><small>'+c+' films</small></div></div>'}
+ var msg=!n.length?"Log a film to start.":c>=2?(3-c)+" more film by "+best+" to unlock.":"Watch 3 films by one director to unlock.";
+ return'<div class="stat glass dir"><div class="face sil"></div><div><small>Most-watched director</small><div class="msg">'+esc(msg)+'</div><small>'+n.length+(n.length===1?" director":" directors")+' so far</small></div></div>'}
+
+function exploreHTML(){
+ var h='<h1 class="pg">Explore</h1><div class="seg glass" role="group" aria-label="Country">'+CO.map(function(c){return'<button data-c="'+c[0]+'" aria-pressed="'+(ex.country===c[0])+'">'+c[1]+'</button>'}).join("")+'</div>';
+ if(!ex.genre){
+  return h+'<div class="gg">'+Object.keys(GID).map(function(n){
+   var sc=(SUB[n]||[]).length;
+   return'<button class="gb glass" data-g="'+n+'" style="--gh:'+hue(n)+'"><div class="gb-top"><span class="gb-dot"></span><span class="gb-tag">'+esc(GTAG[n]||"Genre")+'</span></div><div class="gb-bot"><span class="gb-name">'+esc(n)+'</span><span class="gb-sub">'+(sc?sc+" subgenres":"Explore films")+'</span></div></button>'}).join("")+'</div>'}
+ h+='<div class="bar"><button class="ghost" data-back="1">← All genres</button><h2>'+esc(ex.genre)+(ex.sub?" · "+esc(ex.sub):"")+'</h2>'+(SUB[ex.genre]?'<button class="ghost" data-subs="1">'+(ex.showSubs?"Hide subgenres":"Discover subgenres")+'</button>':"")+'</div>';
+ if(ex.showSubs&&SUB[ex.genre])h+='<div class="chipsrow">'+SUB[ex.genre].map(function(s){return'<button class="chip" data-s="'+esc(s)+'" aria-pressed="'+(ex.sub===s)+'">'+esc(s)+'</button>'}).join("")+'</div>';
+ h+='<div class="rs wrap">'+(ex.loading&&!ex.items.length?'<p class="dim">Loading…</p>':ex.items.length?ex.items.map(function(m){return pc(m.id,m.title,m.poster_path)}).join(""):'<p class="dim">No films found here.</p>')+'</div>';
+ return h+(ex.more?'<button class="ghost" data-more="1">Load more</button>':"")}
+
+function loadExplore(reset){
+ if(reset){ex.page=1;ex.items=[]}
+ ex.loading=true;render(true);
+ function run(kw){return api("discover/movie",{genre:GID[ex.genre],country:ex.country,kw:kw,page:ex.page}).then(function(d){ex.items=ex.items.concat((d.results||[]).filter(function(m){return m.poster_path}));ex.more=(d.page||1)<(d.total_pages||1)&&ex.page<5;ex.loading=false;render(true)})}
+ (ex.sub?api("search/keyword",{q:ex.sub}).then(function(d){var ids=(d.results||[]).slice(0,3).map(function(k){return k.id}).join("|");if(!ids){ex.items=[];ex.more=false;ex.loading=false;render(true);return}return run(ids)}):run("")).catch(function(){ex.items=[];ex.more=false;ex.loading=false;render(true)})}
+
+function loadRows(){
+ var key=films.map(function(f){return f.tid}).join(",");if(key===rowsKey)return;rowsKey=key;rows=null;
+ var s=sorted(),have={};films.forEach(function(f){have[f.tid]=1});
+ var defs=[];
+ if(!films.length){defs=[{t:"Popular right now",p:"discover/movie",o:{}},{t:"Popular in India",p:"discover/movie",o:{country:"IN"}}]}
+ else{
+  var tg=mostCommon(s.slice(0,12).map(function(f){return f.genres[0]})),cs=s.slice(0,12).map(function(f){return f.country}).filter(Boolean),c1=mostCommon(cs),c2=mostCommon(cs.filter(function(c){return c!==c1}));
+  if(s[0])defs.push({t:"Because you liked "+s[0].title,p:"movie/"+s[0].tid+"/recommendations",o:{}});
+  if(tg&&c1&&GID[tg])defs.push({t:"More "+tg.toLowerCase()+" from "+cname(c1)+" cinema",p:"discover/movie",o:{genre:GID[tg],country:c1}});
+  if(s[1])defs.push({t:"Because you liked "+s[1].title,p:"movie/"+s[1].tid+"/recommendations",o:{}});
+  if(tg&&c2&&GID[tg])defs.push({t:cname(c2)+" "+tg.toLowerCase()+" you might like",p:"discover/movie",o:{genre:GID[tg],country:c2}});
+  if(tg&&GID[tg])defs.push({t:tg+" from around the world",p:"discover/movie",o:{genre:GID[tg]}})}
+ Promise.all(defs.map(function(d){return api(d.p,d.o).then(function(r){var t=today();return{t:d.t,items:(r.results||[]).filter(function(m){return m.poster_path&&!have[m.id]&&(!m.release_date||m.release_date<=t)}).slice(0,16)}}).catch(function(){return{t:d.t,items:[]}})})).then(function(r){if(key!==rowsKey)return;rows=r.filter(function(x){return x.items.length});if(view==="home")render(true)})}
+
+function render(noAnim){
+ var tg=paint(),app=$("app"),h="";side();
+ [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===view)});
+ if(view==="home"){
+  h='<div class="brandrow">'+logoHTML()+'<h1 class="brand">Fourth wall</h1></div>';
+  h+='<div class="hero-row">';
+  h+=films.length?'<section class="glass hero"><h2>Mostly '+esc((tg||"film").toLowerCase())+' lately.</h2><p>'+films.length+(films.length===1?" film":" films")+' logged so far.</p></section>'
+   :'<section class="glass hero"><h2>Your sky is empty.</h2><p>Tap the + to log the first film you’ve watched. The page takes on the colour of your taste.</p></section>';
+  h+='<button class="glass mood-card" data-avopen="1" aria-label="Change today\'s cinema mood"><span class="mood-lbl">Today\'s Mood</span><div class="mood-orb">'+avatarGraphic()+'</div><div class="mood-meta"><div class="mood-name">'+esc(avatar.name)+'</div><div class="mood-sub">'+esc(avatar.tag||"Tap to switch")+'</div></div></button>';
+  h+='</div>';
+  if(films.length)h+='<h2 class="sec">Recently logged</h2>'+carouselRow(sorted().slice(0,16).map(function(f){return pc(f.tid,f.title,f.poster)}).join(""));
+  if(rows===null)h+='<p class="dim">Finding films for you…</p>';
+  else h+=rows.map(function(r){return'<h2 class="sec">'+esc(r.t)+'</h2>'+carouselRow(r.items.map(function(m){return pc(m.id,m.title,m.poster_path)}).join(""))}).join("");
+ }else if(view==="explore"){h=exploreHTML()}
+ else if(view==="dna"){h=dnaHTML()}
+ else{
+  var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
+  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><button class="ghost" data-signout="1" style="margin-left:auto">Sign out</button></div>';
+  h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
+  h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
+  h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
+ app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>';if(view==="dna"){bindDnaEvents();backfillFilmDetails()}}
+
+
+/* ---- Custom avatar creator ---- */
+var SK=["#f6d3b8","#e8b894","#c98f66","#9a6544","#6b4228","#9be3a2","#8fd3ff","#d9c2ff"];
+var HC=["#1f1b18","#5a3a22","#c9a24a","#d94f4f","#e9e9f0","#4f7cff","#b86bff"];
+var EC=["#1b1b22","#5a3a22","#2f7bff","#2fa866","#c9a24a","#a24fff","#e63946"];
+var BG=["#2a2f5a","#5a2a4a","#1f4a46","#4a3a1f","#222222","#3a2a6b"];
+var MOODS=["happy","sad","angry","surprised","neutral","wink"],HAIRS=["none","short","long","spiky","bun"],PROPS=["none","glasses","shades","3D glasses","clapper","camera","film strip"];
+var cvd=null;
+function customSVG(c){
+ var sk=SK[c.skin],hc=HC[c.hc],ec=EC[c.eye],k="#1b1b22",o="";
+ function dot(x,y,r){return'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#fff"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.62)+'" fill="'+ec+'"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.3)+'" fill="#0b0b10"/>'}
+ o+='<rect width="64" height="64" fill="'+BG[c.bg]+'"/>';
+ if(c.hair===2)o+='<path d="M12 38c0-17 6-26 20-26s20 9 20 26v18H12z" fill="'+hc+'"/>';
+ if(c.hair===4)o+='<circle cx="32" cy="9" r="6" fill="'+hc+'"/>';
+ o+='<circle cx="32" cy="35" r="17" fill="'+sk+'"/>';
+ if(c.hair===1||c.hair===2||c.hair===4)o+='<path d="M15 33C15 20 22 13 32 13S49 20 49 33C43 27 21 27 15 33z" fill="'+hc+'"/>';
+ if(c.hair===3)o+='<path d="M15 33L16 19L22 26L26 14L32 24L37 14L41 26L48 19L49 33C43 27 21 27 15 33z" fill="'+hc+'"/>';
+ var m=c.mood;
+ if(m===0)o+='<path d="M21 35q4-5 8 0M35 35q4-5 8 0" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M25 42q7 8 14 0z" fill="#8a2f3a"/>';
+ if(m===1)o+=dot(25,36,3.2)+dot(39,36,3.2)+'<path d="M21 30L29 27M43 30L35 27" stroke="'+k+'" stroke-width="2" stroke-linecap="round"/><path d="M26 47q6-5 12 0" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===2)o+=dot(25,36,2.8)+dot(39,36,2.8)+'<path d="M21 29L29 33M43 29L35 33" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M26 46q6-3 12 0" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===3)o+=dot(25,36,4)+dot(39,36,4)+'<path d="M21 28q4-3 8 0M35 28q4-3 8 0" stroke="'+k+'" stroke-width="2" stroke-linecap="round"/><ellipse cx="32" cy="46" rx="3.5" ry="4.5" fill="#6b1f2a"/>';
+ if(m===4)o+=dot(25,36,3.2)+dot(39,36,3.2)+'<path d="M27 44h10" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===5)o+=dot(25,36,3.2)+'<path d="M35 36q4-4 8 0" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M26 43q6 5 13-2" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ var p=c.prop;
+ if(p===1)o+='<circle cx="25" cy="36" r="6.5" stroke="#222" stroke-width="1.8"/><circle cx="39" cy="36" r="6.5" stroke="#222" stroke-width="1.8"/><path d="M31.5 36h1" stroke="#222" stroke-width="1.8"/>';
+ if(p===2)o+='<path d="M17 32h30v4c0 4-3 6-6 6s-5-2-6-4h-6c-1 2-3 4-6 4s-6-2-6-6z" fill="#0b0b10"/>';
+ if(p===3)o+='<rect x="17" y="31" width="14" height="10" rx="2" fill="#ff3b3b" stroke="#fff" stroke-width="1.5"/><rect x="33" y="31" width="14" height="10" rx="2" fill="#22d3ee" stroke="#fff" stroke-width="1.5"/>';
+ if(p===4)o+='<g transform="translate(38 40)"><rect x="0" y="6" width="22" height="14" rx="2" fill="#272938" stroke="#fff" stroke-width="1.4"/><path d="M0 6l20-6 2 5L2 11z" fill="#f3f1fa"/><path d="M5 5l2-4M11 3l2-4M17 1l2-3" stroke="#181924" stroke-width="2"/></g>';
+ if(p===5)o+='<g transform="translate(36 42)"><rect x="0" y="4" width="24" height="15" rx="3" fill="#2b2e3d" stroke="#fff" stroke-width="1.4"/><rect x="5" y="0" width="8" height="5" rx="1" fill="#fff"/><circle cx="12" cy="12" r="5" fill="#0b0b10" stroke="#9aa3c7" stroke-width="1.6"/><circle cx="12" cy="12" r="2" fill="#4fa3ff"/></g>';
+ if(p===6)o+='<path d="M-2 54L66 46V56L-2 64z" fill="#15151d"/><path d="M0 57L64 49M0 61L64 53" stroke="#fff" stroke-width="2" stroke-dasharray="2.5 3"/>';
+ return'<svg class="full" viewBox="0 0 64 64" fill="none">'+o+'</svg>'}
+function openCreator(){
+ cvd=avatar.type==="custom"&&avatar.cfg?JSON.parse(JSON.stringify(avatar.cfg)):{skin:0,hair:1,hc:0,eye:0,mood:0,prop:0,bg:0};
+ var nm=avatar.type==="custom"?avatar.name:"";
+ function sw(k,arr){return'<div class="cv-row">'+arr.map(function(c,i){return'<button class="sw" data-cv="'+k+':'+i+'" style="background:'+c+'" aria-label="'+k+' '+(i+1)+'" aria-pressed="'+(cvd[k]===i)+'"></button>'}).join("")+'</div>'}
+ function ch(k,arr){return'<div class="cv-row">'+arr.map(function(c,i){return'<button class="chip" data-cv="'+k+':'+i+'" aria-pressed="'+(cvd[k]===i)+'">'+c+'</button>'}).join("")+'</div>'}
+ $("panel").innerHTML='<h2>Make your avatar</h2><div class="cv-prev" id="cv-prev">'+customSVG(cvd)+'</div>'+
+  '<div class="cv-lbl">Emotion</div>'+ch("mood",MOODS)+'<div class="cv-lbl">Face colour</div>'+sw("skin",SK)+'<div class="cv-lbl">Eye colour</div>'+sw("eye",EC)+
+  '<div class="cv-lbl">Hair</div>'+ch("hair",HAIRS)+'<div class="cv-lbl">Hair colour</div>'+sw("hc",HC)+'<div class="cv-lbl">Prop</div>'+ch("prop",PROPS)+'<div class="cv-lbl">Background</div>'+sw("bg",BG)+
+  '<input id="cvname" class="inp" maxlength="20" placeholder="Name your avatar" value="'+esc(nm)+'" style="margin-top:14px">'+
+  '<div class="acts"><button class="btn" data-cvsave="1">Save avatar</button><button class="ghost" data-avopen="1">Back</button></div>';
+ show(false)}
+function cvSet(b){var p=b.dataset.cv.split(":");cvd[p[0]]=+p[1];[].forEach.call(b.parentNode.children,function(x){x.setAttribute("aria-pressed",x===b)});$("cv-prev").innerHTML=customSVG(cvd)}
+function cvSave(){var n=($("cvname").value||"").trim()||"My avatar";avatar={type:"custom",id:"custom",name:n,tag:"Custom · "+MOODS[cvd.mood],img:"",cfg:cvd};saveAv();hide();render(true)}
+
+/* ---- Accounts (stored in this browser) ---- */
+var authMode="in";
+function logoHTML(){return'<img class="logo" src="logo.png" alt="" onerror="this.remove()">'}
+function accts(){try{return JSON.parse(localStorage.getItem("fw_accounts")||"{}")}catch(e){return{}}}
+function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(d){return[].map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}
+function drawAuth(err,keep){
+ var up=authMode==="up";
+ $("authbox").innerHTML=logoHTML()+'<h1 class="brand" style="margin:0 0 10px;font-size:30px">Fourth wall</h1><h2>'+(up?"Create your account":"Welcome back")+'</h2><p class="dim" style="margin:6px 0 18px;font-size:14px">'+(up?"You start with an empty sky. Everything you log stays in your account.":"Sign in to see the films you have logged.")+'</p>'+
+  '<form id="authf"><input id="au" class="inp" placeholder="Username" autocomplete="username" maxlength="40" aria-label="Username"><input id="ap" class="inp" type="password" placeholder="Password" autocomplete="'+(up?"new-password":"current-password")+'" aria-label="Password"><div class="err" role="alert">'+esc(err||"")+'</div><button class="btn" type="submit" style="width:100%">'+(up?"Create account":"Sign in")+'</button></form>'+
+  '<button class="ghost" data-authmode="1" style="margin-top:12px;width:100%">'+(up?"I already have an account":"Create a new account")+'</button>';
+ var u=$("au");u.value=keep||"";(keep?$("ap"):u).focus()}
+function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");authMode=Object.keys(accts()).length?"in":"up";drawAuth("")}
+function start(name){
+ user=name;try{localStorage.setItem("fw_session",name)}catch(e){}
+ films=[];avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
+ try{films=JSON.parse(localStorage.getItem(ukey("films"))||"[]")}catch(e){films=[]}
+ try{var sa=JSON.parse(localStorage.getItem(ukey("avatar"))||"null");if(sa&&sa.name)avatar=sa}catch(e){}
+ view="home";period="month";rows=null;rowsKey="__";ex.genre=null;ex.sub=null;ex.items=[];ex.showSubs=false;cur=null;
+ document.body.classList.remove("locked");$("auth").classList.remove("on");hide();window.scrollTo(0,0);render(false);loadRows()}
+function signOut(){try{localStorage.removeItem("fw_session")}catch(e){}user=null;films=[];hide();$("app").innerHTML="";paint();showAuth()}
+document.addEventListener("submit",function(e){
+ if(e.target.id!=="authf")return;e.preventDefault();
+ var n=$("au").value.trim().toLowerCase(),p=$("ap").value,all=accts(),up=authMode==="up";
+ function bad(m){drawAuth(m,n)}
+ if(!n)return bad("Enter a username.");
+ if(!p)return bad("Enter a password.");
+ if(up&&all[n])return bad("That username is taken. Sign in instead.");
+ if(!up&&!all[n])return bad("No account with that username. Create one instead.");
+ var salt=up?Math.random().toString(36).slice(2)+Date.now().toString(36):all[n].s;
+ sha(salt+p).then(function(h){
+  if(up){all[n]={s:salt,h:h};try{localStorage.setItem("fw_accounts",JSON.stringify(all))}catch(x){return bad("Your browser blocked saving the account. Allow site storage and try again.")}start(n)}
+  else if(all[n].h===h)start(n);else bad("Wrong password.")
+ }).catch(function(){bad("Sign in needs a secure (https) connection.")})});
+
+/* ---- Smooth view switching ---- */
+var swT=0;
+function goView(n){
+ clearTimeout(swT);view=n;
+ [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===n)});
+ var st=document.querySelector(".view-stage");
+ if(st&&!matchMedia("(prefers-reduced-motion:reduce)").matches){st.classList.add("leave");swT=setTimeout(function(){window.scrollTo(0,0);render(false)},150)}
+ else{window.scrollTo(0,0);render(false)}}
+
+function show(isLog){$("ov").classList.add("on");if(isLog)$("logbtn").classList.add("open")}
+function hide(){$("ov").classList.remove("on");$("logbtn").classList.remove("open")}
+
+var avCat="All";
+function avCats(){var c=["All"];PRESET_AVATARS.forEach(function(p){if(c.indexOf(p.cat)<0)c.push(p.cat)});return c}
+function avGrid(){return PRESET_AVATARS.filter(function(p){return avCat==="All"||p.cat===avCat}).map(function(p){var on=avatar.type==="preset"&&avatar.id===p.id;return'<button class="av-item" data-avpreset="'+p.id+'" aria-pressed="'+on+'"><div class="av-pic">'+p.svg+'</div><span>'+esc(p.name)+'</span><small>'+esc(p.tag)+'</small></button>'}).join("")}
+function openAvatarPicker(){
+ $("panel").innerHTML='<h2>Choose your cinema mood</h2><p class="dim" style="margin:-6px 0 14px;font-size:14px">Pick a character or camera, build your own face, or search any actor or director.</p>'+
+  '<button class="btn" data-cvopen="1" style="margin-bottom:14px">Create your own avatar</button>'+
+  '<input id="avq" class="inp" placeholder="Search any actor, director, or cinema icon…" autocomplete="off" aria-label="Search cinema icons">'+
+  '<div id="av-results"></div>'+
+  '<div class="chipsrow" id="av-cats">'+avCats().map(function(c){return'<button class="chip" data-avcat="'+esc(c)+'" aria-pressed="'+(avCat===c)+'">'+esc(c)+'</button>'}).join("")+'</div>'+
+  '<div class="av-grid" id="av-grid">'+avGrid()+'</div>'+
+  '<div class="acts"><button class="ghost" data-act="close">Done</button></div>';
+ show(false);
+ $("avq").oninput=function(){
+  clearTimeout(avTimer);var v=this.value.trim();
+  if(v.length<2){$("av-results").innerHTML="";return}
+  avTimer=setTimeout(function(){
+   api("search/person",{q:v}).then(function(d){
+    var ppl=(d.results||[]).filter(function(p){return p.profile_path}).slice(0,12);
+    $("av-results").innerHTML=ppl.length?'<div class="sec" style="font-size:15px">TMDB Icons</div><div class="av-grid" style="margin-bottom:18px">'+ppl.map(function(p){
+     var role=p.known_for_department||"Cinema Icon";
+     return'<button class="av-item" data-avtmdb="'+esc(p.profile_path)+'" data-avname="'+esc(p.name)+'" data-avtag="'+esc(role)+'"><div class="av-pic"><img loading="lazy" alt="" src="'+img(p.profile_path,"w185")+'"></div><span>'+esc(p.name)+'</span><small>'+esc(role)+'</small></button>'}).join("")+'</div>':'<p class="dim" style="font-size:14px">No portraits found for "'+esc(v)+'".</p>'
+   }).catch(function(){$("av-results").innerHTML=""})},350)}}
+
+function openSearch(){
+ $("panel").innerHTML='<h2>Log a film</h2><input id="q" class="inp" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show(true);$("q").focus();
+ $("q").oninput=function(){clearTimeout(timer);var v=this.value.trim();if(v.length<2){$("res").innerHTML="";return}
+  timer=setTimeout(function(){api("search/movie",{q:v}).then(function(d){$("res").innerHTML=(d.results||[]).slice(0,12).map(function(m){return pc(m.id,m.title+(m.release_date?" ("+m.release_date.slice(0,4)+")":""),m.poster_path)}).join("")||'<p class="dim">No films found.</p>'}).catch(function(){$("res").innerHTML='<p class="dim">Search isn’t working right now.</p>'})},350)}}
+
+function openDetail(id){
+ $("panel").innerHTML='<p class="dim">Loading…</p>';show(false);
+ api("movie/"+id).then(function(m){
+  var crew=(m.credits&&m.credits.crew)||[],d=crew.filter(function(c){return c.job==="Director"})[0],w=crew.filter(function(c){return c.job==="Screenplay"||c.job==="Writer"})[0],pcn=(m.production_countries||[])[0];
+  var extras=extractFilmExtras(m);cur={tid:m.id,title:m.title,year:(m.release_date||"").slice(0,4),genres:(m.genres||[]).map(function(g){return g.name}),director:d?d.name:"",dphoto:d?d.profile_path||"":"",writer:w?w.name:(extras.writers[0]||""),poster:m.poster_path||"",score:m.vote_average?m.vote_average.toFixed(1):"",country:pcn?pcn.iso_3166_1:"",lang:m.original_language||"",cast:extras.cast,composer:extras.composer,writers:extras.writers,writerCredits:extras.writerCredits,keywords:extras.keywords,v:2};
+  var logged=films.some(function(f){return f.tid===cur.tid}),qs=encodeURIComponent(cur.title+" "+cur.year);
+  $("panel").innerHTML='<div class="detail">'+(cur.poster?'<img alt="" src="'+img(cur.poster,"w500")+'">':'<div class="ph">'+esc(cur.title)+'</div>')+'<div><h2>'+esc(cur.title)+(cur.year?" ("+esc(cur.year)+")":"")+'</h2>'+
+   '<div class="meta">'+esc(cur.genres.join(" · "))+(m.runtime?" · "+m.runtime+" min":"")+'</div>'+
+   '<div class="meta">'+(cur.director?"Directed by "+esc(cur.director):"")+(cur.writer?"<br>Written by "+esc(cur.writer):"")+'</div>'+
+   '<p class="over">'+esc((m.overview||"").slice(0,320))+'</p>'+
+   '<div class="links"><div><small>TMDB</small>'+(cur.score||"—")+'</div><a href="https://www.imdb.com/find/?q='+qs+'" target="_blank" rel="noopener"><small>IMDb</small>Open</a><a href="https://letterboxd.com/search/'+qs+'/" target="_blank" rel="noopener"><small>Letterboxd</small>Open</a><a href="https://www.google.com/search?q='+qs+'+moctale" target="_blank" rel="noopener"><small>Moctale</small>Search</a></div>'+
+   '<div class="acts">'+(logged?'<button class="ghost" data-act="remove">Remove from my log</button>':'<button class="btn" data-act="log">Log it</button>')+'<button class="ghost" data-act="close">Close</button></div></div></div>'
+ }).catch(function(){$("panel").innerHTML='<p>Couldn’t load that film.</p><div class="acts"><button class="ghost" data-act="close">Close</button></div>'})}
+
+document.addEventListener("click",function(e){
+ var t=e.target;
+ if(t.id==="ov"||t.closest("[data-act=close]")){hide();return}
+ if(t.closest("#logbtn")){if($("ov").classList.contains("on")&&$("logbtn").classList.contains("open"))hide();else openSearch();return}
+ if(t.closest("[data-avopen]")){openAvatarPicker();return}
+ var rn=t.closest("[data-rownext]");
+ if(rn){
+  var shell=rn.closest(".row-shell"),track=shell&&shell.querySelector(".row-track");
+  if(track){
+   track.classList.add("curving");
+   var step=Math.max(320,Math.round(track.clientWidth*0.72));
+   if(track.scrollLeft+track.clientWidth>=track.scrollWidth-12)track.scrollTo({left:0,behavior:"smooth"});
+   else track.scrollBy({left:step,behavior:"smooth"});
+   clearTimeout(track._ct);
+   track._ct=setTimeout(function(){track.classList.remove("curving")},460)}
+  return}
+ var avp=t.closest("[data-avpreset]");
+ if(avp){var f=PRESET_AVATARS.filter(function(x){return x.id===avp.dataset.avpreset})[0];if(f){avatar={type:"preset",id:f.id,name:f.name,tag:f.tag,img:""};saveAv();hide();render(true)}return}
+ var avt=t.closest("[data-avtmdb]");
+ if(avt){avatar={type:"tmdb",id:"",name:avt.dataset.avname,tag:avt.dataset.avtag,img:avt.dataset.avtmdb};saveAv();hide();render(true);return}
+ var ac=t.closest("[data-avcat]");if(ac){avCat=ac.dataset.avcat;[].forEach.call(document.querySelectorAll("[data-avcat]"),function(b){b.setAttribute("aria-pressed",b.dataset.avcat===avCat)});$("av-grid").innerHTML=avGrid();return}
+ if(t.closest("[data-cvopen]")){openCreator();return}
+ var cv=t.closest("[data-cv]");if(cv){cvSet(cv);return}
+ if(t.closest("[data-cvsave]")){cvSave();return}
+ if(t.closest("[data-authmode]")){authMode=authMode==="in"?"up":"in";drawAuth("");return}
+ if(t.closest("[data-signout]")){signOut();return}
+ 
+ if(t.closest("[data-dnashare]")){exportDnaStory();return}
+ var dz=t.closest("[data-dnazoom]");
+ if(dz){dnaState.zoom=dz.dataset.dnazoom==="in"?Math.min(4.5,dnaState.zoom*1.25):Math.max(0.25,dnaState.zoom*0.8);render(true);return}
+ if(t.closest("[data-dnareset]")){dnaState.zoom=1;dnaState.panX=0;dnaState.panY=0;dnaState.highlightRoot=null;render(true);return}
+ if(t.closest("[data-dnalist]")){dnaState.listMode=!dnaState.listMode;render(true);return}
+ if(t.closest("[data-dnaclearhl]")){dnaState.highlightRoot=null;render(true);return}
+ var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v)goView(v.dataset.v);return}
+ var p=t.closest("[data-p]");if(p){period=p.dataset.p;render(true);return}
+ var c=t.closest("[data-c]");if(c){ex.country=c.dataset.c;if(ex.genre)loadExplore(true);else render(true);return}
+ var g=t.closest("[data-g]");if(g){ex.genre=g.dataset.g;ex.sub=null;ex.showSubs=false;loadExplore(true);return}
+ if(t.closest("[data-back]")){ex.genre=null;ex.sub=null;render(true);return}
+ if(t.closest("[data-subs]")){ex.showSubs=!ex.showSubs;render(true);return}
+ var s=t.closest("[data-s]");if(s){ex.sub=ex.sub===s.dataset.s?null:s.dataset.s;loadExplore(true);return}
+ if(t.closest("[data-more]")){ex.page++;loadExplore(false);return}
+ var a=t.closest("[data-act]");
+ if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();cur.v=2;films.push(cur);save();dnaState.growUntil=Date.now()+1800;dnaCache.key="";hide();loadRows();render(true)}
+  else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();hide();loadRows();render(true)}return}
+ var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
+document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
+(function(){var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}var a=accts();if(ss&&a[ss])start(ss);else{paint();showAuth()}})();
+
+/* ---- Cinema DNA (Helix, Branches, Links, Shared Roots, Mutation, LOD) ---- */
+var dnaState = {
+  zoom: 1,
+  panX: 0,
+  panY: 0,
+  highlightRoot: null,
+  listMode: false,
+  lowDetail: false,
+  growUntil: 0,
+  backfillRunning: false,
+  backfillDone: 0,
+  backfillTotal: 0,
+  backfillMsg: "",
+  frameCount: 0,
+  fpsSampleStart: 0
+};
+var dnaCache = { key: "", model: null, sprite: null, hits: [] };
+var dnaAnimId = 0;
+
+function seededRand(seed) {
+  var s = (Math.abs(seed | 0) % 2147483647) || 1;
+  return function() {
+    s = (s * 16807) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+function getGlowSprite() {
+  if (dnaCache.sprite) return dnaCache.sprite;
+  var c = document.createElement("canvas");
+  c.width = 64; c.height = 64;
+  var g = c.getContext("2d");
+  var grad = g.createRadialGradient(32, 32, 1, 32, 32, 30);
+  grad.addColorStop(0, "rgba(255,255,255,0.95)");
+  grad.addColorStop(0.35, "rgba(255,255,255,0.45)");
+  grad.addColorStop(1, "rgba(255,255,255,0)");
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 64, 64);
+  dnaCache.sprite = c;
+  return c;
+}
+
+function extractFilmExtras(m) {
+  var credits = m.credits || {};
+  var crew = credits.crew || [];
+  var castRaw = credits.cast || [];
+  var cast = castRaw.slice(0, 5).map(function(p) {
+    return { id: p.id, name: p.name };
+  });
+  var compObj = null;
+  for (var i = 0; i < crew.length; i++) {
+    var job = (crew[i].job || "").toLowerCase();
+    if (job === "original music composer" || job === "composer" || job === "music") {
+      compObj = { id: crew[i].id, name: crew[i].name };
+      break;
+    }
+  }
+  var writers = [];
+  var writerCredits = [];
+  var seenW = {};
+  for (var j = 0; j < crew.length; j++) {
+    var wj = crew[j].job || "";
+    if (wj === "Screenplay" || wj === "Writer" || wj === "Story") {
+      if (!seenW[crew[j].name]) {
+        seenW[crew[j].name] = 1;
+        writers.push(crew[j].name);
+        writerCredits.push({ id: crew[j].id, name: crew[j].name });
+      }
+    }
+  }
+  var kwList = (m.keywords && (m.keywords.keywords || m.keywords.results)) || [];
+  var keywords = kwList.slice(0, 5).map(function(k) {
+    return { id: k.id, name: k.name };
+  });
+  return {
+    cast: cast,
+    composer: compObj,
+    writers: writers,
+    writerCredits: writerCredits,
+    keywords: keywords,
+    v: 2
+  };
+}
+
+function backfillFilmDetails() {
+  if (dnaState.backfillRunning || !films.length) return;
+  var pending = [];
+  for (var i = 0; i < films.length; i++) {
+    if (!films[i].v || films[i].v < 2) pending.push(films[i]);
+  }
+  if (!pending.length) {
+    dnaState.backfillMsg = "";
+    return;
+  }
+  dnaState.backfillRunning = true;
+  dnaState.backfillTotal = pending.length;
+  dnaState.backfillDone = 0;
+  dnaState.backfillMsg = "Filling in details (0/" + pending.length + ")…";
+  updateDnaProgressUI();
+
+  var idx = 0;
+  var changed = false;
+
+  function worker() {
+    if (idx >= pending.length) return Promise.resolve();
+    var item = pending[idx++];
+    return api("movie/" + item.tid).then(function(m) {
+      var exData = extractFilmExtras(m);
+      item.cast = exData.cast;
+      item.composer = exData.composer;
+      item.writers = exData.writers;
+      item.writerCredits = exData.writerCredits;
+      item.keywords = exData.keywords;
+      if (!item.writer && exData.writers && exData.writers.length) {
+        item.writer = exData.writers[0];
+      }
+      item.v = 2;
+      changed = true;
+      dnaState.backfillDone++;
+      dnaState.backfillMsg = "Filling in details (" + dnaState.backfillDone + "/" + dnaState.backfillTotal + ")…";
+      updateDnaProgressUI();
+    }).catch(function() {
+      dnaState.backfillDone++;
+      updateDnaProgressUI();
+    }).then(worker);
+  }
+
+  var workers = [];
+  for (var w = 0; w < 3; w++) workers.push(worker());
+  Promise.all(workers).then(function() {
+    dnaState.backfillRunning = false;
+    if (changed) {
+      save();
+      dnaCache.key = "";
+      if (view === "dna") {
+        buildDnaModel();
+        requestDnaDraw();
+      }
+    }
+    dnaState.backfillMsg = "";
+    updateDnaProgressUI();
+  });
+}
+
+function updateDnaProgressUI() {
+  var bar = document.getElementById("dna-prog-bar");
+  var lbl = document.getElementById("dna-prog-lbl");
+  if (!bar || !lbl) return;
+  if (dnaState.backfillRunning && dnaState.backfillTotal > 0) {
+    var pct = Math.min(100, Math.round((dnaState.backfillDone / dnaState.backfillTotal) * 100));
+    bar.style.width = pct + "%";
+    lbl.textContent = dnaState.backfillMsg;
+  } else {
+    bar.style.width = "0%";
+    lbl.textContent = "";
+  }
+}
+
+function buildDnaModel() {
+  var key = films.map(function(f) {
+    return f.tid + ":" + (f.date || "") + ":" + (f.at || 0) + ":" + (f.v || 1);
+  }).join("|");
+  if (key === dnaCache.key && dnaCache.model) return dnaCache.model;
+
+  var asc = films.slice().sort(function(a, b) {
+    return a.date < b.date ? -1 : a.date > b.date ? 1 : (a.at || 0) - (b.at || 0);
+  });
+
+  var genreFreq = {}, countryFreq = {};
+  asc.forEach(function(f) {
+    var g0 = (f.genres && f.genres[0]) || "Drama";
+    genreFreq[g0] = (genreFreq[g0] || 0) + 1;
+    if (f.country) countryFreq[f.country] = (countryFreq[f.country] || 0) + 1;
+  });
+
+  var stepY = 82;
+  var twistStep = 0.58;
+  var radius = 112;
+  var nodes = [];
+  var strandA = [];
+  var strandB = [];
+  var totalSpanY = Math.max(240, asc.length * stepY + 180);
+
+  for (var i = 0; i < asc.length; i++) {
+    var f = asc[i];
+    var y = (asc.length - 1 - i) * stepY - totalSpanY * 0.35;
+    var ang = i * twistStep;
+    var ax = Math.cos(ang) * radius;
+    var bx = Math.cos(ang + Math.PI) * radius;
+    var g0 = (f.genres && f.genres[0]) || "Drama";
+    var h = hue(g0);
+    var isMut = asc.length >= 4 && (genreFreq[g0] || 0) === 1 && (!f.country || (countryFreq[f.country] || 0) === 1);
+    var mutHue = isMut ? ((h + 150) % 360) : h;
+
+    strandA.push({ x: ax, y: y });
+    strandB.push({ x: bx, y: y });
+    nodes.push({
+      film: f,
+      index: i,
+      x: 0,
+      y: y,
+      ax: ax,
+      bx: bx,
+      hue: mutHue,
+      baseHue: h,
+      isMutation: isMut,
+      roots: []
+    });
+  }
+
+  function groupBy(getter) {
+    var map = {};
+    nodes.forEach(function(n) {
+      var k = getter(n.film);
+      if (!k) return;
+      if (!map[k]) map[k] = [];
+      map[k].push(n);
+    });
+    return map;
+  }
+
+  var branches = [];
+  var dirGroups = groupBy(function(f) { return f.director; });
+  Object.keys(dirGroups).forEach(function(dir) {
+    var arr = dirGroups[dir];
+    if (arr.length < 2) return;
+    var anchor = arr[Math.floor(arr.length / 2)];
+    var side = branches.length % 2 === 0 ? 1 : -1;
+    var thick = arr.length >= 3 ? Math.min(8, 3.2 + arr.length * 0.75) : 2.1;
+    var len = Math.min(520, 210 + arr.length * 58);
+    var endX = side * (radius + len);
+    var endY = anchor.y - 26;
+    branches.push({
+      type: "director",
+      label: arr.length >= 3 ? (dir.split(" ").pop() + " x" + arr.length) : dir,
+      fullLabel: dir,
+      count: arr.length,
+      thick: thick,
+      hue: anchor.hue,
+      startX: side * radius * 0.8,
+      startY: anchor.y,
+      ctrlX: side * (radius + len * 0.55),
+      ctrlY: anchor.y + 12,
+      endX: endX,
+      endY: endY,
+      nodes: arr
+    });
+  });
+
+  var coGroups = groupBy(function(f) { return f.country; });
+  Object.keys(coGroups).forEach(function(co) {
+    var arr = coGroups[co];
+    if (arr.length < 2) return;
+    var anchor = arr[0];
+    var side = branches.length % 2 === 0 ? 1 : -1;
+    var len = Math.min(420, 165 + arr.length * 42);
+    branches.push({
+      type: "country",
+      label: cname(co) + " cinema",
+      fullLabel: cname(co),
+      count: arr.length,
+      thick: Math.min(4.5, 1.6 + arr.length * 0.4),
+      hue: anchor.hue,
+      startX: side * radius * 0.75,
+      startY: anchor.y + 10,
+      ctrlX: side * (radius + len * 0.5),
+      ctrlY: anchor.y + 24,
+      endX: side * (radius + len),
+      endY: anchor.y + 16,
+      nodes: arr
+    });
+  });
+
+  var links = [];
+  for (var a = 0; a < nodes.length; a++) {
+    for (var b = a + 1; b < Math.min(nodes.length, a + 14); b++) {
+      var fa = nodes[a].film, fb = nodes[b].film;
+      var sameWriter = fa.writer && fb.writer && fa.writer === fb.writer;
+      var sameGenre = fa.genres && fb.genres && fa.genres[0] && fb.genres.indexOf(fa.genres[0]) >= 0;
+      if (sameWriter || sameGenre) {
+        links.push({
+          x1: nodes[a].x, y1: nodes[a].y,
+          x2: nodes[b].x, y2: nodes[b].y,
+          strong: !!sameWriter
+        });
+      }
+      if (links.length >= 260) break;
+    }
+    if (links.length >= 260) break;
+  }
+
+  var rootRegistry = {};
+  function regRoot(id, label, kind, nIdx) {
+    if (!rootRegistry[id]) {
+      rootRegistry[id] = { id: id, label: label, kind: kind, nodeIndices: [] };
+    }
+    rootRegistry[id].nodeIndices.push(nIdx);
+  }
+
+  nodes.forEach(function(n, idx) {
+    var f = n.film;
+    var rnd = seededRand(f.tid || (idx + 1));
+    var rList = [];
+    if (Array.isArray(f.cast)) {
+      f.cast.slice(0, 5).forEach(function(c) {
+        if (c && c.name) {
+          var rid = "actor:" + (c.id || c.name.toLowerCase());
+          regRoot(rid, c.name, "actor", idx);
+          rList.push({ id: rid, label: c.name, kind: "actor" });
+        }
+      });
+    }
+    var writerList = Array.isArray(f.writerCredits) && f.writerCredits.length ? f.writerCredits : (Array.isArray(f.writers) && f.writers.length ? f.writers.map(function(w){return {name:w};}) : (f.writer ? [{name:f.writer}] : []));
+    writerList.slice(0,4).forEach(function(wr){if(!wr || !wr.name)return;var wrid="writer:"+(wr.id||wr.name.toLowerCase());regRoot(wrid,wr.name,"writer",idx);rList.push({id:wrid,label:wr.name,kind:"writer"});});
+    if (f.composer && f.composer.name) {
+      var cmid = "composer:" + (f.composer.id || f.composer.name.toLowerCase());
+      regRoot(cmid, f.composer.name, "composer", idx);
+      rList.push({ id: cmid, label: f.composer.name, kind: "composer" });
+    }
+    if (Array.isArray(f.keywords)) {
+      f.keywords.slice(0, 5).forEach(function(k) {
+        if (k && k.name) {
+          var kwid = "theme:" + (k.id || k.name.toLowerCase());
+          regRoot(kwid, k.name, "theme", idx);
+          rList.push({ id: kwid, label: k.name, kind: "theme" });
+        }
+      });
+    }
+
+    rList.forEach(function(item, rIdx) {
+      var spread = ((rIdx + 0.5) / Math.max(1, rList.length) - 0.5) * 96;
+      var rx = n.x + spread + (rnd() - 0.5) * 14;
+      var ry = n.y + 22 + rIdx * 5 + rnd() * 8;
+      n.roots.push({
+        id: item.id,
+        label: item.label,
+        kind: item.kind,
+        x: rx,
+        y: ry,
+        nx: n.x,
+        ny: n.y,
+        hue: n.hue,
+        sharedCount: 1
+      });
+    });
+  });
+
+  var sharedRoots = [];
+  Object.keys(rootRegistry).forEach(function(rid) {
+    var reg = rootRegistry[rid];
+    if (reg.nodeIndices.length >= 2) {
+      var sumX = 0, sumY = 0;
+      reg.nodeIndices.forEach(function(ni) {
+        sumX += nodes[ni].x;
+        sumY += nodes[ni].y + 34;
+        nodes[ni].roots.forEach(function(nr) {
+          if (nr.id === rid) nr.sharedCount = reg.nodeIndices.length;
+        });
+      });
+      var hubSide = (sharedRoots.length % 2 === 0) ? -1 : 1;
+      var hubSpread = 210 + (sharedRoots.length % 7) * 72 + Math.min(260, reg.nodeIndices.length * 22);
+      sharedRoots.push({
+        id: rid,
+        label: reg.label,
+        kind: reg.kind,
+        count: reg.nodeIndices.length,
+        mx: hubSide * hubSpread,
+        my: sumY / reg.nodeIndices.length,
+        points: reg.nodeIndices.map(function(ni, pointIndex) {
+          return { x: nodes[ni].x + hubSide * (28 + (pointIndex % 3) * 16), y: nodes[ni].y + 10, hue: nodes[ni].hue };
+        })
+      });
+    }
+  });
+
+  sharedRoots.forEach(function(sr, si){
+    if(sr.count < 3) return;
+    var side = si % 2 === 0 ? -1 : 1;
+    var len = Math.min(340, 125 + sr.count * 38);
+    var hueByKind = {actor:335,writer:278,composer:42,theme:188};
+    branches.push({type:sr.kind,label:sr.label.split(" ").pop()+" ×"+sr.count,fullLabel:sr.label,count:sr.count,thick:Math.min(5.5,1.5+sr.count*.55),hue:hueByKind[sr.kind]||sr.points[0].hue,startX:sr.mx,startY:sr.my,ctrlX:sr.mx+side*len*.55,ctrlY:sr.my-34,endX:sr.mx+side*len,endY:sr.my-12,nodes:[]});
+  });
+
+  var model = {
+    nodes: nodes,
+    strandA: strandA,
+    strandB: strandB,
+    branches: branches,
+    links: links,
+    sharedRoots: sharedRoots,
+    topY: asc.length ? nodes[nodes.length - 1].y - 50 : -120,
+    botY: asc.length ? nodes[0].y + 80 : 120
+  };
+  dnaCache.key = key;
+  dnaCache.model = model;
+  return model;
+}
+
+function drawDnaCanvas() {
+  var canvas = document.getElementById("dna-canvas");
+  if (!canvas) return;
+  var model = buildDnaModel();
+  var rect = canvas.getBoundingClientRect();
+  if (!rect.width || !rect.height) return;
+
+  var dpr = Math.min(2, window.devicePixelRatio || 1);
+  var cw = Math.round(rect.width * dpr);
+  var ch = Math.round(rect.height * dpr);
+  if (canvas.width !== cw || canvas.height !== ch) {
+    canvas.width = cw;
+    canvas.height = ch;
+  }
+
+  var ctx = canvas.getContext("2d");
+  ctx.save();
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, cw, ch);
+
+  if (!model.nodes.length) {
+    ctx.restore();
+    return;
+  }
+
+  var z = dnaState.zoom;
+  var cx = cw * 0.5 + dnaState.panX * dpr;
+  var cy = ch * 0.5 + dnaState.panY * dpr;
+  var sprite = getGlowSprite();
+  var hl = dnaState.highlightRoot;
+  var now = Date.now();
+  var reduced = matchMedia("(prefers-reduced-motion:reduce)").matches;
+  var growing = !reduced && now < dnaState.growUntil;
+
+  function nodeActive(n) {
+    if (!hl) return true;
+    for (var i = 0; i < n.roots.length; i++) {
+      if (n.roots[i].id === hl) return true;
+    }
+    return false;
+  }
+
+  function inView(wx, wy, pad) {
+    var sx = cx + wx * z * dpr;
+    var sy = cy + wy * z * dpr;
+    var p = (pad || 60) * z * dpr;
+    return sx >= -p && sx <= cw + p && sy >= -p && sy <= ch + p;
+  }
+
+  if (!dnaState.lowDetail && z >= 0.45) {
+    ctx.lineWidth = Math.max(0.6, 1 * dpr);
+    for (var l = 0; l < model.links.length; l++) {
+      var lk = model.links[l];
+      if (!inView((lk.x1 + lk.x2) * 0.5, (lk.y1 + lk.y2) * 0.5, 140)) continue;
+      ctx.strokeStyle = lk.strong ? "rgba(255,244,214,0.14)" : "rgba(255,255,255,0.055)";
+      ctx.beginPath();
+      ctx.moveTo(cx + lk.x1 * z * dpr, cy + lk.y1 * z * dpr);
+      ctx.lineTo(cx + lk.x2 * z * dpr, cy + lk.y2 * z * dpr);
+      ctx.stroke();
+    }
+  }
+
+  function drawStrand(pts, alpha) {
+    if (pts.length < 2) return;
+    ctx.save();
+    ctx.strokeStyle = "rgba(244, 224, 184, " + alpha + ")";
+    ctx.lineWidth = Math.max(2, 3.1 * z * dpr);
+    ctx.shadowColor = "rgba(218,170,255,.55)";
+    ctx.shadowBlur = 10 * Math.min(1.4,z) * dpr;
+    ctx.beginPath();
+    var started = false;
+    for (var i = 0; i < pts.length; i++) {
+      var sx = cx + pts[i].x * z * dpr;
+      var sy = cy + pts[i].y * z * dpr;
+      if (sy < -120 * dpr || sy > ch + 120 * dpr) {
+        started = false;
+        continue;
+      }
+      if (!started) { ctx.moveTo(sx, sy); started = true; }
+      else ctx.lineTo(sx, sy);
+    }
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.restore();
+  }
+  drawStrand(model.strandA, hl ? 0.25 : 0.68);
+  drawStrand(model.strandB, hl ? 0.25 : 0.52);
+
+  // Organic neural field: deterministic dendrites radiate from each film and
+  // split into smaller synaptic twigs. The canvas keeps this lightweight.
+  for (var ni = 0; ni < model.nodes.length; ni++) {
+    var nn = model.nodes[ni];
+    if (!inView(0, nn.y, 360)) continue;
+    var nrng = seededRand((nn.film.tid || ni + 17) * 97 + ni * 13);
+    var nodeDim = hl && !nodeActive(nn) ? 0.10 : 1;
+    var arms = Math.min(12, 8 + (nn.roots.length > 2 ? 4 : 0));
+    for (var ai = 0; ai < arms; ai++) {
+      var sideN = (ai % 2 === 0 ? -1 : 1);
+      var reach = 520 + nrng() * 1050 + Math.min(220, nn.roots.length * 22);
+      var bend = (nrng() - .5) * 210;
+      var rise = (nrng() - .5) * 190;
+      var sx0 = sideN * (78 + nrng() * 52);
+      var ex0 = sideN * reach;
+      var ey0 = nn.y + rise + (ai - 2) * 12;
+      var mx0 = sideN * (reach * (.42 + nrng() * .16));
+      var my0 = nn.y + bend;
+      if (!inView(ex0 * .5, (nn.y + ey0) * .5, 180)) continue;
+      var hueN = (nn.hue + ai * 19 + (ni % 3) * 7) % 360;
+      ctx.save();
+      ctx.globalAlpha = nodeDim * (0.30 + nrng() * .20);
+      ctx.strokeStyle = "hsla(" + hueN + ",95%,68%,.9)";
+      ctx.lineWidth = (1.05 + nrng() * 1.1) * dpr * Math.min(1.25, Math.max(.72, z));
+      ctx.beginPath();
+      ctx.moveTo(cx + sx0 * z * dpr, cy + nn.y * z * dpr);
+      ctx.bezierCurveTo(cx + mx0 * z * dpr, cy + my0 * z * dpr, cx + ex0 * .78 * z * dpr, cy + (ey0 - rise * .22) * z * dpr, cx + ex0 * z * dpr, cy + ey0 * z * dpr);
+      ctx.stroke();
+      // Side dendrites make the silhouette feel like a neural culture, not a chart.
+      for (var ti = 0; ti < 5; ti++) {
+        var t = .22 + ti * .14;
+        var tx0 = sx0 + (ex0 - sx0) * t;
+        var ty0 = nn.y + (ey0 - nn.y) * t + Math.sin(t * Math.PI) * bend * .28;
+        var twigSide = nrng() > .5 ? 1 : -1;
+        var twigLen = 48 + nrng() * 118;
+        ctx.globalAlpha = nodeDim * (0.20 + nrng() * .16);
+        ctx.lineWidth = .8 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(cx + tx0 * z * dpr, cy + ty0 * z * dpr);
+        ctx.quadraticCurveTo(cx + (tx0 + twigSide * twigLen * .45) * z * dpr, cy + (ty0 - 28 - nrng() * 55) * z * dpr, cx + (tx0 + twigSide * twigLen) * z * dpr, cy + (ty0 - 52 - nrng() * 78) * z * dpr);
+        ctx.stroke();
+      }
+      var synX = cx + ex0 * z * dpr, synY = cy + ey0 * z * dpr;
+      ctx.globalAlpha = nodeDim * .52;
+      ctx.fillStyle = "hsla(" + hueN + ",100%,76%,.95)";
+      ctx.beginPath(); ctx.arc(synX, synY, Math.max(1.2, 2.1 * z * dpr), 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // A woven neural mesh: long axons cross between non-adjacent films, with
+  // deterministic offsets so every account gets a stable, recognisable pattern.
+  if (!dnaState.lowDetail) {
+    var hopSet = [2, 3, 5, 7, 9];
+    for (var ci = 0; ci < model.nodes.length; ci++) {
+      var ca = model.nodes[ci];
+      for (var hi = 0; hi < hopSet.length; hi++) {
+        var cj = ci + hopSet[hi];
+        if (cj >= model.nodes.length) continue;
+        var cb = model.nodes[cj];
+        if (!inView(0, (ca.y + cb.y) * .5, 360)) continue;
+        var cSide = ((ci + hi) % 2) ? 1 : -1;
+        var meshHue = (ca.hue * .55 + cb.hue * .45 + hi * 13) % 360;
+        ctx.save();
+        ctx.globalAlpha = hl ? .025 : (.075 + (hi % 3) * .018);
+        ctx.strokeStyle = "hsla(" + meshHue + ",92%,72%,.9)";
+        ctx.lineWidth = (.75 + (hi === 0 ? .35 : 0)) * dpr;
+        ctx.beginPath();
+        ctx.moveTo(cx + cSide * (92 + hi * 15) * z * dpr, cy + ca.y * z * dpr);
+        ctx.bezierCurveTo(cx + cSide * (430 + hi * 90) * z * dpr, cy + (ca.y + 55 + hi * 12) * z * dpr, cx - cSide * (390 + hi * 72) * z * dpr, cy + (cb.y - 48 - hi * 9) * z * dpr, cx - cSide * (88 + hi * 14) * z * dpr, cy + cb.y * z * dpr);
+        ctx.stroke();
+        // Small junctions along the axon make it read as a living synapse web.
+        for (var ji = 1; ji <= 2; ji++) {
+          var jt = ji / 3;
+          var jx = cSide * (92 + hi * 15) * (1-jt) - cSide * (88 + hi * 14) * jt;
+          var jy = ca.y + (cb.y-ca.y)*jt;
+          ctx.globalAlpha = hl ? .04 : .24;
+          ctx.fillStyle = "hsla(" + meshHue + ",100%,78%,.95)";
+          ctx.beginPath(); ctx.arc(cx + jx * z * dpr, cy + jy * z * dpr, Math.max(1.1, 2.1 * z * dpr), 0, Math.PI*2); ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+  }
+
+  for (var b = 0; b < model.branches.length; b++) {
+    var br = model.branches[b];
+    if (!inView((br.startX + br.endX) * 0.5, (br.startY + br.endY) * 0.5, 180)) continue;
+    var brAlpha = hl ? 0.22 : 0.72;
+    ctx.save();
+    ctx.strokeStyle = "hsla(" + br.hue + ", 88%, 62%, " + brAlpha + ")";
+    ctx.lineWidth = Math.max(1.2, br.thick * Math.min(1.6, z) * dpr);
+    ctx.beginPath();
+    ctx.moveTo(cx + br.startX * z * dpr, cy + br.startY * z * dpr);
+    ctx.quadraticCurveTo(
+      cx + br.ctrlX * z * dpr, cy + br.ctrlY * z * dpr,
+      cx + br.endX * z * dpr, cy + br.endY * z * dpr
+    );
+    ctx.stroke();
+
+    for (var k = 0; k < Math.min(br.count, 5); k++) {
+      var tx = br.endX + (k - 2) * 7;
+      var ty = br.endY + (k % 2 === 0 ? -5 : 5);
+      ctx.fillStyle = "hsla(" + br.hue + ", 95%, 70%, " + brAlpha + ")";
+      ctx.beginPath();
+      ctx.arc(cx + tx * z * dpr, cy + ty * z * dpr, Math.max(2, 3.2 * z * dpr), 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    if (z >= 0.75 && br.label) {
+      ctx.font = Math.round(11 * dpr) + 'px "Instrument Sans", sans-serif';
+      ctx.fillStyle = "rgba(243,241,250," + (hl ? 0.3 : 0.85) + ")";
+      ctx.fillText(br.label, cx + (br.endX + (br.endX >= 0 ? 8 : -54)) * z * dpr, cy + br.endY * z * dpr + 4 * dpr);
+    }
+    ctx.restore();
+  }
+
+  var hits = [];
+  if (!dnaState.lowDetail && z >= 0.25) {
+    for (var s = 0; s < model.sharedRoots.length; s++) {
+      var sr = model.sharedRoots[s];
+      var isSel = hl === sr.id;
+      var sAlpha = hl ? (isSel ? 0.95 : 0.12) : 0.52;
+      ctx.strokeStyle = "hsla(42, 90%, 72%, " + sAlpha + ")";
+      ctx.lineWidth = Math.max(1, (isSel ? 2.2 : 1.2) * dpr);
+      for (var p = 0; p < sr.points.length; p++) {
+        var pt = sr.points[p];
+        if (!inView(pt.x, pt.y, 120)) continue;
+        ctx.beginPath();
+        ctx.moveTo(cx + pt.x * z * dpr, cy + pt.y * z * dpr);
+        ctx.quadraticCurveTo(
+          cx + pt.x * z * dpr, cy + (sr.my - 12) * z * dpr,
+          cx + sr.mx * z * dpr, cy + sr.my * z * dpr
+        );
+        ctx.stroke();
+      }
+      if (inView(sr.mx, sr.my, 80)) {
+        var ringX = cx + sr.mx * z * dpr;
+        var ringY = cy + sr.my * z * dpr;
+        var ringR = Math.max(4, 5.5 * z * dpr);
+        ctx.strokeStyle = isSel ? "#ffffff" : "rgba(255, 224, 150, 0.85)";
+        ctx.lineWidth = 1.6 * dpr;
+        ctx.beginPath();
+        ctx.arc(ringX, ringY, ringR, 0, Math.PI * 2);
+        ctx.stroke();
+
+        hits.push({ type: "root", id: sr.id, label: sr.label, x: ringX, y: ringY, r: Math.max(12 * dpr, ringR * 2) });
+
+        if (z >= 1.55) {
+          ctx.font = Math.round(10.5 * dpr) + 'px "Instrument Sans", sans-serif';
+          ctx.fillStyle = isSel ? "#ffffff" : "rgba(243,241,250,0.82)";
+          ctx.fillText(sr.label, ringX + ringR + 4 * dpr, ringY + 3.5 * dpr);
+        }
+      }
+    }
+  }
+
+  for (var i = 0; i < model.nodes.length; i++) {
+    var n = model.nodes[i];
+    if (!inView(n.x, n.y, 120)) continue;
+    var active = nodeActive(n);
+    var nAlpha = hl ? (active ? 1 : 0.16) : 1;
+    var isNewest = growing && i === model.nodes.length - 1;
+    var pulse = isNewest ? (0.7 + 0.3 * Math.sin(now / 110)) : 1;
+
+    var sxA = cx + n.ax * z * dpr;
+    var sxB = cx + n.bx * z * dpr;
+    var sx = cx + n.x * z * dpr;
+    var sy = cy + n.y * z * dpr;
+
+    ctx.strokeStyle = "hsla(" + n.hue + ", 96%, 70%, " + (0.88 * nAlpha) + ")";
+    ctx.shadowColor = "hsla(" + n.hue + ", 100%, 68%, .75)";
+    ctx.shadowBlur = 13 * Math.min(1.4,z) * dpr;
+    ctx.lineWidth = Math.max(1.8, (n.isMutation ? 3.6 : 2.7) * z * dpr);
+    ctx.beginPath();
+    ctx.moveTo(sxA, sy);
+    ctx.lineTo(sxB, sy);
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    if (!dnaState.lowDetail && nAlpha > 0.25) {
+      var gSize = (n.isMutation ? 36 : 20) * Math.max(0.7, Math.min(1.6, z)) * dpr * pulse;
+      ctx.globalAlpha = (n.isMutation ? 0.65 : 0.34) * nAlpha;
+      ctx.drawImage(sprite, sx - gSize * 0.5, sy - gSize * 0.5, gSize, gSize);
+      ctx.globalAlpha = 1;
+    }
+
+    if (n.isMutation) {
+      ctx.strokeStyle = "hsla(" + n.hue + ", 100%, 75%, " + (0.85 * nAlpha) + ")";
+      ctx.lineWidth = 1.8 * dpr;
+      ctx.beginPath();
+      ctx.arc(sx, sy, Math.max(7, 9 * z * dpr), 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    var dotR = Math.max(3.2, (n.isMutation ? 6 : 4.6) * Math.min(1.5, z) * dpr);
+    ctx.fillStyle = n.isMutation ? "#ffffff" : ("hsla(" + n.hue + ", 95%, 66%, " + nAlpha + ")");
+    ctx.beginPath();
+    ctx.arc(sx, sy, dotR, 0, Math.PI * 2);
+    ctx.fill();
+
+    hits.push({ type: "film", film: n.film, x: sx, y: sy, r: Math.max(14 * dpr, dotR * 2.4) });
+
+    if (z >= 1.15 && nAlpha > 0.25) {
+      ctx.font = Math.round(11.5 * dpr) + 'px "Instrument Sans", sans-serif';
+      ctx.fillStyle = "rgba(243,241,250," + (0.9 * nAlpha) + ")";
+      var tLbl = n.film.title + (n.film.year ? " (" + n.film.year + ")" : "");
+      ctx.fillText(tLbl, sx + dotR + 6 * dpr, sy + 4 * dpr);
+
+      if (!dnaState.lowDetail && z >= 1.35) {
+        for (var r = 0; r < n.roots.length; r++) {
+          var rt = n.roots[r];
+          if (rt.sharedCount < 2 && z < 1.8) continue;
+          var rHit = hl === rt.id;
+          var rAlpha = hl ? (rHit ? 0.95 : 0.14) : 0.45;
+          var rx = cx + rt.x * z * dpr;
+          var ry = cy + rt.y * z * dpr;
+          ctx.strokeStyle = "hsla(" + n.hue + ", 80%, 68%, " + rAlpha + ")";
+          ctx.lineWidth = 1 * dpr;
+          ctx.beginPath();
+          ctx.moveTo(sx, sy + dotR);
+          ctx.quadraticCurveTo(sx, ry - 4 * dpr, rx, ry);
+          ctx.stroke();
+
+          hits.push({ type: "root", id: rt.id, label: rt.label, x: rx, y: ry, r: 10 * dpr });
+
+          if (z >= 1.8) {
+            ctx.font = Math.round(9.5 * dpr) + 'px "Instrument Sans", sans-serif';
+            ctx.fillStyle = rHit ? "#ffe699" : "rgba(243,241,250," + (0.72 * rAlpha) + ")";
+            ctx.fillText(rt.label, rx + 4 * dpr, ry + 3 * dpr);
+          }
+        }
+      }
+    }
+  }
+
+  if (!dnaState.lowDetail && model.nodes.length) {
+    var topN = model.nodes[model.nodes.length - 1];
+    var tpx = cx + topN.x * z * dpr;
+    var tpy = cy + (topN.y - 24) * z * dpr;
+    for (var p = 0; p < 12; p++) {
+      var px = tpx + Math.cos(p * 2.1) * (10 + (p % 4) * 7) * z * dpr;
+      var py = tpy - (p % 5) * 7 * z * dpr;
+      ctx.fillStyle = "hsla(" + topN.hue + ", 95%, 75%, " + (0.55 - (p % 5) * 0.09) + ")";
+      ctx.beginPath();
+      ctx.arc(px, py, Math.max(1.2, 2.2 * z * dpr), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  ctx.restore();
+  dnaCache.hits = hits;
+
+  drawDnaMinimap(model, cw, ch, cx, cy, z, dpr);
+
+  if (!dnaState.fpsSampleStart) {
+    dnaState.fpsSampleStart = now;
+    dnaState.frameCount = 0;
+  }
+  dnaState.frameCount++;
+  if (now - dnaState.fpsSampleStart > 2500) {
+    var fps = (dnaState.frameCount * 1000) / (now - dnaState.fpsSampleStart);
+    if (fps < 22 && !dnaState.lowDetail) dnaState.lowDetail = true;
+    dnaState.fpsSampleStart = now;
+    dnaState.frameCount = 0;
+  }
+
+  if (growing) {
+    dnaAnimId = requestAnimationFrame(drawDnaCanvas);
+  } else {
+    dnaAnimId = 0;
+  }
+}
+
+function drawDnaMinimap(model, cw, ch, cx, cy, z, dpr) {
+  var mm = document.getElementById("dna-minimap");
+  if (!mm || !model.nodes.length) return;
+  var r = mm.getBoundingClientRect();
+  if (!r.width || !r.height) return;
+  var mw = Math.round(r.width * dpr);
+  var mh = Math.round(r.height * dpr);
+  if (mm.width !== mw || mm.height !== mh) { mm.width = mw; mm.height = mh; }
+  var mctx = mm.getContext("2d");
+  mctx.clearRect(0, 0, mw, mh);
+
+  var spanY = Math.max(120, model.botY - model.topY);
+  var scale = Math.min((mw - 16 * dpr) / 280, (mh - 12 * dpr) / spanY);
+  var ox = mw * 0.5;
+  var oy = mh * 0.5 - ((model.topY + model.botY) * 0.5) * scale;
+
+  mctx.strokeStyle = "rgba(244,224,184,0.45)";
+  mctx.lineWidth = 1.2 * dpr;
+  mctx.beginPath();
+  for (var i = 0; i < model.nodes.length; i++) {
+    var nx = ox + model.nodes[i].x * scale;
+    var ny = oy + model.nodes[i].y * scale;
+    if (i === 0) mctx.moveTo(nx, ny);
+    else mctx.lineTo(nx, ny);
+  }
+  mctx.stroke();
+
+  var vx = ox + ((-cx) / (z * dpr)) * scale;
+  var vy = oy + ((-cy) / (z * dpr)) * scale;
+  var vw = (cw / (z * dpr)) * scale;
+  var vh = (ch / (z * dpr)) * scale;
+  mctx.strokeStyle = "rgba(255,255,255,0.85)";
+  mctx.lineWidth = 1.2 * dpr;
+  mctx.strokeRect(vx, vy, Math.max(8, vw), Math.max(8, vh));
+}
+
+function requestDnaDraw() {
+  if (dnaAnimId) cancelAnimationFrame(dnaAnimId);
+  dnaAnimId = requestAnimationFrame(drawDnaCanvas);
+}
+
+function dnaSubgenreData() {
+  var rules = [
+    ["Psychological horror", /psychological|paranoia|mind game|mental illness|delusion|hallucination|unreliable narrator/],
+    ["Supernatural horror", /supernatural|ghost|haunting|demon|possession|exorcism|afterlife/],
+    ["Folk horror", /folk|cult|ritual|witchcraft|rural|pagan|folklore/],
+    ["Body horror", /body horror|body transformation|mutation|infection|parasite|medical horror|disease/],
+    ["Slasher", /slasher|serial killer|masked killer|stalker|psychopath/],
+    ["Cosmic horror", /cosmic horror|eldritch|lovecraft|ancient god|unknown force|extraterrestrial/],
+    ["Found footage", /found footage|mockumentary|handheld camera/],
+    ["Surrealist cinema", /surrealism|surreal|dream|dreamlike|absurdism/],
+    ["Neo-noir", /neo.noir|film noir|noir/],
+    ["Mind-bending sci-fi", /time loop|time travel|parallel universe|simulation|alternate reality|dystopia/],
+    ["Coming-of-age", /coming of age|teenager|adolescence|youth/],
+    ["Slow-burn thriller", /slow burn|conspiracy|investigation|mystery|suspense/],
+    ["Dark comedy", /dark comedy|black comedy|satire|cynical/],
+    ["Romantic drama", /romance|love story|relationship|marriage/],
+    ["Crime drama", /organized crime|gangster|heist|detective|police corruption/],
+    ["War & political drama", /war|politics|political|revolution|military/],
+    ["Existential drama", /existential|identity|meaning of life|isolation|alienation|mortality/]
+  ];
+  var counts = {}, samples = {};
+  films.forEach(function(f) {
+    var text = (f.title || "") + " " + (f.keywords || []).map(function(k){return typeof k === "string" ? k : k.name;}).join(" ");
+    text = text.toLowerCase();
+    rules.forEach(function(r) { if (r[1].test(text)) { counts[r[0]] = (counts[r[0]] || 0) + 1; (samples[r[0]] = samples[r[0]] || []).push(f.title); } });
+  });
+  return Object.keys(counts).map(function(k){return {name:k,count:counts[k],films:samples[k]};}).sort(function(a,b){return b.count-a.count;});
+}
+function dnaTasteProfile() {
+  var sub = dnaSubgenreData();
+  var genreCounts = {}, dirCounts = {}, countryCounts = {}, themeCounts = {}, writerCounts = {}, composerCounts = {};
+  films.forEach(function(f){
+    (f.genres || []).forEach(function(g){genreCounts[g]=(genreCounts[g]||0)+1;});
+    if(f.director)dirCounts[f.director]=(dirCounts[f.director]||0)+1;
+    if(f.country)countryCounts[f.country]=(countryCounts[f.country]||0)+1;
+    (f.keywords||[]).forEach(function(k){var n=typeof k==="string"?k:k.name;if(n)themeCounts[n]=(themeCounts[n]||0)+1;});
+    (f.writers||f.writerCredits||[]).forEach(function(w){var n=typeof w==="string"?w:w.name;if(n)writerCounts[n]=(writerCounts[n]||0)+1;});
+    if(f.writer && !f.writers && !f.writerCredits)writerCounts[f.writer]=(writerCounts[f.writer]||0)+1;
+    if(f.composer&&f.composer.name)composerCounts[f.composer.name]=(composerCounts[f.composer.name]||0)+1;
+  });
+  function top(map){return Object.keys(map).map(function(k){return {name:k,count:map[k]};}).sort(function(a,b){return b.count-a.count;});}
+  var gs=top(genreCounts), ds=top(dirCounts), cs=top(countryCounts), ts=top(themeCounts), ws=top(writerCounts), ms=top(composerCounts);
+  var establishedSub=sub.filter(function(x){return x.count>=2;});
+  var dominant=establishedSub[0]?establishedSub[0].name:(gs[0]?gs[0].name:"Cinema explorer");
+  var second=establishedSub[1]?establishedSub[1].name:(gs[1]?gs[1].name:"");
+  var titles={"Psychological horror":"The Horror Observer","Supernatural horror":"The Unseen-Seeker","Folk horror":"The Keeper of Old Mysteries","Body horror":"The Form-Breaker","Slasher":"The Anatomy of Fear","Cosmic horror":"The Cosmic Questioner","Surrealist cinema":"The Surrealist Thinker","Neo-noir":"The Shadow Cartographer","Mind-bending sci-fi":"The Reality Questioner","Coming-of-age":"The Humanist Observer","Slow-burn thriller":"The Patient Investigator","Dark comedy":"The Darkly Curious","Romantic drama":"The Intimate Observer","Existential drama":"The Existential Explorer"};
+  var title=titles[dominant]||("The "+dominant.replace(/\b\w/g,function(c){return c.toUpperCase();})+" Observer");
+  var subNames=establishedSub.slice(0,4).map(function(x){return x.name.toLowerCase();});
+  var filmExamples=films.slice().sort(function(a,b){return (b.at||0)-(a.at||0);}).slice(0,3).map(function(f){return f.title;});
+  var genreLine=gs.slice(0,3).map(function(x){return x.name+" ("+x.count+")";}).join(", ");
+  var lead="Across "+films.length+" logged films, your clearest recurring thread is "+dominant.toLowerCase()+(second?", with "+second.toLowerCase()+" close behind":"")+". That is more specific than simply saying you like "+(gs[0]?gs[0].name.toLowerCase():"cinema")+": it points to the kind of mood and dramatic pressure you repeatedly choose to spend time with. "+(subNames.length?"The subgenre mix — "+subNames.join(", ")+" — suggests that atmosphere, uncertainty and the inner lives of characters matter to you as much as the events of the plot.":"As your log grows, the subgenre pattern will help distinguish the exact kinds of stories within those broader genres that keep your attention.");
+  var narrative="Your film history leans towards stories that invite interpretation rather than passive viewing. The recurring labels and themes suggest an interest in how a story creates tension: through withheld information, unstable points of view, difficult choices, unusual worlds or relationships under pressure. You may enjoy leaving a film with something to untangle — not because every story needs a twist, but because ambiguity gives you room to form your own reading. This is a description of the viewing patterns in your log, not a claim about your personality outside cinema.";
+  if(subNames.length>1) narrative="The combination of "+subNames.slice(0,3).join(", ")+" gives your taste a particular shape. These subgenres approach tension in different ways, but they often reward close attention: to behaviour, atmosphere, symbolism and the gap between what characters say and what may actually be happening. That suggests you are not only choosing a genre; you are choosing a viewing experience — one that asks you to notice details, sit with uncertainty and keep thinking after the credits.";
+  var recurring=[];
+  if(ds.length)recurring.push("directors such as "+ds.slice(0,4).map(function(x){return x.name+(x.count>1?" ("+x.count+" films)":"");}).join(", "));
+  if(ws.length)recurring.push("writers including "+ws.slice(0,3).map(function(x){return x.name;}).join(", "));
+  if(ms.length)recurring.push("composer "+ms[0].name);
+  var signature=recurring.length?"There are familiar creative voices running through your watch history: "+recurring.join("; ")+". Repeated collaborators can reveal a preference that genre counts miss — a certain rhythm of dialogue, visual restraint, intensity, musical atmosphere or way of building a character. ":"Your creative-collaborator pattern is still taking shape, so the strongest evidence currently comes from the genres and themes in your log. ";
+  if(ts.length)signature+="The keywords that recur most often include "+ts.slice(0,6).map(function(x){return x.name.toLowerCase();}).join(", ")+". ";
+  if(cs.length)signature+="Your most represented cinema origins include "+cs.slice(0,3).map(function(x){return x.name+" ("+x.count+")";}).join(", ")+", adding another layer to the kinds of storytelling you seek out.";
+  var contradiction="A strong taste does not mean a narrow one. The films outside your dominant subgenres are worth keeping in view: they show where your curiosity wanders, and they may be the beginning of a new interest rather than exceptions to explain away. "+(gs.length>1?"Your broader genre spread — "+genreLine+" — suggests there is more than one emotional register in your collection. The contrast between those choices is part of the portrait, not a flaw in its consistency.":"As you log more films from different traditions, this section will become more specific about the contrast between your familiar territory and the films that surprise it.");
+  return {title:title,dominant:dominant,second:second,lead:lead,narrative:narrative,signature:signature,contradiction:contradiction,genres:gs,subgenres:sub,directors:ds,countries:cs,themes:ts,films:films.length,examples:filmExamples};
+}
+function dnaProfileHTML() {
+  var p=dnaTasteProfile();
+  if(!films.length)return '<aside class="glass dna-profile"><div class="dna-eyebrow">The mind behind the movies</div><h2>Your cinematic identity is waiting.</h2><p class="dna-copy">Log a few films and Fourth wall will begin noticing the precise subgenres, storytelling rhythms, recurring collaborators and themes that make your film history distinct.</p></aside>';
+  var tags=p.subgenres.slice(0,7).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
+  if(!tags)tags=p.genres.slice(0,7).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
+  var stats='<div class="dna-stats"><div class="dna-stat"><strong>'+p.films+'</strong><span>Films logged</span></div><div class="dna-stat"><strong>'+p.subgenres.length+'</strong><span>Subgenres found</span></div><div class="dna-stat"><strong>'+p.directors.filter(function(x){return x.count>1;}).length+'</strong><span>Returning directors</span></div></div>';
+  return '<aside class="glass dna-profile"><div class="dna-profile-intro"><div class="dna-eyebrow">The mind behind the movies</div><h2>'+esc(p.title)+'</h2><div class="dna-mantra">“Your film history is a map of the stories, moods and ideas you keep returning to.”</div>'+stats+'</div><div class="dna-insight"><b>The pattern beneath your genres</b><p class="dna-copy">'+esc(p.lead)+'</p></div><div class="dna-insight"><b>The kind of storytelling you seek</b><p class="dna-copy">'+esc(p.narrative)+'</p></div><div class="dna-insight"><b>The signatures and contradictions</b><p class="dna-copy">'+esc(p.signature+' '+p.contradiction)+'</p></div><div class="dna-insight"><b>Your subgenre fingerprints</b><div class="dna-tags">'+tags+'</div><p class="dim" style="font-size:11px;line-height:1.6;margin:12px 0 0">This portrait is built from the films and metadata you have logged. It describes patterns in your cinematic taste, not a fixed personality type.</p></div></aside>';
+}
+
+function exportDnaStory() {
+  var p=dnaTasteProfile(), model=buildDnaModel(), c=document.createElement("canvas");
+  c.width=1080;c.height=1920;
+  var x=c.getContext("2d");
+  var bg=x.createLinearGradient(0,0,1080,1920);bg.addColorStop(0,"#160711");bg.addColorStop(.48,"#080914");bg.addColorStop(1,"#10091d");x.fillStyle=bg;x.fillRect(0,0,1080,1920);
+  var glow=x.createRadialGradient(540,760,20,540,760,760);glow.addColorStop(0,"rgba(150,65,210,.22)");glow.addColorStop(1,"rgba(10,5,18,0)");x.fillStyle=glow;x.fillRect(0,0,1080,1920);
+  for(var q=0;q<180;q++){var px=(q*197)%1080,py=(q*317)%1920;x.fillStyle="rgba(255,255,255,"+(.10+(q%5)*.025)+")";x.beginPath();x.arc(px,py,(q%3)+.7,0,Math.PI*2);x.fill();}
+  var cx=540,top=340,step= Math.min(34,760/Math.max(1,model.nodes.length)),rad=112;
+  x.save();x.translate(cx,top);
+  // Layered neural branches first, so the luminous helix sits above the network.
+  for(var ni=0;ni<model.nodes.length;ni++){
+    var nn=model.nodes[ni],seed=seededRand((nn.film.tid||ni+1)*97+ni*13);
+    for(var ai=0;ai<10;ai++){
+      var side=ai%2?-1:1,reach=300+seed()*420,ey=ni*step+(seed()-.5)*110;
+      var hueN=(nn.hue+ai*17)%360;
+      x.beginPath();x.moveTo(side*rad*.7,ni*step);
+      x.bezierCurveTo(side*reach*.42,ni*step+(seed()-.5)*130,side*reach*.78,ey-35,side*reach,ey);
+      x.strokeStyle="hsla("+hueN+",95%,68%,.30)";x.lineWidth=1.3;x.stroke();
+      for(var tw=0;tw<3;tw++){var t=.28+tw*.23,tx=side*rad*.7+(side*reach-side*rad*.7)*t,ty=ni*step+(ey-ni*step)*t;x.beginPath();x.moveTo(tx,ty);x.quadraticCurveTo(tx+side*(30+seed()*45),ty-35,tx+side*(70+seed()*65),ty-80);x.strokeStyle="hsla("+hueN+",95%,70%,.22)";x.lineWidth=.8;x.stroke();}
+    }
+  }
+  for(var li=0;li<model.nodes.length;li++){
+    for(var hop=2;hop<=6;hop+=2){if(li+hop>=model.nodes.length)continue;var sideL=li%2?-1:1;x.beginPath();x.moveTo(sideL*rad,li*step);x.bezierCurveTo(sideL*430,li*step+35,-sideL*430,(li+hop)*step-35,-sideL*rad,(li+hop)*step);x.strokeStyle="rgba(190,145,255,.18)";x.lineWidth=1;x.stroke();}
+  }
+  function strand(offset,color){x.beginPath();for(var i=0;i<Math.max(12,model.nodes.length*2);i++){var yy=i*step/2,xx=Math.sin(i*.43+offset)*rad;if(i===0)x.moveTo(xx,yy);else x.lineTo(xx,yy);}x.strokeStyle=color;x.lineWidth=5;x.shadowColor=color;x.shadowBlur=20;x.stroke();x.shadowBlur=0;}
+  strand(0,"rgba(235,195,255,.96)");strand(Math.PI,"rgba(255,171,190,.84)");
+  for(var n=0;n<model.nodes.length;n++){var yy=n*step,xx=Math.sin(n*.43)*rad,hh=model.nodes[n].hue;x.strokeStyle="hsla("+hh+",96%,72%,.95)";x.lineWidth=3;x.beginPath();x.moveTo(xx,yy);x.lineTo(-xx,yy);x.stroke();x.fillStyle="hsla("+hh+",100%,78%,1)";x.beginPath();x.arc(0,yy,6,0,Math.PI*2);x.fill();x.shadowColor="hsla("+hh+",100%,70%,.8)";x.shadowBlur=14;x.fill();x.shadowBlur=0;}
+  x.restore();
+  x.textAlign="center";x.fillStyle="#f4eaff";x.font="600 30px Georgia";x.fillText("F O U R T H   W A L L",540,105);
+  x.fillStyle="#cda8f2";x.font="700 20px Arial";x.fillText("YOUR CINEMA DNA",540,172);
+  x.fillStyle="#fff";x.font="800 58px Arial";wrapCanvasText(x,p.title.toUpperCase(),540,1290,920,68);
+  x.fillStyle="#ddc8ed";x.font="italic 25px Georgia";wrapCanvasText(x,p.lead,540,1430,850,42);
+  x.fillStyle="rgba(255,255,255,.82)";x.font="500 23px Arial";x.fillText(p.films+" FILMS  ·  "+p.subgenres.length+" SUBGENRES",540,1730);
+  var topSubs=p.subgenres.slice(0,3).map(function(v){return v.name;}).join("  ·  ");
+  if(topSubs){x.fillStyle="rgba(226,205,245,.72)";x.font="18px Arial";x.fillText(topSubs.slice(0,72),540,1780);}
+  x.fillStyle="#c9b6d8";x.font="18px Arial";x.fillText("DISCOVER YOUR CINEMA DNA  ·  FOURTH WALL",540,1850);
+  function downloadBlob(blob){var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="my-cinema-dna.jpg";document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1500);}
+  if(c.toBlob){c.toBlob(function(blob){if(blob&&blob.type==="image/jpeg")downloadBlob(blob);else{var data=c.toDataURL("image/jpeg",.94),a=document.createElement("a");a.href=data;a.download="my-cinema-dna.jpg";a.click();}},"image/jpeg",.94);}
+  else {var a=document.createElement("a");a.href=c.toDataURL("image/jpeg",.94);a.download="my-cinema-dna.jpg";a.click();}
+}
+
+function wrapCanvasText(ctx,text,cx,y,maxWidth,lineHeight){var words=String(text).split(" "),line="",lines=[];for(var i=0;i<words.length;i++){var test=line?line+" "+words[i]:words[i];if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=words[i];}else line=test;}if(line)lines.push(line);for(var j=0;j<lines.length&&j<4;j++)ctx.fillText(lines[j],cx,y+j*lineHeight);}
+
+function dnaHTML() {
+  var h = '<div class="dna-wrap">';
+  h += '<div class="dna-head"><div><div class="dna-eyebrow">A living map of your film taste</div><h1 class="pg" style="margin:0">Cinema DNA</h1></div>';
+  h += '<div class="dna-tools"><button class="ghost" data-dnalist="1" aria-pressed="' + (dnaState.listMode ? "true" : "false") + '">' + (dnaState.listMode ? "Helix view" : "List view") + '</button><button class="ghost" data-dnareset="1">Reset view</button><button class="ghost dna-share" data-dnashare="1">↓ Save JPEG</button></div></div>';
+  h += '<div class="dna-prog"><i id="dna-prog-bar" style="width:0%"></i></div><div class="dim" id="dna-prog-lbl" style="font-size:12px;min-height:12px">' + esc(dnaState.backfillMsg || "") + '</div>';
+  if (dnaState.listMode) {
+    var byDir = {};
+    films.forEach(function(f) { var k = f.director || "Unknown director"; (byDir[k] = byDir[k] || []).push(f); });
+    h += '<div class="glass dna-list">';
+    if (!films.length) h += '<p class="dim">Log a film to plant the first rung.</p>';
+    else Object.keys(byDir).forEach(function(dir) { h += '<div class="dna-grp"><h3>' + esc(dir) + ' (' + byDir[dir].length + ')</h3><div class="dna-grp-items">'; byDir[dir].forEach(function(f) { h += '<button class="dna-chip" data-id="' + f.tid + '">' + esc(f.title) + (f.year ? " (" + f.year + ")" : "") + '</button>'; }); h += '</div></div>'; });
+    h += '</div>';
+  } else {
+    h += '<div class="dna-layout"><div class="dna-main"><div class="glass dna-stage"><canvas id="dna-canvas" class="dna-canvas" aria-label="Interactive Cinema DNA neural network showing relationships between films, people and themes"></canvas>';
+    h += '<div class="dna-hud-tl"><span class="dna-badge" id="dna-zoom-badge">Zoom ' + dnaState.zoom.toFixed(1) + 'x · ' + films.length + (films.length === 1 ? " film" : " films") + '</span>';
+    if (dnaState.highlightRoot) h += '<span class="dna-badge" id="dna-hl-badge">Connection: ' + esc(dnaState.highlightRoot.split(":").slice(1).join(":")) + '</span>';
+    h += '</div><div class="dna-hud-tr"><button class="dna-zbtn" type="button" data-dnazoom="in" aria-label="Zoom in">+</button><button class="dna-zbtn" type="button" data-dnazoom="out" aria-label="Zoom out">−</button></div><div class="dna-hud-bl">';
+    if (dnaState.highlightRoot) h += '<button class="dna-pill" type="button" data-dnaclearhl="1">Clear highlight</button>';
+    h += '<span class="dna-pill" style="pointer-events:none;opacity:.8">Drag to pan · Pinch or scroll to zoom · Double-tap a film to focus</span></div><div class="dna-hud-br"><canvas id="dna-minimap" aria-hidden="true"></canvas></div>';
+    if (!films.length) h += '<div class="dna-empty"><div class="dna-seed"></div><p class="dim" style="margin:0">Log a film to plant the first rung.</p></div>';
+    h += '</div><div class="glass dna-subgenres"><h3>Your subgenre fingerprints</h3><div class="dna-tags">';
+    var sub=dnaSubgenreData();
+    if(sub.length) h+=sub.slice(0,12).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' <b>'+x.count+'</b></span>';}).join("");
+    else h+='<span class="dim" style="font-size:12px">Subgenre patterns will emerge as film keywords are added.</span>';
+    h+='</div><div class="dna-key" style="margin-top:13px"><span><i style="background:#ff718e"></i>Actors</span><span><i style="background:#d6a0ff"></i>Writers</span><span><i style="background:#f3c66d"></i>Composers</span><span><i style="background:#78d8e8"></i>Themes</span></div></div></div>';
+    h += dnaProfileHTML() + '</div>';
+  }
+  h += '</div>'; return h;
+}
+
+function bindDnaEvents() {
+  var canvas = document.getElementById("dna-canvas");
+  if (!canvas) return;
+  var dragging = false, startX = 0, startY = 0, moved = false;
+  var pinchDist = 0;
+
+  function updateZoomBadge() {
+    var b = document.getElementById("dna-zoom-badge");
+    if (b) b.textContent = "Zoom " + dnaState.zoom.toFixed(1) + "x · " + films.length + (films.length === 1 ? " film" : " films");
+  }
+
+  function handleTap(clientX, clientY, isDouble) {
+    var rect = canvas.getBoundingClientRect();
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var px = (clientX - rect.left) * dpr;
+    var py = (clientY - rect.top) * dpr;
+    var best = null, bestD = Infinity;
+    for (var i = 0; i < dnaCache.hits.length; i++) {
+      var it = dnaCache.hits[i];
+      var dx = it.x - px, dy = it.y - py;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist <= it.r && dist < bestD) { best = it; bestD = dist; }
+    }
+    if (!best) return;
+    if (best.type === "film") {
+      if (isDouble) {
+        dnaState.zoom = Math.min(3.2, Math.max(1.6, dnaState.zoom * 1.45));
+        var model = buildDnaModel();
+        for (var n = 0; n < model.nodes.length; n++) {
+          if (model.nodes[n].film.tid === best.film.tid) {
+            dnaState.panX = -model.nodes[n].x * dnaState.zoom;
+            dnaState.panY = -model.nodes[n].y * dnaState.zoom;
+            break;
+          }
+        }
+        updateZoomBadge();
+        requestDnaDraw();
+      } else {
+        openDetail(best.film.tid);
+      }
+    } else if (best.type === "root") {
+      dnaState.highlightRoot = (dnaState.highlightRoot === best.id) ? null : best.id;
+      render(true);
+    }
+  }
+
+  canvas.onpointerdown = function(e) {
+    dragging = true; moved = false;
+    startX = e.clientX; startY = e.clientY;
+    canvas.classList.add("dragging");
+    try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+  };
+
+  canvas.onpointermove = function(e) {
+    if (!dragging) return;
+    var dx = e.clientX - startX;
+    var dy = e.clientY - startY;
+    if (Math.abs(dx) > 4 || Math.abs(dy) > 4) moved = true;
+    dnaState.panX += dx;
+    dnaState.panY += dy;
+    startX = e.clientX;
+    startY = e.clientY;
+    requestDnaDraw();
+  };
+
+  canvas.onpointerup = function(e) {
+    if (!dragging) return;
+    dragging = false;
+    canvas.classList.remove("dragging");
+    try { canvas.releasePointerCapture(e.pointerId); } catch (err) {}
+    if (!moved) handleTap(e.clientX, e.clientY, false);
+  };
+
+  canvas.ondblclick = function(e) {
+    handleTap(e.clientX, e.clientY, true);
+  };
+
+  canvas.onwheel = function(e) {
+    e.preventDefault();
+    var factor = e.deltaY < 0 ? 1.14 : 0.88;
+    dnaState.zoom = Math.max(0.35, Math.min(3.5, dnaState.zoom * factor));
+    updateZoomBadge();
+    requestDnaDraw();
+  };
+
+  canvas.ontouchstart = function(e) {
+    if (e.touches && e.touches.length === 2) {
+      var dx = e.touches[0].clientX - e.touches[1].clientX;
+      var dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchDist = Math.sqrt(dx * dx + dy * dy);
+    }
+  };
+
+  canvas.ontouchmove = function(e) {
+    if (e.touches && e.touches.length === 2 && pinchDist > 0) {
+      e.preventDefault();
+      var dx = e.touches[0].clientX - e.touches[1].clientX;
+      var dy = e.touches[0].clientY - e.touches[1].clientY;
+      var nd = Math.sqrt(dx * dx + dy * dy);
+      dnaState.zoom = Math.max(0.35, Math.min(3.5, dnaState.zoom * (nd / pinchDist)));
+      pinchDist = nd;
+      updateZoomBadge();
+      requestDnaDraw();
+    }
+  };
+
+  requestDnaDraw();
+}
+
+</script>
+</body>
+</html>
