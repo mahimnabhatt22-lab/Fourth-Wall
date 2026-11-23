@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fourth wall</title>
+<link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Cinzel:wght@600;700;800&family=Instrument+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
 @property --h{syntax:"<number>";inherits:true;initial-value:230}
@@ -24,18 +25,18 @@ body::before{content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;ba
 /* Distant Blurry Deep-Space Stars */
 #stars{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 #stars i{position:absolute;border-radius:50%;background:#fff;animation:tw var(--td,4.5s) ease-in-out infinite;animation-delay:var(--dl,0s)}
-#stars i.far{filter:blur(1.4px);opacity:.38}
-#stars i.mid{filter:blur(.7px);opacity:.55}
-@keyframes tw{0%,100%{opacity:var(--lo,.14);transform:scale(.92)}50%{opacity:var(--hi,.65);transform:scale(1.12)}}
+@keyframes tw{0%,100%{opacity:var(--lo,.14)}50%{opacity:var(--hi,.65)}}
 @media (prefers-reduced-motion:reduce){
-  #stars i,.gas-cloud{animation:none!important}
+  #stars i,.band::after,.bub{animation:none!important}
   .row-track,.pc,.gb,.mood-card,#panel,#ov,.fab,.view-stage{transition:none!important;animation:none!important}
 }
 
 main{max-width:1100px;margin:0 auto;padding:calc(22px + env(safe-area-inset-top,0px)) 20px 140px}
 @media (min-width:1001px){main{max-width:none;margin:0 0 0 218px;padding-right:44px}}
-.view-stage{animation:viewIn .42s cubic-bezier(.22,1,.36,1) both}
-@keyframes viewIn{from{opacity:0;transform:translateY(12px) scale(.99)}to{opacity:1;transform:translateY(0) scale(1)}}
+.view-stage{animation:viewIn .36s cubic-bezier(.22,1,.36,1) backwards}
+.view-stage.still{animation:none}
+.view-stage.leave{animation:none;opacity:0;transform:translateY(-8px);transition:opacity .15s ease-out,transform .15s ease-out}
+@keyframes viewIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 
 h1,h2,h3,.num{font-family:"Bricolage Grotesque",system-ui,sans-serif;margin:0}
 .glass{background:var(--glass);backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%);border:1px solid var(--edge);border-radius:24px;box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 18px 40px rgba(0,0,0,.38)}
@@ -71,9 +72,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .row-shell{position:relative;margin-bottom:16px;perspective:1100px}
 .row-track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;padding:6px 48px 14px 2px;scrollbar-width:none;-ms-overflow-style:none;transform-style:preserve-3d;transition:transform .46s cubic-bezier(.22,1,.36,1)}
 .row-track::-webkit-scrollbar{display:none;width:0;height:0}
-.row-track.curving{transform:rotateY(-7deg) scale(.988)}
-.row-track.curving .pc{transform:translateZ(10px) rotateY(4deg)}
-.row-track.curving .pc:nth-child(even){transform:translateZ(18px) rotateY(6deg)}
+.row-track.curving{transform:rotateY(-5deg);will-change:transform}
 
 .row-next{position:absolute;right:6px;top:44%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;background:rgba(14,14,24,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.26);color:#fff;display:grid;place-items:center;z-index:3;box-shadow:0 8px 24px rgba(0,0,0,.55);opacity:.9}
 .row-next:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.55);transform:translateY(-50%) scale(1.08);opacity:1}
@@ -84,8 +83,8 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .rs::-webkit-scrollbar{display:none}
 .rs.wrap{flex-wrap:wrap;overflow:visible}
 
-.pc{flex:0 0 150px;width:150px;padding:0;overflow:hidden;text-align:left;transition:transform .34s cubic-bezier(.22,1,.36,1),border-color .3s ease,box-shadow .34s ease}
-.pc:hover{transform:translateY(-4px) scale(1.018);border-color:rgba(255,255,255,.36);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 20px 38px rgba(0,0,0,.48)}
+.pc{flex:0 0 150px;width:150px;padding:0;overflow:hidden;text-align:left;transition:transform .3s cubic-bezier(.22,1,.36,1)}
+.pc:hover{transform:translateY(-4px)}
 .pc img,.pc .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;transition:transform .45s cubic-bezier(.22,1,.36,1)}
 .pc:hover img{transform:scale(1.035)}
 .pc .ph{display:flex;align-items:flex-end;padding:12px;font:800 18px/1.1 "Bricolage Grotesque",system-ui,sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
@@ -122,14 +121,20 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .side .who{display:flex;align-items:center;gap:10px;background:none;border:0;padding:0;text-align:left;width:100%}.side .who .face{width:44px;height:44px;font-size:18px}.side .who .face svg{width:28px;height:28px}.side b{display:block;font-size:15px;line-height:1.2}.side small{color:var(--dim)}
 .side h3{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);font-family:"Instrument Sans",sans-serif;font-weight:500}
 
-.meter{display:flex;gap:14px;flex:1;min-height:220px;align-items:stretch}
-.pipe-wrap{position:relative;width:44px;flex:none;display:flex;align-items:center;justify-content:center}
-.pipe{position:relative;width:40px;height:100%;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.03) 32%,rgba(255,255,255,.02) 68%,rgba(255,255,255,.13) 100%);border:1.5px solid rgba(255,255,255,.34);box-shadow:inset 0 6px 12px rgba(255,255,255,.22),inset 0 -6px 12px rgba(255,255,255,.18),inset 3px 0 8px rgba(255,255,255,.2),inset -3px 0 10px rgba(0,0,0,.55),0 10px 26px rgba(0,0,0,.45);overflow:hidden;isolation:isolate}
-.pipe::before{content:"";position:absolute;inset:3px;border-radius:999px;border:1px solid rgba(255,255,255,.16);pointer-events:none;z-index:4}
-.pipe::after{content:"";position:absolute;top:12px;bottom:12px;left:6px;width:5px;border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.55),rgba(255,255,255,.12) 45%,rgba(255,255,255,.35));filter:blur(.4px);pointer-events:none;z-index:5}
-.gas-chamber{position:absolute;inset:4px;border-radius:999px;overflow:hidden;z-index:1}
-.gas-cloud{position:absolute;left:-35%;right:-35%;border-radius:50%;filter:blur(11px);mix-blend-mode:screen;opacity:.88;animation:gasDrift var(--dur,7s) ease-in-out infinite alternate;animation-delay:var(--del,0s)}
-@keyframes gasDrift{0%{transform:translateY(-8%) translateX(-6%) scale(1)}50%{transform:translateY(6%) translateX(8%) scale(1.12)}100%{transform:translateY(-4%) translateX(-4%) scale(.96)}}
+.meter{display:flex;gap:14px;flex:1;min-height:240px;align-items:stretch}
+.tube{position:relative;width:50px;flex:none;display:flex;flex-direction:column;align-items:center}
+.rim{width:50px;height:9px;flex:none;border-radius:5px;border:2px solid rgba(255,255,255,.7);background:linear-gradient(180deg,rgba(255,255,255,.4),rgba(255,255,255,.08));position:relative;z-index:6;margin-bottom:-2px}
+.pipe{position:relative;width:40px;flex:1;border:2px solid rgba(255,255,255,.55);border-top:0;border-radius:0 0 20px 20px;background:rgba(255,255,255,.05);overflow:hidden;isolation:isolate;box-shadow:0 12px 26px rgba(0,0,0,.45),inset 0 -8px 14px rgba(255,255,255,.12)}
+.pipe::before{content:"";position:absolute;z-index:5;left:5px;top:10px;bottom:24px;width:5px;border-radius:5px;background:linear-gradient(180deg,rgba(255,255,255,.8),rgba(255,255,255,.15) 70%,rgba(255,255,255,.4));pointer-events:none}
+.pipe::after{content:"";position:absolute;z-index:5;right:5px;top:16px;bottom:32px;width:2px;border-radius:2px;background:rgba(255,255,255,.3);pointer-events:none}
+.fill{position:absolute;left:0;right:0;bottom:0;top:12%;display:flex;flex-direction:column;z-index:1}
+.fill.empty{opacity:.45}
+.band{position:relative;flex:var(--f,1) 1 0;min-height:16px;overflow:hidden;background:linear-gradient(90deg,hsl(var(--c) 100% 46%),hsl(var(--c) 100% 62%) 45%,hsl(var(--c) 100% 50%))}
+.band+.band{margin-top:-12px;-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%)}
+.band::after{content:"";position:absolute;inset:-20% -40%;background:radial-gradient(ellipse at 30% 40%,rgba(255,255,255,.4),transparent 55%);animation:wisp var(--dur,7s) ease-in-out infinite alternate}
+@keyframes wisp{from{transform:translateX(-18%)}to{transform:translateX(18%)}}
+.bub{position:absolute;bottom:8px;left:var(--x,10px);width:var(--sz,5px);height:var(--sz,5px);border-radius:50%;background:rgba(255,255,255,.8);z-index:3;opacity:0;animation:rise var(--bd,5s) linear infinite;animation-delay:var(--bl,0s)}
+@keyframes rise{0%{transform:translateY(0);opacity:0}15%{opacity:.8}100%{transform:translateY(-190px);opacity:0}}
 
 .legend{display:flex;flex-direction:column;justify-content:center;gap:12px;font-size:13px;min-width:0;flex:1}
 .legend div{display:flex;align-items:center;gap:7px}.legend em{width:9px;height:9px;border-radius:50%;flex:none;font-style:normal;box-shadow:0 0 8px currentColor}
@@ -183,9 +188,31 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .acts{display:flex;gap:10px;margin-top:16px}
 .btn{background:rgba(255,255,255,.92);color:#0a0a12;border:0;border-radius:999px;padding:10px 22px;font-weight:500}
 .ghost{background:none;border:1px solid var(--edge);border-radius:999px;padding:9px 18px}
+
+.pc.glass,.stat.glass,.gb.glass{backdrop-filter:none;-webkit-backdrop-filter:none}
+.pc.glass,.stat.glass{background:rgba(30,28,50,.66)}
+body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility:hidden}
+.logo{display:block;height:clamp(56px,9vw,84px);width:auto;max-width:100%;flex:none}
+.brandrow{display:flex;align-items:center;gap:16px;margin:4px 0 26px}.brandrow .brand{margin:0}
+#authbox .logo{height:120px;margin:0 auto 10px}
+#auth{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
+#auth.on{display:flex}
+#authbox{width:100%;max-width:380px;padding:28px;text-align:center}
+
+#authbox h2{font-size:24px}
+.err{color:#ff9a9a;font-size:13px;min-height:18px;margin:-6px 0 10px;text-align:left}
+.full{width:100%!important;height:100%!important}
+.cv-prev{width:120px;height:120px;border-radius:50%;overflow:hidden;margin:0 auto 14px;border:1.5px solid rgba(255,255,255,.3)}
+.cv-prev svg{width:100%;height:100%;display:block}
+.cv-lbl{font-size:13px;color:var(--dim);margin:12px 0 6px}
+.cv-row{display:flex;flex-wrap:wrap;gap:8px}
+.cv-row .chip{text-transform:capitalize}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.25);padding:0}
+.sw[aria-pressed=true]{border-color:#fff;box-shadow:0 0 0 2px rgba(255,255,255,.35)}
+#av-cats{margin-top:6px}
 </style>
 </head>
-<body>
+<body class="locked">
 <div id="stars" aria-hidden="true"></div>
 <aside class="side glass" id="side" aria-label="Taste meter"></aside>
 <main id="app"></main>
@@ -194,6 +221,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 </nav>
 <button class="fab" id="logbtn" aria-label="Log a film">+</button>
 <div id="ov" role="dialog" aria-modal="true"><div id="panel" class="glass"></div></div>
+<div id="auth"><div id="authbox" class="glass"></div></div>
 <script>
 var GID={Action:28,Adventure:12,Animation:16,Comedy:35,Crime:80,Documentary:99,Drama:18,Family:10751,Fantasy:14,History:36,Horror:27,Music:10402,Mystery:9648,Romance:10749,"Science Fiction":878,Thriller:53,War:10752,Western:37};
 var G={Horror:355,War:8,Action:18,Western:28,Adventure:32,History:38,Comedy:48,Documentary:95,Family:125,Animation:150,Music:165,"Science Fiction":182,Drama:222,Mystery:250,Thriller:268,Fantasy:300,Crime:285,Romance:328};
@@ -239,12 +267,113 @@ var PRESET_AVATARS=[
  {id:"clapper",name:"Director",tag:"Cinephile",svg:'<svg viewBox="0 0 64 64" fill="none"><rect x="14" y="26" width="36" height="24" rx="5" fill="#272938" stroke="#8a90a8" stroke-width="1.5"/><path d="M14 26l34-9 2 6-34 9-2-6z" fill="#f3f1fa"/><path d="M21 24l3-6M31 21l3-6M41 18l3-6" stroke="#181924" stroke-width="2.5"/></svg>'}
 ];
 
+/* ---- More avatars ---- */
+function SV(b){return'<svg viewBox="0 0 64 64" fill="none">'+b+'</svg>'}
+function FC(o){
+ var s=o.s||"#f1c7a6",e=o.e||"#1b1b22",hh=o.h||"",b="";
+ if(o.l&&hh)b+='<path d="M12 38c0-17 6-26 20-26s20 9 20 26v16H12z" fill="'+hh+'"/>';
+ b+='<circle cx="32" cy="35" r="16" fill="'+s+'"/>';
+ if(hh)b+='<path d="M15 33C15 20 22 12 32 12S49 20 49 33C43 27 21 27 15 33z" fill="'+hh+'"/>';
+ b+='<circle cx="26" cy="36" r="2.2" fill="'+e+'"/><circle cx="38" cy="36" r="2.2" fill="'+e+'"/>';
+ if(o.m!==0)b+='<path d="'+(o.m||"M27 44q5 3 10 0")+'" stroke="'+(o.mc||"#8a3a3a")+'" stroke-width="2" stroke-linecap="round"/>';
+ return SV(b+(o.x||""))}
+function A(id,name,tag,cat,svg){PRESET_AVATARS.push({id:id,name:name,tag:tag,cat:cat,svg:svg})}
+function CM(b,a,l){return SV('<rect x="6" y="24" width="40" height="22" rx="3" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="46" y="28" width="12" height="14" rx="2" fill="#14151b" stroke="'+a+'" stroke-width="1.6"/><circle cx="52" cy="35" r="4" fill="'+l+'"/><rect x="14" y="15" width="26" height="9" rx="2" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="10" y="30" width="14" height="4" fill="'+a+'"/><rect x="10" y="38" width="22" height="3" fill="'+a+'" opacity=".6"/><path d="M20 46v8M32 46v8" stroke="'+a+'" stroke-width="3"/>')}
+function SLR(b,a,g){return SV('<path d="M24 24l3-8h10l3 8" fill="'+a+'"/><rect x="8" y="22" width="48" height="26" rx="4" fill="'+b+'" stroke="'+a+'" stroke-width="1.6"/><rect x="8" y="22" width="48" height="7" rx="3" fill="'+a+'"/><circle cx="32" cy="38" r="10" fill="#101218" stroke="'+a+'" stroke-width="2.4"/><circle cx="32" cy="38" r="5" fill="#2a4d8a"/><circle cx="30" cy="36" r="1.6" fill="#fff" opacity=".8"/>'+(g?'<rect x="9" y="30" width="8" height="18" rx="3" fill="'+a+'" opacity=".5"/>':'<rect x="12" y="24" width="6" height="3" fill="#d3262e"/>'))}
+
+var CATOF={stormtrooper:"Sci-Fi",vader:"Sci-Fi",alien:"Sci-Fi",hellboy:"Horror",starlord:"Marvel",groot:"Marvel",rocket:"Marvel",moonknight:"Marvel",hulk:"Marvel",ironman:"Marvel",spiderman:"Marvel",deadpool:"Marvel",batman:"DC",joker:"DC",totoro:"Animation",clapper:"Cameras & gear",flyingjatt:"Indian cinema",krrish:"Indian cinema",raone:"Indian cinema",gone:"Indian cinema",harrypotter:"Wizarding world",hermione:"Wizarding world"};
+PRESET_AVATARS.forEach(function(p){p.cat=CATOF[p.id]||"More"});
+
+/* Wizarding world */
+var WZ="Wizarding world";
+A("ron","Ron Weasley","Loyal Best Friend",WZ,FC({h:"#d9622b",x:'<g fill="#c47a4a"><circle cx="28" cy="41" r=".9"/><circle cx="32" cy="42" r=".9"/><circle cx="36" cy="41" r=".9"/></g>'}));
+A("dumbledore","Dumbledore","Headmaster",WZ,FC({s:"#f2d3bb",h:"#eceaf0",l:1,m:0,x:'<path d="M19 43c2 11 7 15 13 15s11-4 13-15c-4 4-22 4-26 0z" fill="#eceaf0"/><circle cx="26" cy="36" r="4.6" stroke="#c9a24a" stroke-width="1.4"/><circle cx="38" cy="36" r="4.6" stroke="#c9a24a" stroke-width="1.4"/>'}));
+A("snape","Snape","Half-Blood Prince",WZ,FC({s:"#e6cdb8",h:"#15131a",l:1,m:"M28 45h8"}));
+A("hagrid","Hagrid","Keeper of Keys",WZ,FC({s:"#e3b08c",h:"#3a2a22",l:1,m:0,x:'<path d="M17 41c3 13 11 16 15 16s12-3 15-16c-4 4-26 4-30 0z" fill="#3a2a22"/><circle cx="32" cy="41" r="2.4" fill="#c9786a"/>'}));
+A("voldemort","Voldemort","He Who Must Not Be Named",WZ,FC({s:"#d7dbd2",e:"#d62828",m:"M28 45h8",x:'<path d="M30 40l2 3 2-3" stroke="#6b7266" stroke-width="1.4" stroke-linecap="round"/>'}));
+A("draco","Draco Malfoy","Slytherin Pride",WZ,FC({s:"#f4dccb",h:"#efe3b2",m:"M28 44q5-2 10 0"}));
+A("luna","Luna Lovegood","Spectrespecs On",WZ,FC({s:"#f3d3bd",h:"#e8d9a0",l:1,e:"#6a8bd8",x:'<circle cx="24" cy="36" r="5.5" stroke="#ff5aa5" stroke-width="2"/><circle cx="40" cy="36" r="5.5" stroke="#ffd23f" stroke-width="2"/><path d="M29.5 36h5" stroke="#9b59ff" stroke-width="1.8"/>'}));
+A("neville","Neville","Brave Gardener",WZ,FC({s:"#f1cdb4",h:"#6b4a2d",x:'<circle cx="23" cy="42" r="3" fill="#f08a8a" opacity=".5"/><circle cx="41" cy="42" r="3" fill="#f08a8a" opacity=".5"/>'}));
+A("mcgonagall","McGonagall","Transfiguration",WZ,FC({s:"#efd0b8",h:"#3b3b4a",m:"M28 44h8",x:'<rect x="21" y="32" width="9" height="7" rx="1.5" stroke="#222" stroke-width="1.5"/><rect x="34" y="32" width="9" height="7" rx="1.5" stroke="#222" stroke-width="1.5"/><path d="M8 28h48l-4 3H12z" fill="#2c6b4a"/><path d="M19 28L32 3l13 25z" fill="#2c6b4a"/>'}));
+A("sirius","Sirius Black","Padfoot",WZ,FC({s:"#e8cdb3",h:"#1f1b20",l:1}));
+A("bellatrix","Bellatrix","Mad as a Hatter",WZ,FC({s:"#e8d4d0",h:"#18141c",l:1,mc:"#6d1a30",m:"M27 44q5 4 10 0"}));
+A("dobby","Dobby","Dobby Is Free",WZ,SV('<path d="M14 26c-12-4-12 12-2 16zM50 26c12-4 12 12 2 16z" fill="#c9b79c"/><ellipse cx="32" cy="36" rx="14" ry="16" fill="#d6c5ab"/><circle cx="25" cy="34" r="5" fill="#9fe0a8"/><circle cx="39" cy="34" r="5" fill="#9fe0a8"/><circle cx="25" cy="34" r="2" fill="#111"/><circle cx="39" cy="34" r="2" fill="#111"/><path d="M28 45q4 3 8 0" stroke="#6b5a45" stroke-width="2"/>'));
+A("hedwig","Hedwig","Snowy Messenger",WZ,SV('<path d="M17 26l3-12 9 8zM47 26l-3-12-9 8z" fill="#e1dccf"/><ellipse cx="32" cy="36" rx="17" ry="18" fill="#f4f1ea"/><circle cx="25" cy="32" r="6" fill="#fff" stroke="#d6cfbd"/><circle cx="39" cy="32" r="6" fill="#fff" stroke="#d6cfbd"/><circle cx="25" cy="32" r="3.4" fill="#f5a623"/><circle cx="39" cy="32" r="3.4" fill="#f5a623"/><circle cx="25" cy="32" r="1.5" fill="#111"/><circle cx="39" cy="32" r="1.5" fill="#111"/><path d="M32 36l-3.5 5h7z" fill="#e8a33d"/><path d="M24 48h4M31 50h2M36 48h4" stroke="#bfb8a6" stroke-width="1.6"/>'));
+A("dementor","Dementor","Soul Chill",WZ,SV('<path d="M32 8c-11 0-17 8-17 20v26l5-5 4 6 4-6 4 6 4-6 5 5V28c0-12-6-20-17-20z" fill="#1c1c26"/><ellipse cx="32" cy="28" rx="9" ry="11" fill="#08080c"/><ellipse cx="32" cy="38" rx="3.5" ry="5" fill="#2e2e3d"/>'));
+A("sortinghat","Sorting Hat","Gryffindor!",WZ,SV('<path d="M8 52h48l-7-5C47 40 44 30 38 14c-2-6-8-4-9 0-3 14-8 26-20 33z" fill="#8c6a43"/><path d="M24 36q4-3 8 0M34 36q4-3 8 0" stroke="#3a2614" stroke-width="2" stroke-linecap="round"/><path d="M26 44q6 4 12 0" stroke="#3a2614" stroke-width="2.2" stroke-linecap="round"/>'));
+
+/* Marvel + Guardians + Avengers */
+A("gamora","Gamora","Deadliest Woman",
+ "Marvel",FC({s:"#6fc27a",h:"#1a1a26",l:1,m:"M28 44q4 2 8 0"}));
+A("drax","Drax","The Destroyer","Marvel",FC({s:"#a05a4a",m:"M27 44h10",x:'<path d="M20 28h8M36 28h8M26 25v6M38 25v6" stroke="#6f2f26" stroke-width="2.4" stroke-linecap="round"/>'}));
+A("nebula","Nebula","Cyborg Sister","Marvel",FC({s:"#4a7fd9",e:"#f1f1ff",m:"M28 44h8",x:'<path d="M20 30h10M34 30h10M32 20v10" stroke="#2c4ea0" stroke-width="2"/><circle cx="43" cy="36" r="4" fill="#bfc6d8"/>'}));
+A("mantis","Mantis","Empath","Marvel",FC({s:"#c8d99a",h:"#1d1a14",l:1,x:'<path d="M26 14L22 4M38 14l4-10" stroke="#1d1a14" stroke-width="2"/><circle cx="22" cy="4" r="2" fill="#ff7bd5"/><circle cx="42" cy="4" r="2" fill="#ff7bd5"/>'}));
+A("captainamerica","Captain America","Shield Bearer","Marvel",SV('<path d="M14 38C14 22 21 12 32 12s18 10 18 26v4H14z" fill="#2b5fb8"/><path d="M20 36h24v10c0 5-5 9-12 9s-12-4-12-9z" fill="#f1c7a6"/><path d="M32 16l2 5h5l-4 3 1.5 5-4.5-3-4.5 3 1.5-5-4-3h5z" fill="#fff"/><circle cx="26" cy="41" r="1.8" fill="#222"/><circle cx="38" cy="41" r="1.8" fill="#222"/><path d="M27 48q5 3 10 0" stroke="#8a3a3a" stroke-width="2"/><path d="M14 38l-4 4M50 38l4 4" stroke="#fff" stroke-width="3"/>'));
+A("thor","Thor","God of Thunder","Marvel",FC({s:"#f0cdb0",h:"#e6c46a",l:1,e:"#3f88e8",m:0,x:'<path d="M18 26l8-5 6 4 6-4 8 5" stroke="#aab2c0" stroke-width="3" stroke-linecap="round"/><path d="M20 43c3 8 21 8 24 0-4 3-20 3-24 0z" fill="#e6c46a"/>'}));
+A("blackwidow","Black Widow","Red Room","Marvel",FC({s:"#f1cfba",h:"#b8321f",l:1,mc:"#a02030"}));
+A("hawkeye","Hawkeye","Never Misses","Marvel",FC({s:"#e7c3a3",h:"#3a2c24",m:"M28 44h8",x:'<path d="M18 33h28v6H18z" fill="#4b2a8a"/><circle cx="26" cy="36" r="2.2" fill="#fff"/><circle cx="38" cy="36" r="2.2" fill="#fff"/>'}));
+A("blackpanther","Black Panther","Wakanda Forever","Marvel",SV('<path d="M16 22l4-12 8 8h8l8-8 4 12c2 6 2 12 0 18l-4 12H20l-4-12c-2-6-2-12 0-18z" fill="#15151d"/><path d="M22 32l8 3-8 2zM42 32l-8 3 8 2z" fill="#fff"/><path d="M26 22h12M26 44l6 4 6-4" stroke="#8a8fb0" stroke-width="2"/>'));
+A("doctorstrange","Doctor Strange","Sorcerer Supreme","Marvel",FC({s:"#e8c3a3",h:"#2a2224",m:0,x:'<path d="M15 33c-1 8 0 12 3 14M49 33c1 8 0 12-3 14" stroke="#e9e9f0" stroke-width="3.4"/><path d="M23 44c3 3 15 3 18 0" stroke="#2a2224" stroke-width="3"/><path d="M13 53l10-6h18l10 6v6H13z" fill="#c63b2f"/>'}));
+A("scarletwitch","Scarlet Witch","Chaos Magic","Marvel",FC({s:"#f0cdb8",h:"#8a3a22",l:1,x:'<path d="M18 24l2-10 6 6 6-8 6 8 6-6 2 10z" fill="#c42a3a"/>'}));
+A("vision","Vision","Mind Stone","Marvel",SV('<circle cx="32" cy="35" r="17" fill="#d44a4a"/><path d="M15 31C15 18 22 12 32 12s17 6 17 19c-6-6-28-6-34 0z" fill="#3fb36a"/><circle cx="32" cy="24" r="3.4" fill="#ffd23f"/><circle cx="26" cy="37" r="2.4" fill="#fff"/><circle cx="38" cy="37" r="2.4" fill="#fff"/><path d="M28 45h8" stroke="#7a1f1f" stroke-width="2"/>'));
+A("thanos","Thanos","Inevitable","Marvel",FC({s:"#a88bd4",m:"M27 45q5-3 10 0",mc:"#4a2a6e",x:'<path d="M23 27q9-4 18 0M20 40v6M44 40v6" stroke="#6e4fa8" stroke-width="2.2" stroke-linecap="round"/>'}));
+A("loki","Loki","Glorious Purpose","Marvel",FC({s:"#eed0bc",h:"#14161a",l:1,e:"#3aa66a",m:"M27 44q5 2 10-1",x:'<path d="M20 14c-2-8 4-10 8-6M44 14c2-8-4-10-8-6" stroke="#d4a82f" stroke-width="3.4" stroke-linecap="round"/>'}));
+A("doctordoom","Doctor Doom","Victor Von Doom","Marvel",SV('<path d="M14 24c0-10 8-16 18-16s18 6 18 16v26H14z" fill="#2f5a47"/><path d="M20 24h24v22c0 5-5 9-12 9s-12-4-12-9z" fill="#aeb3bd"/><path d="M24 33h6v2h-6zM34 33h6v2h-6z" fill="#0c0f12"/><path d="M26 44h12M30 40l2 4 2-4" stroke="#6d7380" stroke-width="2"/>'));
+A("venom","Venom","We Are Venom","Marvel",SV('<path d="M12 38C12 18 20 10 32 10s20 8 20 28c0 10-8 16-20 16s-20-6-20-16z" fill="#0d0d12"/><path d="M19 28c4-2 8 1 9 6-4 2-9 0-9-6zM45 28c-4-2-8 1-9 6 4 2 9 0 9-6z" fill="#fff"/><path d="M20 42c4 8 20 8 24 0-4 3-20 3-24 0z" fill="#fff"/><path d="M26 44v4M32 45v5M38 44v4" stroke="#0d0d12" stroke-width="1.6"/>'));
+A("wolverine","Wolverine","Snikt","Marvel",SV('<path d="M17 24L10 6l14 9zM47 24l7-18-14 9z" fill="#2b4aa8"/><circle cx="32" cy="35" r="16" fill="#f0c9a8"/><path d="M15 33C15 20 22 13 32 13S49 20 49 33C43 27 21 27 15 33z" fill="#2b4aa8"/><path d="M21 31l8 4-8 1zM43 31l-8 4 8 1z" fill="#fff"/><path d="M16 38l6 8M48 38l-6 8" stroke="#2a1d14" stroke-width="3.5"/><path d="M27 45h10" stroke="#8a3a3a" stroke-width="2"/>'));
+
+/* DC */
+A("superman","Superman","Man of Steel","DC",FC({s:"#f1cdb0",h:"#15151c",x:'<path d="M30 13q4 4 8 1" stroke="#15151c" stroke-width="2.5" stroke-linecap="round"/>'}));
+A("wonderwoman","Wonder Woman","Amazon Princess","DC",FC({s:"#f0cbb0",h:"#2a1a14",l:1,x:'<path d="M18 22l14-6 14 6" stroke="#f2c500" stroke-width="3.4" stroke-linecap="round"/><path d="M32 17l1.6 3.2 3.4.5-2.5 2.4.6 3.4L32 24.8l-3.1 1.7.6-3.4-2.5-2.4 3.4-.5z" fill="#d3262e"/>'}));
+A("harley","Harley Quinn","Mistress of Mayhem","DC",FC({s:"#f3dfe3",h:"#f4f4fb",l:1,x:'<circle cx="11" cy="30" r="7" fill="#ff3d8b"/><circle cx="53" cy="30" r="7" fill="#27c2f0"/>'}));
+
+/* Horror */
+A("annabelle","Annabelle","Possessed Porcelain","Horror",FC({s:"#efe6dc",h:"#4a3426",l:1,e:"#0b0b10",mc:"#9c2f3a",x:'<circle cx="22" cy="42" r="3" fill="#e79a9a" opacity=".6"/><circle cx="42" cy="42" r="3" fill="#e79a9a" opacity=".6"/><path d="M23 12l-9-3v9zM41 12l9-3v9z" fill="#fff"/><path d="M34 20l-3 6 3 3" stroke="#9a8b7e" stroke-width="1"/>'}));
+A("chucky","Chucky","Hi, I am Chucky","Horror",FC({s:"#e9b79a",h:"#c0551f",e:"#2d6fd1",mc:"#8a1f1f",m:"M26 44q6 3 12 0",x:'<path d="M20 28l9 10M23 27l-1 6M26 29l-1 6" stroke="#7a2a2a" stroke-width="1.6" stroke-linecap="round"/><path d="M42 42l5-4M43 45l5-2" stroke="#7a2a2a" stroke-width="1.6"/>'}));
+A("nun","The Nun","Valak","Horror",SV('<path d="M14 54V30c0-14 7-20 18-20s18 6 18 20v24z" fill="#101014"/><path d="M20 30c0-8 5-13 12-13s12 5 12 13v10c0 8-5 12-12 12s-12-4-12-12z" fill="#ddd9d0"/><path d="M22 26h20" stroke="#fff" stroke-width="3"/><path d="M24 33h6v3h-6zM34 33h6v3h-6z" fill="#0c0c10"/><circle cx="27" cy="34.5" r="1" fill="#d6a400"/><circle cx="37" cy="34.5" r="1" fill="#d6a400"/><path d="M26 45q6 2 12 0" stroke="#6b1f2a" stroke-width="2.2"/>'));
+A("pennywise","Pennywise","We All Float","Horror",FC({s:"#f3eee6",e:"#f2c500",mc:"#d3262e",m:"M24 43q8 8 16 0",x:'<circle cx="12" cy="26" r="7" fill="#e0502a"/><circle cx="52" cy="26" r="7" fill="#e0502a"/><path d="M26 38v9M38 38v9" stroke="#d3262e" stroke-width="2"/><circle cx="32" cy="39" r="2.4" fill="#d3262e"/>'}));
+A("ghostface","Ghostface","Scream","Horror",SV('<path d="M14 54V20c0-8 8-12 18-12s18 4 18 12v34z" fill="#0b0b0e"/><path d="M21 16h22c1 14 0 28-5 38h-12c-5-10-6-24-5-38z" fill="#efeee8"/><path d="M24 22c1 8 3 12 5 14-3 0-6-6-5-14zM40 22c-1 8-3 12-5 14 3 0 6-6 5-14z" fill="#0b0b0e"/><ellipse cx="32" cy="46" rx="3.6" ry="6.5" fill="#0b0b0e"/>'));
+A("jason","Jason","Camp Crystal Lake","Horror",SV('<path d="M16 20c0-8 7-12 16-12s16 4 16 12v24c0 8-6 12-16 12s-16-4-16-12z" fill="#e8e4d6"/><ellipse cx="25" cy="28" rx="3.5" ry="4" fill="#111"/><ellipse cx="39" cy="28" rx="3.5" ry="4" fill="#111"/><path d="M32 8v12M24 14l3 5M40 14l-3 5" stroke="#c0392b" stroke-width="2.4"/><g fill="#111"><circle cx="26" cy="42" r="1.6"/><circle cx="32" cy="45" r="1.6"/><circle cx="38" cy="42" r="1.6"/><circle cx="29" cy="49" r="1.6"/><circle cx="35" cy="49" r="1.6"/></g>'));
+A("freddy","Freddy Krueger","One, Two, Freddy Is Coming","Horror",SV('<ellipse cx="32" cy="38" rx="16" ry="18" fill="#c9825f"/><path d="M12 25h40l-4 4H16z" fill="#5a3a22"/><path d="M18 25c0-9 6-15 14-15s14 6 14 15z" fill="#5a3a22"/><path d="M18 22h28v3H18z" fill="#a8261f"/><circle cx="26" cy="36" r="2.4" fill="#111"/><circle cx="38" cy="36" r="2.4" fill="#111"/><path d="M22 41l6 4M42 34l-4 6" stroke="#8a4a35" stroke-width="2.2"/><path d="M26 46q6 3 12 0" stroke="#5a1f1f" stroke-width="2"/>'));
+A("michael","Michael Myers","The Shape","Horror",SV('<path d="M14 38c0-16 7-26 18-26s18 10 18 26v14H14z" fill="#4a3a30"/><ellipse cx="32" cy="38" rx="14" ry="17" fill="#e9e6dd"/><path d="M18 28C20 17 26 14 32 14s12 3 14 14c-4-6-24-6-28 0z" fill="#4a3a30"/><ellipse cx="25" cy="35" rx="4" ry="3" fill="#0b0b0e"/><ellipse cx="39" cy="35" rx="4" ry="3" fill="#0b0b0e"/><path d="M28 47h8" stroke="#bdb8aa" stroke-width="2"/>'));
+A("billy","Billy the Puppet","I Want to Play a Game","Horror",SV('<circle cx="32" cy="36" r="17" fill="#f1ece2"/><path d="M15 33C15 20 22 12 32 12S49 20 49 33C43 27 21 27 15 33z" fill="#17171d"/><circle cx="23" cy="43" r="4.2" fill="#d3262e"/><circle cx="41" cy="43" r="4.2" fill="#d3262e"/><circle cx="25" cy="34" r="4" fill="#111"/><circle cx="39" cy="34" r="4" fill="#111"/><circle cx="25" cy="34" r="1.6" fill="#d3262e"/><circle cx="39" cy="34" r="1.6" fill="#d3262e"/><path d="M24 48h16l-2 6H26z" fill="#fff" stroke="#111" stroke-width="1.4"/>'));
+A("samara","Samara","Seven Days","Horror",FC({s:"#d9ddd5",h:"#141418",l:1,m:"M28 45h8",e:"#0b0b10",x:'<path d="M26 16c-1 14-3 24-8 32M38 16c1 14 3 24 8 32" stroke="#141418" stroke-width="5" stroke-linecap="round"/>'}));
+A("megan","M3GAN","Friend Mode","Horror",FC({s:"#f3e1d6",h:"#6a4a32",e:"#3b2a1a",m:"M28 44h8",mc:"#a8574a",x:'<path d="M16 36v10M48 36v10" stroke="#6a4a32" stroke-width="5"/>'}));
+A("pinhead","Pinhead","Cenobite","Horror",SV('<circle cx="32" cy="34" r="18" fill="#d6d2cc"/><path d="M18 34h28M32 18v32M22 24l20 20M42 24L22 44" stroke="#4a4a52" stroke-width="1.4"/><g fill="#c8c8d6"><circle cx="24" cy="34" r="1.8"/><circle cx="32" cy="34" r="1.8"/><circle cx="40" cy="34" r="1.8"/><circle cx="32" cy="26" r="1.8"/><circle cx="32" cy="42" r="1.8"/></g>'));
+
+/* Sci-Fi */
+A("yoda","Yoda","Do or Do Not","Sci-Fi",SV('<path d="M4 34c9-5 13-3 17 2l-3 6zM60 34c-9-5-13-3-17 2l3 6z" fill="#9ab973"/><ellipse cx="32" cy="36" rx="14" ry="16" fill="#9ab973"/><circle cx="25" cy="34" r="3.4" fill="#fff"/><circle cx="39" cy="34" r="3.4" fill="#fff"/><circle cx="25" cy="34" r="1.6" fill="#3a2614"/><circle cx="39" cy="34" r="1.6" fill="#3a2614"/><path d="M22 27q3-2 6 0M36 27q3-2 6 0M26 45q6 3 12 0" stroke="#5e7a3e" stroke-width="1.8" stroke-linecap="round"/>'));
+A("mandalorian","The Mandalorian","This Is the Way","Sci-Fi",SV('<path d="M14 40C14 22 21 12 32 12s18 10 18 28v10H14z" fill="#8a9099" stroke="#4a4f58" stroke-width="1.5"/><path d="M20 28h24v6H35v12h-6V34h-9z" fill="#0c0e14"/><path d="M20 22q12-6 24 0" stroke="#4a4f58" stroke-width="2"/>'));
+A("r2d2","R2-D2","Beep Boop","Sci-Fi",SV('<path d="M16 28c0-10 7-16 16-16s16 6 16 16v26H16z" fill="#e9edf5" stroke="#9aa3c7" stroke-width="1.5"/><path d="M16 36h32M16 46h32" stroke="#2a62c9" stroke-width="5"/><circle cx="32" cy="24" r="5" fill="#14151b" stroke="#2a62c9" stroke-width="2"/><circle cx="32" cy="24" r="1.6" fill="#e63946"/>'));
+
+/* Cameras & gear */
+var CG="Cameras & gear";
+A("imax","IMAX Camera","70mm Giant",CG,CM("#e8ecf5","#3a4a6b","#2f7bff"));
+A("handcrank","Hand-Crank Camera","Silent Era",CG,SV('<rect x="20" y="30" width="26" height="20" rx="2" fill="#6b4a2d" stroke="#d9b36b" stroke-width="1.5"/><circle cx="26" cy="20" r="9" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><circle cx="42" cy="20" r="9" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><path d="M46 40h8M54 40v-8" stroke="#d9b36b" stroke-width="2.4"/><circle cx="54" cy="31" r="2" fill="#d9b36b"/><path d="M20 36h-9v8h9z" fill="#2b2b33" stroke="#d9b36b" stroke-width="1.5"/><path d="M26 50l-4 8M40 50l4 8" stroke="#8c6a43" stroke-width="2.4"/>'));
+A("slr35","35mm Film Camera","Shoot on Film",CG,SLR("#2b2e3d","#c9ced9",0));
+A("alexa","ARRI Alexa","Digital Cinema",CG,CM("#1f2230","#6f7694","#2f7bff"));
+A("redcam","RED Camera","Digital Cinema",CG,CM("#c01f2b","#ffb3b8","#ff5a5a"));
+A("digicine","Digital Cine Camera","Pixels at Work",CG,CM("#2b2e3d","#c9ced9","#6dd4c0"));
+A("dslr","DSLR","Indie Shooter",CG,SLR("#14151b","#6f7694",1));
+A("camcorder","Camcorder","Home Video",CG,SV('<rect x="10" y="22" width="36" height="22" rx="5" fill="#34384a" stroke="#aeb3bd" stroke-width="1.5"/><rect x="46" y="26" width="10" height="14" rx="2" fill="#14151b" stroke="#aeb3bd" stroke-width="1.5"/><circle cx="51" cy="33" r="3" fill="#5ab0ff"/><rect x="16" y="26" width="14" height="14" rx="2" fill="#10131c"/><circle cx="40" cy="28" r="2" fill="#ff3b3b"/><path d="M18 44v6h22v-6" stroke="#aeb3bd" stroke-width="2.4"/>'));
+A("super8","Super 8","Home Movies",CG,SV('<rect x="12" y="24" width="34" height="22" rx="3" fill="#9a5a2a" stroke="#f1d7a8" stroke-width="1.6"/><circle cx="28" cy="35" r="7" fill="#1b1410" stroke="#f1d7a8" stroke-width="1.6"/><circle cx="28" cy="35" r="3" fill="#6a8bd8"/><rect x="46" y="28" width="9" height="14" rx="2" fill="#6b3d1b"/><rect x="18" y="14" width="22" height="10" rx="2" fill="#6b3d1b" stroke="#f1d7a8" stroke-width="1.4"/><circle cx="24" cy="19" r="2" fill="#f1d7a8"/>'));
+A("actioncam","Action Cam","Small and Rugged",CG,SV('<rect x="14" y="20" width="36" height="28" rx="5" fill="#1b1d26" stroke="#7a8099" stroke-width="1.6"/><circle cx="32" cy="34" r="9" fill="#0c0e14" stroke="#7a8099" stroke-width="2"/><circle cx="32" cy="34" r="4" fill="#4f7cff"/><rect x="18" y="24" width="8" height="4" rx="1" fill="#2c2f3d"/><circle cx="44" cy="25" r="1.6" fill="#ff3b3b"/><path d="M22 48v6h20v-6" stroke="#7a8099" stroke-width="3"/>'));
+A("polaroid","Instant Camera","Instant Film",CG,SV('<rect x="10" y="18" width="44" height="34" rx="6" fill="#f2efe6" stroke="#cfc9b8" stroke-width="1.5"/><rect x="10" y="18" width="44" height="12" rx="6" fill="#d7d2c2"/><circle cx="32" cy="38" r="9" fill="#1b1d26" stroke="#8a90a8" stroke-width="2.4"/><circle cx="32" cy="38" r="4" fill="#5a3a9a"/><rect x="14" y="22" width="10" height="5" rx="1" fill="#e63946"/><rect x="42" y="22" width="8" height="5" rx="1" fill="#9fb4ff"/>'));
+A("filmstrip","Film Strip","Frame by Frame",CG,SV('<g transform="rotate(-18 32 32)"><rect x="2" y="18" width="60" height="28" rx="2" fill="#15151d"/><path d="M4 22h56M4 42h56" stroke="#f3f1fa" stroke-width="3" stroke-dasharray="4 4"/><rect x="8" y="26" width="14" height="12" fill="#5a6ad1"/><rect x="25" y="26" width="14" height="12" fill="#d96a8a"/><rect x="42" y="26" width="14" height="12" fill="#e6b94a"/></g>'));
+A("filmreel","Film Reel","Reel Life",CG,SV('<circle cx="32" cy="32" r="22" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="2"/><circle cx="32" cy="32" r="5" fill="#0c0e14" stroke="#aeb3bd" stroke-width="1.6"/><g fill="#0c0e14"><circle cx="32" cy="17" r="5"/><circle cx="45" cy="25" r="5"/><circle cx="45" cy="39" r="5"/><circle cx="32" cy="47" r="5"/><circle cx="19" cy="39" r="5"/><circle cx="19" cy="25" r="5"/></g>'));
+A("projector","Projector","Projection Booth",CG,SV('<rect x="10" y="26" width="34" height="20" rx="3" fill="#3a3f52" stroke="#aeb3bd" stroke-width="1.6"/><circle cx="20" cy="18" r="10" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="1.6"/><circle cx="36" cy="18" r="10" fill="#2b2e3d" stroke="#aeb3bd" stroke-width="1.6"/><path d="M44 32l14-6v18l-14-6z" fill="#ffe9a8" opacity=".85"/>'));
+A("lens","Prime Lens","Sharp Focus",CG,SV('<circle cx="32" cy="32" r="24" fill="#14151b" stroke="#aeb3bd" stroke-width="2"/><circle cx="32" cy="32" r="16" fill="#1d2233" stroke="#6f7694" stroke-width="2"/><circle cx="32" cy="32" r="8" fill="#2f7bff" opacity=".8"/><circle cx="27" cy="27" r="3" fill="#fff" opacity=".7"/>'));
+A("chair","Director Chair","Action!",CG,SV('<path d="M18 22h28v8H18zM16 34h32v6H16z" fill="#c63b2f"/><path d="M18 30l-2 26M46 30l2 26M20 40l24 14M44 40L20 54" stroke="#d9b36b" stroke-width="3"/>'));
+A("popcorn","Popcorn","Snack Break",CG,SV('<g fill="#fff3c9"><circle cx="22" cy="24" r="6"/><circle cx="32" cy="20" r="7"/><circle cx="42" cy="24" r="6"/><circle cx="27" cy="16" r="5"/><circle cx="38" cy="16" r="5"/></g><path d="M18 28h28l-4 26H22z" fill="#e63946"/><path d="M26 28l2 26M32 28v26M38 28l-2 26" stroke="#fff" stroke-width="3"/>'));
+A("glasses3d","3D Glasses","Pop-Out Mood",CG,SV('<rect x="8" y="26" width="22" height="16" rx="4" fill="#ff3b3b" stroke="#f3f1fa" stroke-width="2"/><rect x="34" y="26" width="22" height="16" rx="4" fill="#22d3ee" stroke="#f3f1fa" stroke-width="2"/><path d="M8 28L4 22M56 28l4-6M30 34h4" stroke="#f3f1fa" stroke-width="3"/>'));
+A("ticket","Movie Ticket","Admit One",CG,SV('<path d="M8 22h48v8a4 4 0 0 0 0 8v8H8v-8a4 4 0 0 0 0-8z" fill="#e8b94a"/><path d="M40 22v26" stroke="#8a5a14" stroke-width="2" stroke-dasharray="3 3"/><path d="M16 32h16M16 38h12" stroke="#8a5a14" stroke-width="2.4"/>'));
+PRESET_AVATARS.forEach(function(p){if(p.id==="clapper")p.cat=CG});
+
 var films=[],view="home",period="month",cur=null,timer=null,avTimer=null,rows=null,rowsKey="__",ex={country:"",genre:null,sub:null,showSubs:false,page:1,items:[],more:false,loading:false};
 var avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
-try{films=JSON.parse(localStorage.getItem("fw_films")||"[]")}catch(e){films=[]}
-try{var savedAv=JSON.parse(localStorage.getItem("fw_avatar")||"null");if(savedAv&&savedAv.name)avatar=savedAv}catch(e){}
-function save(){try{localStorage.setItem("fw_films",JSON.stringify(films))}catch(e){}}
-function saveAv(){try{localStorage.setItem("fw_avatar",JSON.stringify(avatar))}catch(e){}}
+var user=null;function ukey(k){return"fw_u_"+user+"_"+k}
+function save(){if(!user)return;try{localStorage.setItem(ukey("films"),JSON.stringify(films))}catch(e){}}
+function saveAv(){if(!user)return;try{localStorage.setItem(ukey("avatar"),JSON.stringify(avatar))}catch(e){}}
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
@@ -254,7 +383,7 @@ function mix(hs,ws){var x=0,y=0;hs.forEach(function(h,i){var a=h*Math.PI/180,w=w
 function filmHue(f){return mix(f.genres.slice(0,3).map(hue),[1,.8,.5])}
 function img(p,s){return p?"https://image.tmdb.org/t/p/"+s+p:""}
 function api(p,o){var q="p="+encodeURIComponent(p);for(var k in o||{})if(o[k]!==undefined&&o[k]!=="")q+="&"+k+"="+encodeURIComponent(o[k]);return fetch("/api/tmdb?"+q).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
-function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+(poster?'<img loading="lazy" alt="" src="'+img(poster,"w342")+'">':'<div class="ph">'+esc(title)+'</div>')+'<span>'+esc(title)+'</span></button>'}
+function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+(poster?'<img loading="lazy" decoding="async" alt="" src="'+img(poster,"w342")+'">':'<div class="ph">'+esc(title)+'</div>')+'<span>'+esc(title)+'</span></button>'}
 function carouselRow(innerHTML){
  return'<div class="row-shell"><div class="row-track">'+innerHTML+'</div><button class="row-next" type="button" data-rownext="1" aria-label="Scroll row right"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>'}
 function sorted(){return films.slice().sort(function(a,b){return b.date<a.date?-1:b.date>a.date?1:b.at-a.at})}
@@ -264,6 +393,7 @@ function cname(c){if(CL[c])return CL[c];try{return new Intl.DisplayNames(["en"],
 function avatarGraphic(av){
  av=av||avatar;
  if(av.type==="tmdb"&&av.img)return'<img alt="" src="'+img(av.img,"w185")+'">';
+ if(av.type==="custom"&&av.cfg)return customSVG(av.cfg);
  var p=PRESET_AVATARS.filter(function(x){return x.id===av.id})[0]||PRESET_AVATARS[0];
  return p.svg}
 
@@ -271,7 +401,7 @@ function avatarGraphic(av){
 function ensureStars(){
  var stars=$("stars");
  if(stars.children.length)return;
- for(var i=0;i<54;i++){
+ for(var i=0;i<40;i++){
   var s=document.createElement("i"),far=i%3!==0;
   s.className=far?"far":"mid";
   s.style.left=(Math.random()*98+1).toFixed(2)+"%";
@@ -310,25 +440,18 @@ function paint(){
  st.setProperty("--a2",(0.44+0.20*(1-dominance*0.4)).toFixed(2));
  return mostCommon(recent.map(function(f){return f.genres[0]}))}
 
-/* Sealed Borosilicate Glass Pipe with Volumetric Gas Clouds */
+/* Test tube taste meter */
 function side(){
  var el=$("side"),n=films.length;
  var h='<button class="who" data-avopen="1" title="Change cinema avatar"><div class="face">'+avatarGraphic()+'</div><div><b>'+esc(avatar.name)+'</b><small>'+n+(n===1?" film":" films")+'</small></div></button><h3>Taste meter</h3>';
- if(!n){
-  h+='<div class="meter"><div class="pipe-wrap"><div class="pipe"><div class="gas-chamber"><div class="gas-cloud" style="top:15%;height:55%;background:radial-gradient(circle,hsla(230,85%,60%,.28),transparent 72%);--dur:8s;--del:0s"></div><div class="gas-cloud" style="top:45%;height:50%;background:radial-gradient(circle,hsla(270,85%,60%,.24),transparent 72%);--dur:9s;--del:-3s"></div></div></div></div><p class="dim" style="font-size:13px;align-self:center">Log films and gases of your taste swirl inside.</p></div>';
-  el.innerHTML=h;return}
- var cnt={},tot=0;sorted().slice(0,12).forEach(function(f){var g=f.genres[0]||"Drama";cnt[g]=(cnt[g]||0)+1;tot++});
- var ks=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]});
- var cursor=0,clouds=[];
- ks.forEach(function(g,idx){
-  var share=cnt[g]/tot,gh=hue(g);
-  var topPct=Math.max(-8,cursor*88-6);
-  var heightPct=Math.max(34,share*82+24);
-  cursor+=share;
-  clouds.push('<div class="gas-cloud" style="top:'+topPct.toFixed(1)+'%;height:'+heightPct.toFixed(1)+'%;background:radial-gradient(ellipse at 50% 50%,hsla('+gh+',95%,62%,.9) 0%,hsla('+gh+',90%,48%,.45) 52%,transparent 76%);--dur:'+(6.5+idx*1.3)+'s;--del:'+(-idx*1.7)+'s"></div>')});
- h+='<div class="meter"><div class="pipe-wrap"><div class="pipe"><div class="gas-chamber">'+clouds.join("")+'</div></div></div><div class="legend">'+
-  ks.slice(0,6).map(function(g){var c="hsl("+hue(g)+" 85% 58%)";return'<div><em style="background:'+c+';color:'+c+'"></em>'+esc(g)+'<span>'+Math.round(cnt[g]/tot*100)+'%</span></div>'}).join("")+'</div></div>';
- el.innerHTML=h}
+ var bubs="";for(var i=0;i<6;i++)bubs+='<i class="bub" style="--x:'+(7+i*5.5)+'px;--sz:'+(3+i%3*2)+'px;--bd:'+(4+i*.9).toFixed(1)+'s;--bl:'+(-i*1.3).toFixed(1)+'s"></i>';
+ function tube(bands){return'<div class="tube"><div class="rim"></div><div class="pipe"><div class="fill'+(n?"":" empty")+'">'+bands+'</div>'+bubs+'</div></div>'}
+ if(!n){h+='<div class="meter">'+tube('<div class="band" style="--c:230;--f:1;--dur:8s"></div><div class="band" style="--c:275;--f:1;--dur:9s"></div>')+'<p class="dim" style="font-size:13px;align-self:center">Log films and your taste fills the tube.</p></div>'}
+ else{
+  var cnt={},tot=0;sorted().slice(0,12).forEach(function(f){var g=f.genres[0]||"Drama";cnt[g]=(cnt[g]||0)+1;tot++});
+  var ks=Object.keys(cnt).sort(function(a,b){return cnt[b]-cnt[a]});
+  h+='<div class="meter">'+tube(ks.map(function(g,i){return'<div class="band" style="--c:'+hue(g)+';--f:'+(cnt[g]/tot).toFixed(3)+';--dur:'+(6+i*1.2).toFixed(1)+'s"></div>'}).join(""))+'<div class="legend">'+ks.slice(0,6).map(function(g){var c="hsl("+hue(g)+" 85% 58%)";return'<div><em style="background:'+c+';color:'+c+'"></em>'+esc(g)+'<span>'+Math.round(cnt[g]/tot*100)+'%</span></div>'}).join("")+'</div></div>'}
+ if(el._h!==h){el._h=h;el.innerHTML=h}}
 
 function dirBox(){
  var m={},best=null,c=0;
@@ -376,7 +499,7 @@ function render(noAnim){
  var tg=paint(),app=$("app"),h="";side();
  [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===view)});
  if(view==="home"){
-  h='<h1 class="brand">Fourth wall</h1>';
+  h='<div class="brandrow">'+logoHTML()+'<h1 class="brand">Fourth wall</h1></div>';
   h+='<div class="hero-row">';
   h+=films.length?'<section class="glass hero"><h2>Mostly '+esc((tg||"film").toLowerCase())+' lately.</h2><p>'+films.length+(films.length===1?" film":" films")+' logged so far.</p></section>'
    :'<section class="glass hero"><h2>Your sky is empty.</h2><p>Tap the + to log the first film you’ve watched. The page takes on the colour of your taste.</p></section>';
@@ -388,24 +511,114 @@ function render(noAnim){
  }else if(view==="explore"){h=exploreHTML()}
  else{
   var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
-  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div></div>';
+  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><button class="ghost" data-signout="1" style="margin-left:auto">Sign out</button></div>';
   h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
   h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
   h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
- app.innerHTML='<div class="'+(noAnim?"":"view-stage")+'">'+h+'</div>'}
+ app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>'}
+
+
+/* ---- Custom avatar creator ---- */
+var SK=["#f6d3b8","#e8b894","#c98f66","#9a6544","#6b4228","#9be3a2","#8fd3ff","#d9c2ff"];
+var HC=["#1f1b18","#5a3a22","#c9a24a","#d94f4f","#e9e9f0","#4f7cff","#b86bff"];
+var EC=["#1b1b22","#5a3a22","#2f7bff","#2fa866","#c9a24a","#a24fff","#e63946"];
+var BG=["#2a2f5a","#5a2a4a","#1f4a46","#4a3a1f","#222222","#3a2a6b"];
+var MOODS=["happy","sad","angry","surprised","neutral","wink"],HAIRS=["none","short","long","spiky","bun"],PROPS=["none","glasses","shades","3D glasses","clapper","camera","film strip"];
+var cvd=null;
+function customSVG(c){
+ var sk=SK[c.skin],hc=HC[c.hc],ec=EC[c.eye],k="#1b1b22",o="";
+ function dot(x,y,r){return'<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="#fff"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.62)+'" fill="'+ec+'"/><circle cx="'+x+'" cy="'+y+'" r="'+(r*.3)+'" fill="#0b0b10"/>'}
+ o+='<rect width="64" height="64" fill="'+BG[c.bg]+'"/>';
+ if(c.hair===2)o+='<path d="M12 38c0-17 6-26 20-26s20 9 20 26v18H12z" fill="'+hc+'"/>';
+ if(c.hair===4)o+='<circle cx="32" cy="9" r="6" fill="'+hc+'"/>';
+ o+='<circle cx="32" cy="35" r="17" fill="'+sk+'"/>';
+ if(c.hair===1||c.hair===2||c.hair===4)o+='<path d="M15 33C15 20 22 13 32 13S49 20 49 33C43 27 21 27 15 33z" fill="'+hc+'"/>';
+ if(c.hair===3)o+='<path d="M15 33L16 19L22 26L26 14L32 24L37 14L41 26L48 19L49 33C43 27 21 27 15 33z" fill="'+hc+'"/>';
+ var m=c.mood;
+ if(m===0)o+='<path d="M21 35q4-5 8 0M35 35q4-5 8 0" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M25 42q7 8 14 0z" fill="#8a2f3a"/>';
+ if(m===1)o+=dot(25,36,3.2)+dot(39,36,3.2)+'<path d="M21 30L29 27M43 30L35 27" stroke="'+k+'" stroke-width="2" stroke-linecap="round"/><path d="M26 47q6-5 12 0" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===2)o+=dot(25,36,2.8)+dot(39,36,2.8)+'<path d="M21 29L29 33M43 29L35 33" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M26 46q6-3 12 0" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===3)o+=dot(25,36,4)+dot(39,36,4)+'<path d="M21 28q4-3 8 0M35 28q4-3 8 0" stroke="'+k+'" stroke-width="2" stroke-linecap="round"/><ellipse cx="32" cy="46" rx="3.5" ry="4.5" fill="#6b1f2a"/>';
+ if(m===4)o+=dot(25,36,3.2)+dot(39,36,3.2)+'<path d="M27 44h10" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ if(m===5)o+=dot(25,36,3.2)+'<path d="M35 36q4-4 8 0" stroke="'+k+'" stroke-width="2.4" stroke-linecap="round"/><path d="M26 43q6 5 13-2" stroke="#8a3a3a" stroke-width="2" stroke-linecap="round"/>';
+ var p=c.prop;
+ if(p===1)o+='<circle cx="25" cy="36" r="6.5" stroke="#222" stroke-width="1.8"/><circle cx="39" cy="36" r="6.5" stroke="#222" stroke-width="1.8"/><path d="M31.5 36h1" stroke="#222" stroke-width="1.8"/>';
+ if(p===2)o+='<path d="M17 32h30v4c0 4-3 6-6 6s-5-2-6-4h-6c-1 2-3 4-6 4s-6-2-6-6z" fill="#0b0b10"/>';
+ if(p===3)o+='<rect x="17" y="31" width="14" height="10" rx="2" fill="#ff3b3b" stroke="#fff" stroke-width="1.5"/><rect x="33" y="31" width="14" height="10" rx="2" fill="#22d3ee" stroke="#fff" stroke-width="1.5"/>';
+ if(p===4)o+='<g transform="translate(38 40)"><rect x="0" y="6" width="22" height="14" rx="2" fill="#272938" stroke="#fff" stroke-width="1.4"/><path d="M0 6l20-6 2 5L2 11z" fill="#f3f1fa"/><path d="M5 5l2-4M11 3l2-4M17 1l2-3" stroke="#181924" stroke-width="2"/></g>';
+ if(p===5)o+='<g transform="translate(36 42)"><rect x="0" y="4" width="24" height="15" rx="3" fill="#2b2e3d" stroke="#fff" stroke-width="1.4"/><rect x="5" y="0" width="8" height="5" rx="1" fill="#fff"/><circle cx="12" cy="12" r="5" fill="#0b0b10" stroke="#9aa3c7" stroke-width="1.6"/><circle cx="12" cy="12" r="2" fill="#4fa3ff"/></g>';
+ if(p===6)o+='<path d="M-2 54L66 46V56L-2 64z" fill="#15151d"/><path d="M0 57L64 49M0 61L64 53" stroke="#fff" stroke-width="2" stroke-dasharray="2.5 3"/>';
+ return'<svg class="full" viewBox="0 0 64 64" fill="none">'+o+'</svg>'}
+function openCreator(){
+ cvd=avatar.type==="custom"&&avatar.cfg?JSON.parse(JSON.stringify(avatar.cfg)):{skin:0,hair:1,hc:0,eye:0,mood:0,prop:0,bg:0};
+ var nm=avatar.type==="custom"?avatar.name:"";
+ function sw(k,arr){return'<div class="cv-row">'+arr.map(function(c,i){return'<button class="sw" data-cv="'+k+':'+i+'" style="background:'+c+'" aria-label="'+k+' '+(i+1)+'" aria-pressed="'+(cvd[k]===i)+'"></button>'}).join("")+'</div>'}
+ function ch(k,arr){return'<div class="cv-row">'+arr.map(function(c,i){return'<button class="chip" data-cv="'+k+':'+i+'" aria-pressed="'+(cvd[k]===i)+'">'+c+'</button>'}).join("")+'</div>'}
+ $("panel").innerHTML='<h2>Make your avatar</h2><div class="cv-prev" id="cv-prev">'+customSVG(cvd)+'</div>'+
+  '<div class="cv-lbl">Emotion</div>'+ch("mood",MOODS)+'<div class="cv-lbl">Face colour</div>'+sw("skin",SK)+'<div class="cv-lbl">Eye colour</div>'+sw("eye",EC)+
+  '<div class="cv-lbl">Hair</div>'+ch("hair",HAIRS)+'<div class="cv-lbl">Hair colour</div>'+sw("hc",HC)+'<div class="cv-lbl">Prop</div>'+ch("prop",PROPS)+'<div class="cv-lbl">Background</div>'+sw("bg",BG)+
+  '<input id="cvname" class="inp" maxlength="20" placeholder="Name your avatar" value="'+esc(nm)+'" style="margin-top:14px">'+
+  '<div class="acts"><button class="btn" data-cvsave="1">Save avatar</button><button class="ghost" data-avopen="1">Back</button></div>';
+ show(false)}
+function cvSet(b){var p=b.dataset.cv.split(":");cvd[p[0]]=+p[1];[].forEach.call(b.parentNode.children,function(x){x.setAttribute("aria-pressed",x===b)});$("cv-prev").innerHTML=customSVG(cvd)}
+function cvSave(){var n=($("cvname").value||"").trim()||"My avatar";avatar={type:"custom",id:"custom",name:n,tag:"Custom · "+MOODS[cvd.mood],img:"",cfg:cvd};saveAv();hide();render(true)}
+
+/* ---- Accounts (stored in this browser) ---- */
+var authMode="in";
+function logoHTML(){return'<img class="logo" src="logo.png" alt="" onerror="this.remove()">'}
+function accts(){try{return JSON.parse(localStorage.getItem("fw_accounts")||"{}")}catch(e){return{}}}
+function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(d){return[].map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}
+function drawAuth(err,keep){
+ var up=authMode==="up";
+ $("authbox").innerHTML=logoHTML()+'<h1 class="brand" style="margin:0 0 10px;font-size:30px">Fourth wall</h1><h2>'+(up?"Create your account":"Welcome back")+'</h2><p class="dim" style="margin:6px 0 18px;font-size:14px">'+(up?"You start with an empty sky. Everything you log stays in your account.":"Sign in to see the films you have logged.")+'</p>'+
+  '<form id="authf"><input id="au" class="inp" placeholder="Username" autocomplete="username" maxlength="24" aria-label="Username"><input id="ap" class="inp" type="password" placeholder="Password" autocomplete="'+(up?"new-password":"current-password")+'" aria-label="Password"><div class="err" role="alert">'+esc(err||"")+'</div><button class="btn" type="submit" style="width:100%">'+(up?"Create account":"Sign in")+'</button></form>'+
+  '<button class="ghost" data-authmode="1" style="margin-top:12px;width:100%">'+(up?"I already have an account":"Create a new account")+'</button>';
+ var u=$("au");u.value=keep||"";(keep?$("ap"):u).focus()}
+function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");authMode=Object.keys(accts()).length?"in":"up";drawAuth("")}
+function start(name){
+ user=name;try{localStorage.setItem("fw_session",name)}catch(e){}
+ films=[];avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
+ try{films=JSON.parse(localStorage.getItem(ukey("films"))||"[]")}catch(e){films=[]}
+ try{var sa=JSON.parse(localStorage.getItem(ukey("avatar"))||"null");if(sa&&sa.name)avatar=sa}catch(e){}
+ view="home";period="month";rows=null;rowsKey="__";ex.genre=null;ex.sub=null;ex.items=[];ex.showSubs=false;cur=null;
+ document.body.classList.remove("locked");$("auth").classList.remove("on");hide();window.scrollTo(0,0);render(false);loadRows()}
+function signOut(){try{localStorage.removeItem("fw_session")}catch(e){}user=null;films=[];hide();$("app").innerHTML="";paint();showAuth()}
+document.addEventListener("submit",function(e){
+ if(e.target.id!=="authf")return;e.preventDefault();
+ var n=$("au").value.trim().toLowerCase(),p=$("ap").value,all=accts(),up=authMode==="up";
+ function bad(m){drawAuth(m,n)}
+ if(!/^[a-z0-9_.-]{3,24}$/.test(n))return bad("Use 3 to 24 letters, numbers, dots, dashes or underscores for the username.");
+ if(p.length<6)return bad("Use at least 6 characters for the password.");
+ if(up&&all[n])return bad("That username is taken. Sign in instead.");
+ if(!up&&!all[n])return bad("No account with that username. Create one instead.");
+ var salt=up?Math.random().toString(36).slice(2)+Date.now().toString(36):all[n].s;
+ sha(salt+p).then(function(h){
+  if(up){all[n]={s:salt,h:h};try{localStorage.setItem("fw_accounts",JSON.stringify(all))}catch(x){return bad("Your browser blocked saving the account. Allow site storage and try again.")}start(n)}
+  else if(all[n].h===h)start(n);else bad("Wrong password.")
+ }).catch(function(){bad("Sign in needs a secure (https) connection.")})});
+
+/* ---- Smooth view switching ---- */
+var swT=0;
+function goView(n){
+ clearTimeout(swT);view=n;
+ [].forEach.call(document.querySelectorAll("[data-v]"),function(b){b.setAttribute("aria-pressed",b.dataset.v===n)});
+ var st=document.querySelector(".view-stage");
+ if(st&&!matchMedia("(prefers-reduced-motion:reduce)").matches){st.classList.add("leave");swT=setTimeout(function(){window.scrollTo(0,0);render(false)},150)}
+ else{window.scrollTo(0,0);render(false)}}
 
 function show(isLog){$("ov").classList.add("on");if(isLog)$("logbtn").classList.add("open")}
 function hide(){$("ov").classList.remove("on");$("logbtn").classList.remove("open")}
 
+var avCat="All";
+function avCats(){var c=["All"];PRESET_AVATARS.forEach(function(p){if(c.indexOf(p.cat)<0)c.push(p.cat)});return c}
+function avGrid(){return PRESET_AVATARS.filter(function(p){return avCat==="All"||p.cat===avCat}).map(function(p){var on=avatar.type==="preset"&&avatar.id===p.id;return'<button class="av-item" data-avpreset="'+p.id+'" aria-pressed="'+on+'"><div class="av-pic">'+p.svg+'</div><span>'+esc(p.name)+'</span><small>'+esc(p.tag)+'</small></button>'}).join("")}
 function openAvatarPicker(){
- var presetsHTML=PRESET_AVATARS.map(function(p){
-  var active=avatar.type==="preset"&&avatar.id===p.id;
-  return'<button class="av-item" data-avpreset="'+p.id+'" aria-pressed="'+active+'"><div class="av-pic">'+p.svg+'</div><span>'+esc(p.name)+'</span><small>'+esc(p.tag)+'</small></button>'}).join("");
- $("panel").innerHTML='<h2>Choose your cinema mood</h2><p class="dim" style="margin:-6px 0 14px;font-size:14px">Pick an iconic character mask or search any actor, director, or cinema icon from TMDB.</p>'+
+ $("panel").innerHTML='<h2>Choose your cinema mood</h2><p class="dim" style="margin:-6px 0 14px;font-size:14px">Pick a character or camera, build your own face, or search any actor or director.</p>'+
+  '<button class="btn" data-cvopen="1" style="margin-bottom:14px">Create your own avatar</button>'+
   '<input id="avq" class="inp" placeholder="Search any actor, director, or cinema icon…" autocomplete="off" aria-label="Search cinema icons">'+
   '<div id="av-results"></div>'+
-  '<div class="sec" style="font-size:15px;margin-top:8px">Iconic Masks & Personas</div>'+
-  '<div class="av-grid">'+presetsHTML+'</div>'+
+  '<div class="chipsrow" id="av-cats">'+avCats().map(function(c){return'<button class="chip" data-avcat="'+esc(c)+'" aria-pressed="'+(avCat===c)+'">'+esc(c)+'</button>'}).join("")+'</div>'+
+  '<div class="av-grid" id="av-grid">'+avGrid()+'</div>'+
   '<div class="acts"><button class="ghost" data-act="close">Done</button></div>';
  show(false);
  $("avq").oninput=function(){
@@ -417,7 +630,7 @@ function openAvatarPicker(){
     $("av-results").innerHTML=ppl.length?'<div class="sec" style="font-size:15px">TMDB Icons</div><div class="av-grid" style="margin-bottom:18px">'+ppl.map(function(p){
      var role=p.known_for_department||"Cinema Icon";
      return'<button class="av-item" data-avtmdb="'+esc(p.profile_path)+'" data-avname="'+esc(p.name)+'" data-avtag="'+esc(role)+'"><div class="av-pic"><img loading="lazy" alt="" src="'+img(p.profile_path,"w185")+'"></div><span>'+esc(p.name)+'</span><small>'+esc(role)+'</small></button>'}).join("")+'</div>':'<p class="dim" style="font-size:14px">No portraits found for "'+esc(v)+'".</p>'
-   }).catch(function(){$("av-results").innerHTML=''})},350)}}
+   }).catch(function(){$("av-results").innerHTML=""})},350)}}
 
 function openSearch(){
  $("panel").innerHTML='<h2>Log a film</h2><input id="q" class="inp" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show(true);$("q").focus();
@@ -458,7 +671,13 @@ document.addEventListener("click",function(e){
  if(avp){var f=PRESET_AVATARS.filter(function(x){return x.id===avp.dataset.avpreset})[0];if(f){avatar={type:"preset",id:f.id,name:f.name,tag:f.tag,img:""};saveAv();hide();render(true)}return}
  var avt=t.closest("[data-avtmdb]");
  if(avt){avatar={type:"tmdb",id:"",name:avt.dataset.avname,tag:avt.dataset.avtag,img:avt.dataset.avtmdb};saveAv();hide();render(true);return}
- var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v){view=v.dataset.v;render(false);window.scrollTo({top:0,behavior:"smooth"})}return}
+ var ac=t.closest("[data-avcat]");if(ac){avCat=ac.dataset.avcat;[].forEach.call(document.querySelectorAll("[data-avcat]"),function(b){b.setAttribute("aria-pressed",b.dataset.avcat===avCat)});$("av-grid").innerHTML=avGrid();return}
+ if(t.closest("[data-cvopen]")){openCreator();return}
+ var cv=t.closest("[data-cv]");if(cv){cvSet(cv);return}
+ if(t.closest("[data-cvsave]")){cvSave();return}
+ if(t.closest("[data-authmode]")){authMode=authMode==="in"?"up":"in";drawAuth("");return}
+ if(t.closest("[data-signout]")){signOut();return}
+ var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v)goView(v.dataset.v);return}
  var p=t.closest("[data-p]");if(p){period=p.dataset.p;render(true);return}
  var c=t.closest("[data-c]");if(c){ex.country=c.dataset.c;if(ex.genre)loadExplore(true);else render(true);return}
  var g=t.closest("[data-g]");if(g){ex.genre=g.dataset.g;ex.sub=null;ex.showSubs=false;loadExplore(true);return}
@@ -471,7 +690,7 @@ document.addEventListener("click",function(e){
   else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();hide();loadRows();render(true)}return}
  var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
 document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
-render(false);loadRows();
+(function(){var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}var a=accts();if(ss&&a[ss])start(ss);else{paint();showAuth()}})();
 </script>
 </body>
 </html>
