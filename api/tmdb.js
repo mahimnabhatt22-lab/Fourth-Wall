@@ -9,7 +9,7 @@ module.exports = async function handler(req, res) {
 
   const q = req.query, params = new URLSearchParams({ language: "en-US", include_adult: "false" });
   if (q.q) params.set("query", String(q.q).slice(0, 100));
-  if (/^movie\/\d+$/.test(p)) params.set("append_to_response", "credits");
+  if (/^movie\/\d+$/.test(p)) params.set("append_to_response", "credits,keywords");
   if (p === "discover/movie") {
     params.set("sort_by", "popularity.desc");
     params.set("vote_count.gte", "150");
