@@ -1,10 +1,10 @@
-// Asks TMDB for movie & collection data on behalf of the page, so the secret token never reaches the browser.
+// Asks TMDB for movie, collection, trending & upcoming data on behalf of the page, so the secret token never reaches the browser.
 module.exports = async function handler(req, res) {
   const token = process.env.TMDB_TOKEN;
   if (!token) return res.status(500).json({ error: "TMDB_TOKEN is not set in Vercel" });
 
   const p = String(req.query.p || "");
-  const allowed = /^(search\/movie|search\/keyword|search\/person|discover\/movie|movie\/\d+|movie\/\d+\/recommendations|collection\/\d+)$/;
+  const allowed = /^(search\/movie|search\/keyword|search\/person|discover\/movie|movie\/upcoming|trending\/movie\/(day|week)|movie\/\d+|movie\/\d+\/(recommendations|similar)|collection\/\d+)$/;
   if (!allowed.test(p)) return res.status(400).json({ error: "Not allowed" });
 
   const q = req.query, params = new URLSearchParams({ language: "en-US", include_adult: "false" });
@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
       headers: { Authorization: "Bearer " + token, accept: "application/json" }
     });
     const data = await r.json();
-    res.setHeader("Cache-Control", "s-maxage=3600");
+    res.setHeader("Cache-Control", p === "movie/upcoming" || p.startsWith("trending/") ? "s-maxage=900" : "s-maxage=3600");
     return res.status(r.status).json(data);
   } catch (e) {
     return res.status(502).json({ error: "Could not reach TMDB" });

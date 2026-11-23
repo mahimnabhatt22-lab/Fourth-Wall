@@ -280,6 +280,53 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
   .cu-stage{height:64vh;min-height:420px}
   .dock button{padding:10px 15px;font-size:14px}
 }
+
+/* Keyboard Shortcuts Cheat-Sheet Modal & Hint */
+.kbd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;margin-top:12px}
+.kbd-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);font-size:13px}
+.kbd-keys{display:inline-flex;gap:5px;flex:none}
+.kbd{display:inline-block;padding:3px 8px;border-radius:7px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);font:700 11px/1.2 "Bricolage Grotesque",monospace;color:#fff;box-shadow:0 2px 0 rgba(0,0,0,.4)}
+.kbd-fab{position:fixed;left:22px;bottom:calc(24px + env(safe-area-inset-bottom,0px));width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--edge);color:var(--dim);font:800 15px/1 "Bricolage Grotesque",sans-serif;z-index:4;display:grid;place-items:center}
+.kbd-fab:hover{background:rgba(255,255,255,.18);color:#fff;border-color:rgba(255,255,255,.45)}
+@media (max-width:680px){.kbd-fab{display:none}}
+
+/* 1. First-Time Account Onboarding Walkthrough */
+.ob-dots{display:flex;gap:7px;margin-bottom:14px}
+.ob-dot{width:24px;height:4px;border-radius:999px;background:rgba(255,255,255,.16);transition:background .25s,width .25s}
+.ob-dot.on{width:38px;background:hsl(var(--h) 92% 64%)}
+.ob-card{padding:22px;border-radius:20px;background:linear-gradient(150deg,rgba(255,255,255,.09),rgba(255,255,255,.03));border:1px solid rgba(255,255,255,.16);margin:10px 0 16px}
+.ob-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font:700 11px/1 "Bricolage Grotesque",sans-serif;letter-spacing:.1em;text-transform:uppercase;background:rgba(255,255,255,.12);color:#e9d5ff;margin-bottom:10px}
+.ob-keys{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+
+/* 2. Quick-Log Arcade Deck */
+.arc-top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+.arc-hud{display:flex;flex-wrap:wrap;gap:7px;align-items:center;padding:9px 12px;border-radius:14px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);font-size:12px;color:var(--dim);margin-bottom:12px}
+.arc-hud span{display:inline-flex;align-items:center;gap:5px;margin-right:6px}
+.arc-status{font-size:12px;color:#b8f7d4;min-height:18px;margin:-6px 0 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.arc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;max-height:56vh;overflow-y:auto;padding:4px 2px 10px}
+@media (max-width:680px){.arc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.arc-card{position:relative;padding:0;overflow:hidden;text-align:left;border-radius:16px;background:rgba(30,28,50,.72);border:2px solid rgba(255,255,255,.12);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.arc-card img,.arc-card .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block}
+.arc-card .ph{display:flex;align-items:flex-end;padding:10px;font:800 15px/1.1 "Bricolage Grotesque",sans-serif;background:linear-gradient(160deg,#3b3b66,#12121f)}
+.arc-card .arc-t{display:block;padding:8px 9px 10px;font-size:12px;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arc-card.active{border-color:#fff;transform:translateY(-3px) scale(1.02);box-shadow:0 0 0 3px hsl(var(--h) 92% 62%/.45),0 14px 28px rgba(0,0,0,.55);z-index:2}
+.arc-card.logged-flash{animation:arcPop .38s ease}
+@keyframes arcPop{0%{transform:scale(1.05);box-shadow:0 0 0 6px rgba(82,183,136,.75)}100%{transform:scale(.94);opacity:.2}}
+.arc-badge{position:absolute;top:7px;left:7px;padding:3px 7px;border-radius:999px;background:rgba(10,10,18,.82);border:1px solid rgba(255,255,255,.22);font:700 10px/1 "Bricolage Grotesque",sans-serif;color:#e9d5ff}
+
+/* 3. Universes Page: Live Entertainment & Upcoming Releases Flash Cards */
+.live-feed{padding:18px 20px;margin-top:4px}
+.live-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;background:#52b788;box-shadow:0 0 10px #52b788;margin-right:6px}
+.live-strip{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;scrollbar-width:none}
+.live-strip::-webkit-scrollbar{display:none}
+.flash-card{flex:0 0 280px;width:280px;padding:12px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);display:flex;gap:12px;align-items:flex-start;text-align:left;transition:transform .24s ease,border-color .24s ease}
+.flash-card:hover{transform:translateY(-3px);border-color:rgba(255,255,255,.38)}
+.flash-card img,.flash-card .f-ph{width:64px;height:96px;border-radius:10px;object-fit:cover;flex:none;background:rgba(255,255,255,.08)}
+.flash-pill{display:inline-block;font:700 10px/1 "Bricolage Grotesque",sans-serif;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;background:rgba(225,197,255,.14);border:1px solid rgba(225,197,255,.3);color:#e9d5ff;margin-bottom:5px}
+.flash-pill.up{background:rgba(82,183,136,.16);border-color:rgba(82,183,136,.38);color:#a7f3d0}
+.flash-title{display:block;font:800 14px/1.2 "Bricolage Grotesque",sans-serif;margin-bottom:4px}
+.flash-meta{font-size:11px;color:var(--dim);line-height:1.35}
 </style>
 </head>
 <body class="locked">
@@ -289,6 +336,7 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 <nav class="dock glass" aria-label="Main">
 <button data-v="home" aria-pressed="true">Home</button><button data-v="explore" aria-pressed="false">Explore</button><button data-v="universes" aria-pressed="false">Universes</button><button data-v="me" aria-pressed="false">Me</button>
 </nav>
+<button class="kbd-fab" id="kbdbtn" type="button" onclick="openShortcutsModal()" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">?</button>
 <button class="fab" id="logbtn" aria-label="Log a film">+</button>
 <div id="ov" role="dialog" aria-modal="true"><div id="panel" class="glass"></div></div>
 <div id="auth"><div id="authbox" class="glass"></div></div>
@@ -583,11 +631,11 @@ function render(noAnim){
  else if(view==="cinemography"){h=cinematographyHTML()}
  else{
   var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
-  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><button class="ghost" data-signout="1" style="margin-left:auto">Sign out</button></div>';
+  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" onclick="openOnboarding(0)">Replay Tutorial</button><button class="ghost" data-signout="1">Sign out</button></div></div>';
   h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
   h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
   h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
- app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>';if(view==="universes"){bindUniverseEvents();backfillFilmDetails()}}
+ app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>';if(view==="universes"){bindUniverseEvents();backfillFilmDetails();ensureLiveFeedLoop()}}
 
 
 /* ---- Custom avatar creator ---- */
@@ -647,13 +695,15 @@ function drawAuth(err,keep){
   '<button class="ghost" data-authmode="1" style="margin-top:12px;width:100%">'+(up?"I already have an account":"Create a new account")+'</button>';
  var u=$("au");u.value=keep||"";(keep?$("ap"):u).focus()}
 function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");authMode=Object.keys(accts()).length?"in":"up";drawAuth("")}
-function start(name){
+function start(name,isNew){
  user=name;try{localStorage.setItem("fw_session",name)}catch(e){}
  films=[];avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
  try{films=JSON.parse(localStorage.getItem(ukey("films"))||"[]")}catch(e){films=[]}
  try{var sa=JSON.parse(localStorage.getItem(ukey("avatar"))||"null");if(sa&&sa.name)avatar=sa}catch(e){}
  view="home";period="month";rows=null;rowsKey="__";ex.genre=null;ex.sub=null;ex.items=[];ex.showSubs=false;cur=null;
- document.body.classList.remove("locked");$("auth").classList.remove("on");hide();window.scrollTo(0,0);render(false);loadRows()}
+ document.body.classList.remove("locked");$("auth").classList.remove("on");hide();window.scrollTo(0,0);render(false);loadRows();
+ var seenOb=false;try{seenOb=localStorage.getItem(ukey("ob_done"))==="1"}catch(e){}
+ if(isNew||!seenOb){setTimeout(function(){openOnboarding(0)},260)}}
 function signOut(){try{localStorage.removeItem("fw_session")}catch(e){}user=null;films=[];hide();$("app").innerHTML="";paint();showAuth()}
 document.addEventListener("submit",function(e){
  if(e.target.id!=="authf")return;e.preventDefault();
@@ -665,7 +715,7 @@ document.addEventListener("submit",function(e){
  if(!up&&!all[n])return bad("No account with that username. Create one instead.");
  var salt=up?Math.random().toString(36).slice(2)+Date.now().toString(36):all[n].s;
  sha(salt+p).then(function(h){
-  if(up){all[n]={s:salt,h:h};try{localStorage.setItem("fw_accounts",JSON.stringify(all))}catch(x){return bad("Your browser blocked saving the account. Allow site storage and try again.")}start(n)}
+  if(up){all[n]={s:salt,h:h};try{localStorage.setItem("fw_accounts",JSON.stringify(all))}catch(x){return bad("Your browser blocked saving the account. Allow site storage and try again.")}start(n,true)}
   else if(all[n].h===h)start(n);else bad("Wrong password.")
  }).catch(function(){bad("Sign in needs a secure (https) connection.")})});
 
@@ -704,10 +754,270 @@ function openAvatarPicker(){
      return'<button class="av-item" data-avtmdb="'+esc(p.profile_path)+'" data-avname="'+esc(p.name)+'" data-avtag="'+esc(role)+'"><div class="av-pic"><img loading="lazy" alt="" src="'+img(p.profile_path,"w185")+'"></div><span>'+esc(p.name)+'</span><small>'+esc(role)+'</small></button>'}).join("")+'</div>':'<p class="dim" style="font-size:14px">No portraits found for "'+esc(v)+'".</p>'
    }).catch(function(){$("av-results").innerHTML=""})},350)}}
 
-function openSearch(){
- $("panel").innerHTML='<h2>Log a film</h2><input id="q" class="inp" placeholder="Search for a film…" autocomplete="off" aria-label="Search for a film"><div id="res" class="rs wrap"></div>';show(true);$("q").focus();
- $("q").oninput=function(){clearTimeout(timer);var v=this.value.trim();if(v.length<2){$("res").innerHTML="";return}
-  timer=setTimeout(function(){api("search/movie",{q:v}).then(function(d){$("res").innerHTML=(d.results||[]).slice(0,12).map(function(m){return pc(m.id,m.title+(m.release_date?" ("+m.release_date.slice(0,4)+")":""),m.poster_path)}).join("")||'<p class="dim">No films found.</p>'}).catch(function(){$("res").innerHTML='<p class="dim">Search isn’t working right now.</p>'})},350)}}
+/* ---- 1. First-Time Account Onboarding Walkthrough ---- */
+var obStep = 0;
+var ONBOARDING_STEPS = [
+  {
+    badge: "Step 1 of 4 · Home & Aura",
+    title: "Your Sky Reflects Your Taste",
+    body: "Fourth wall starts as a clean slate. Every film you log shifts the ambient sky aura to match your dominant genres and fills the glass Taste Meter tube on the left with layered genre bands.",
+    keys: [["1", "Home"], ["M", "Switch Cinema Mood"]]
+  },
+  {
+    badge: "Step 2 of 4 · Quick-Log Arcade (+)",
+    title: "Rapid-Fire Logging With Your Keyboard",
+    body: "Press + (or / / K) to open the Quick-Log Arcade. Instead of a blank box, you get an instant grid of unlogged films. Navigate with W A S D, press Spacebar to instant-log and spawn similar recommendations, Left Shift to inspect full details, or R to hop to a fresh genre.",
+    keys: [["W A S D", "Move Cursor"], ["Space", "Instant Log + Feed"], ["Shift", "Details"], ["R", "New Genre"]]
+  },
+  {
+    badge: "Step 3 of 4 · Explore",
+    title: "Filter by Country, Genre & Subgenres",
+    body: "Jump into Explore to browse films across Worldwide, India, USA, UK, Korea, Japan, France, or Spain—then drill down into curated subgenres like Psychological horror, Neo-noir, Cyberpunk, or Coming-of-age.",
+    keys: [["2", "Explore"], ["Esc", "All Genres"]]
+  },
+  {
+    badge: "Step 4 of 4 · Universes & Cinemography",
+    title: "Constellation Star Map & Story Export",
+    body: "Watch your logged films connect into an interactive constellation linked by official cinematic universes, directors, writers, and cast. Click any universe hub for a JARVIS completion dashboard, check Live Upcoming Releases at the bottom, or export your 9:16 Cinemography story.",
+    keys: [["3", "Universes"], ["C", "Cinemography"], ["?", "All Shortcuts"]]
+  }
+];
+
+function finishOnboarding() {
+  try { if (user) localStorage.setItem(ukey("ob_done"), "1"); } catch (e) {}
+  hide();
+}
+
+function openOnboarding(step) {
+  obStep = Math.max(0, Math.min(ONBOARDING_STEPS.length - 1, step || 0));
+  var s = ONBOARDING_STEPS[obStep];
+  var isLast = obStep === ONBOARDING_STEPS.length - 1;
+  $("panel").innerHTML =
+    '<div class="ob-dots">' + ONBOARDING_STEPS.map(function(_, i) {
+      return '<span class="ob-dot' + (i === obStep ? ' on' : '') + '"></span>';
+    }).join("") + '</div>' +
+    '<div class="ob-card"><span class="ob-badge">' + esc(s.badge) + '</span>' +
+    '<h2 style="margin-bottom:8px">' + esc(s.title) + '</h2>' +
+    '<p class="dim" style="margin:0;line-height:1.65;font-size:15px">' + esc(s.body) + '</p>' +
+    '<div class="ob-keys">' + s.keys.map(function(k) {
+      return '<span class="kbd-row" style="padding:6px 10px"><kbd class="kbd">' + esc(k[0]) + '</kbd><span style="font-size:12px">' + esc(k[1]) + '</span></span>';
+    }).join("") + '</div></div>' +
+    '<div class="acts" style="justify-content:space-between">' +
+      '<button class="ghost" onclick="finishOnboarding()">Skip tutorial</button>' +
+      '<div style="display:flex;gap:8px">' +
+        (obStep > 0 ? '<button class="ghost" onclick="openOnboarding(' + (obStep - 1) + ')">Back</button>' : '') +
+        (isLast ? '<button class="btn" onclick="finishOnboarding()">Start exploring</button>'
+                : '<button class="btn" onclick="openOnboarding(' + (obStep + 1) + ')">Next →</button>') +
+      '</div>' +
+    '</div>';
+  show(false);
+}
+
+/* ---- 2. Quick-Log Arcade Deck (+ Button Redesign) ---- */
+var arcade = {
+  items: [],
+  cursor: 0,
+  genreName: "Popular",
+  seenIds: {},
+  statusMsg: "",
+  busyLog: false,
+  returnToArcade: false
+};
+
+function arcadeCols() {
+  return window.innerWidth <= 680 ? 2 : 4;
+}
+
+function renderArcadeGrid() {
+  var grid = $("arc-grid"), st = $("arc-status");
+  if (st) st.innerHTML = '<span>' + esc(arcade.statusMsg || ("Batch: " + arcade.genreName)) + '</span><span class="dim">' + arcade.items.length + ' ready</span>';
+  if (!grid) return;
+  if (!arcade.items.length) {
+    grid.innerHTML = '<p class="dim" style="grid-column:1/-1">Loading unlogged films…</p>';
+    return;
+  }
+  if (arcade.cursor >= arcade.items.length) arcade.cursor = Math.max(0, arcade.items.length - 1);
+  grid.innerHTML = arcade.items.map(function(m, idx) {
+    var act = idx === arcade.cursor ? " active" : "";
+    var yr = m.release_date ? " (" + m.release_date.slice(0, 4) + ")" : "";
+    var badge = m._tag ? '<span class="arc-badge">' + esc(m._tag) + '</span>' : "";
+    return '<button type="button" class="arc-card' + act + '" data-arcidx="' + idx + '">' + badge +
+      (m.poster_path ? '<img loading="lazy" decoding="async" alt="" src="' + img(m.poster_path, "w342") + '">' : '<div class="ph">' + esc(m.title) + '</div>') +
+      '<span class="arc-t">' + esc(m.title + yr) + '</span></button>';
+  }).join("");
+  var activeEl = grid.querySelector(".arc-card.active");
+  if (activeEl) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function loadArcadeBatch(forceRandomGenre) {
+  var loggedMap = {};
+  films.forEach(function(f) { loggedMap[f.tid] = 1; });
+  var gNames = Object.keys(GID);
+  var pickGenre = forceRandomGenre ? gNames[Math.floor(Math.random() * gNames.length)] : null;
+  if (!pickGenre && films.length && Math.random() < 0.65) {
+    var topG = mostCommon([].concat.apply([], films.slice(-8).map(function(f) { return f.genres || []; })));
+    if (topG && GID[topG]) pickGenre = topG;
+  }
+  arcade.genreName = pickGenre || "Trending & Popular";
+  arcade.statusMsg = "Loading " + arcade.genreName + " batch…";
+  arcade.items = [];
+  arcade.cursor = 0;
+  renderArcadeGrid();
+
+  var page = Math.floor(Math.random() * 3) + 1;
+  var req = pickGenre
+    ? api("discover/movie", { genre: GID[pickGenre], page: page })
+    : api("trending/movie/week", { page: 1 });
+
+  req.then(function(d) {
+    var t = today();
+    var fresh = (d.results || []).filter(function(m) {
+      return m && m.id && !loggedMap[m.id] && (!m.release_date || m.release_date <= t);
+    }).slice(0, 16);
+    fresh.forEach(function(m) { arcade.seenIds[m.id] = 1; m._tag = pickGenre || "Trending"; });
+    arcade.items = fresh;
+    arcade.cursor = 0;
+    arcade.statusMsg = "Genre: " + arcade.genreName + " · Press R for a new genre";
+    renderArcadeGrid();
+  }).catch(function() {
+    arcade.statusMsg = "Could not load batch — type / to search by title.";
+    renderArcadeGrid();
+  });
+}
+
+function arcadeInstantLog(idx) {
+  if (arcade.busyLog || !arcade.items[idx]) return;
+  var m = arcade.items[idx];
+  if (films.some(function(f) { return f.tid === m.id; })) {
+    arcade.items.splice(idx, 1);
+    renderArcadeGrid();
+    return;
+  }
+  arcade.busyLog = true;
+  arcade.statusMsg = "Logging " + m.title + " & feeding recommendations…";
+  var cardEl = document.querySelector('[data-arcidx="' + idx + '"]');
+  if (cardEl) cardEl.classList.add("logged-flash");
+  renderArcadeGrid();
+
+  api("movie/" + m.id).then(function(full) {
+    var crew = (full.credits && full.credits.crew) || [];
+    var d = crew.filter(function(c) { return c.job === "Director"; })[0];
+    var w = crew.filter(function(c) { return c.job === "Screenplay" || c.job === "Writer"; })[0];
+    var pcn = (full.production_countries || [])[0];
+    var extras = extractFilmExtras(full);
+    var entry = {
+      tid: full.id,
+      title: full.title,
+      year: (full.release_date || "").slice(0, 4),
+      genres: (full.genres || []).map(function(g) { return g.name; }),
+      director: d ? d.name : "",
+      dphoto: d ? d.profile_path || "" : "",
+      writer: w ? w.name : (extras.writers[0] || ""),
+      poster: full.poster_path || "",
+      score: full.vote_average ? full.vote_average.toFixed(1) : "",
+      country: pcn ? pcn.iso_3166_1 : "",
+      lang: full.original_language || "",
+      cast: extras.cast,
+      composer: extras.composer,
+      writers: extras.writers,
+      writerCredits: extras.writerCredits,
+      keywords: extras.keywords,
+      collection: extras.collection,
+      releaseDate: extras.releaseDate,
+      date: today(),
+      at: Date.now(),
+      v: 3
+    };
+    if (!films.some(function(f) { return f.tid === entry.tid; })) {
+      films.push(entry);
+      save();
+      cuCache.key = "";
+      paint();
+      side();
+      loadRows();
+    }
+
+    // Remove logged item from grid & fetch self-feeding recommendations
+    arcade.items = arcade.items.filter(function(x) { return x.id !== m.id; });
+    if (arcade.cursor >= arcade.items.length) arcade.cursor = Math.max(0, arcade.items.length - 1);
+    renderArcadeGrid();
+
+    return Promise.all([
+      api("movie/" + m.id + "/recommendations").catch(function() { return { results: [] }; }),
+      api("movie/" + m.id + "/similar").catch(function() { return { results: [] }; })
+    ]).then(function(res) {
+      var loggedMap = {};
+      films.forEach(function(f) { loggedMap[f.tid] = 1; });
+      arcade.items.forEach(function(x) { loggedMap[x.id] = 1; });
+      var t = today();
+      var pool = [].concat(res[0].results || [], res[1].results || []);
+      var added = 0;
+      for (var i = 0; i < pool.length && added < 4; i++) {
+        var cand = pool[i];
+        if (cand && cand.id && !loggedMap[cand.id] && (!cand.release_date || cand.release_date <= t)) {
+          loggedMap[cand.id] = 1;
+          cand._tag = "Because of " + m.title.slice(0, 16);
+          arcade.items.splice(Math.min(arcade.cursor + added, arcade.items.length), 0, cand);
+          added++;
+        }
+      }
+      arcade.statusMsg = "✓ Logged " + m.title + (added ? " · +" + added + " similar added" : "");
+      arcade.busyLog = false;
+      renderArcadeGrid();
+    });
+  }).catch(function() {
+    arcade.busyLog = false;
+    arcade.statusMsg = "Could not log " + m.title + ".";
+    renderArcadeGrid();
+  });
+}
+
+function openSearch(preserveState) {
+  arcade.returnToArcade = false;
+  $("panel").innerHTML =
+    '<div class="arc-top"><h2 style="margin:0">Quick-Log Arcade</h2>' +
+    '<div style="display:flex;gap:8px"><button type="button" class="ghost" onclick="loadArcadeBatch(true)">↻ New Genre (R)</button><button type="button" class="ghost" data-act="close">Done</button></div></div>' +
+    '<div class="arc-hud">' +
+      '<span><kbd class="kbd">W</kbd><kbd class="kbd">A</kbd><kbd class="kbd">S</kbd><kbd class="kbd">D</kbd> Move</span>' +
+      '<span><kbd class="kbd">Space</kbd> Instant Log + Feed</span>' +
+      '<span><kbd class="kbd">Shift</kbd> Details</span>' +
+      '<span><kbd class="kbd">R</kbd> New Genre</span>' +
+      '<span><kbd class="kbd">/</kbd> Search Title</span>' +
+    '</div>' +
+    '<input id="q" class="inp" style="margin-bottom:10px" placeholder="Press / or click here to search by title (Esc / ↓ returns to grid)…" autocomplete="off" aria-label="Search for a film">' +
+    '<div id="arc-status" class="arc-status"></div>' +
+    '<div id="arc-grid" class="arc-grid"></div>';
+  show(true);
+
+  if (preserveState && arcade.items.length) {
+    renderArcadeGrid();
+  } else {
+    arcade.seenIds = {};
+    loadArcadeBatch(false);
+  }
+
+  $("q").oninput = function() {
+    clearTimeout(timer);
+    var v = this.value.trim();
+    if (v.length < 2) {
+      if (!v.length) loadArcadeBatch(false);
+      return;
+    }
+    timer = setTimeout(function() {
+      var loggedMap = {};
+      films.forEach(function(f) { loggedMap[f.tid] = 1; });
+      api("search/movie", { q: v }).then(function(d) {
+        arcade.items = (d.results || []).filter(function(m) { return !loggedMap[m.id]; }).slice(0, 16);
+        arcade.cursor = 0;
+        arcade.statusMsg = 'Search results for "' + v + '" (Press ↓ or Esc to navigate grid)';
+        renderArcadeGrid();
+      }).catch(function() {
+        arcade.statusMsg = "Search isn't working right now.";
+        renderArcadeGrid();
+      });
+    }, 300);
+  };
+}
 
 function openDetail(id){
  $("panel").innerHTML='<p class="dim">Loading…</p>';show(false);
@@ -720,7 +1030,7 @@ function openDetail(id){
    '<div class="meta">'+(cur.director?"Directed by "+esc(cur.director):"")+(cur.writer?"<br>Written by "+esc(cur.writer):"")+'</div>'+
    '<p class="over">'+esc((m.overview||"").slice(0,320))+'</p>'+
    '<div class="links"><div><small>TMDB</small>'+(cur.score||"—")+'</div><a href="https://www.imdb.com/find/?q='+qs+'" target="_blank" rel="noopener"><small>IMDb</small>Open</a><a href="https://letterboxd.com/search/'+qs+'/" target="_blank" rel="noopener"><small>Letterboxd</small>Open</a><a href="https://www.google.com/search?q='+qs+'+moctale" target="_blank" rel="noopener"><small>Moctale</small>Search</a></div>'+
-   '<div class="acts">'+(logged?'<button class="ghost" data-act="remove">Remove from my log</button>':'<button class="btn" data-act="log">Log it</button>')+'<button class="ghost" data-act="close">Close</button></div></div></div>'
+   '<div class="acts">'+(logged?'<button class="ghost" data-act="remove">Remove from my log</button>':'<button class="btn" data-act="log">Log it</button>')+(arcade.returnToArcade?'<button class="ghost" onclick="openSearch(true)">← Back to Arcade</button>':'')+'<button class="ghost" data-act="close">Close</button></div></div></div>'
  }).catch(function(){$("panel").innerHTML='<p>Couldn’t load that film.</p><div class="acts"><button class="ghost" data-act="close">Close</button></div>'})}
 
 document.addEventListener("click",function(e){
@@ -750,12 +1060,6 @@ document.addEventListener("click",function(e){
  if(t.closest("[data-authmode]")){authMode=authMode==="in"?"up":"in";drawAuth("");return}
  if(t.closest("[data-signout]")){signOut();return}
  
- if(t.closest("[data-dnashare]")){exportDnaStory();return}
- var dz=t.closest("[data-dnazoom]");
- if(dz){dnaState.zoom=dz.dataset.dnazoom==="in"?Math.min(4.5,dnaState.zoom*1.25):Math.max(0.25,dnaState.zoom*0.8);render(true);return}
- if(t.closest("[data-dnareset]")){dnaState.zoom=1;dnaState.panX=0;dnaState.panY=0;dnaState.highlightRoot=null;render(true);return}
- if(t.closest("[data-dnalist]")){dnaState.listMode=!dnaState.listMode;render(true);return}
- if(t.closest("[data-dnaclearhl]")){dnaState.highlightRoot=null;render(true);return}
  var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v)goView(v.dataset.v);return}
  var p=t.closest("[data-p]");if(p){period=p.dataset.p;render(true);return}
  var c=t.closest("[data-c]");if(c){ex.country=c.dataset.c;if(ex.genre)loadExplore(true);else render(true);return}
@@ -767,8 +1071,136 @@ document.addEventListener("click",function(e){
  var a=t.closest("[data-act]");
  if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();cur.v=3;films.push(cur);save();cuCache.key="";hide();loadRows();render(true)}
   else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();cuCache.key="";cuState.selected=null;hide();loadRows();render(true)}return}
+ var acard=t.closest("[data-arcidx]");if(acard){var aidx=+acard.dataset.arcidx;if(arcade.cursor===aidx)arcadeInstantLog(aidx);else{arcade.cursor=aidx;renderArcadeGrid()}return}
  var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
-document.addEventListener("keydown",function(e){if(e.key==="Escape")hide()});
+
+/* ---- Global Keyboard Shortcuts ---- */
+function openShortcutsModal() {
+  var items = [
+    [["/", "K"], "Open Quick-Log Arcade"],
+    [["W A S D"], "Move cursor in Arcade"],
+    [["Space"], "Instant-log + feed similar"],
+    [["L-Shift"], "Inspect film details in Arcade"],
+    [["R"], "Refresh Arcade genre batch"],
+    [["1"], "Home"],
+    [["2"], "Explore genres"],
+    [["3"], "Cinematic Universes"],
+    [["4"], "Me (Profile & Stats)"],
+    [["C"], "Cinemography"],
+    [["M"], "Switch today's mood / avatar"],
+    [["L"], "Toggle Constellation / List view"],
+    [["+", "="], "Zoom in (Constellation)"],
+    [["-"], "Zoom out (Constellation)"],
+    [["0"], "Reset map zoom & pan"],
+    [["←", "→"], "Pan map or scroll rows"],
+    [["?"], "Keyboard shortcuts"],
+    [["Esc"], "Close modal / Dismiss"]
+  ];
+  $("panel").innerHTML = '<h2>Keyboard shortcuts</h2><p class="dim" style="margin:-6px 0 12px;font-size:14px">Navigate Fourth Wall hands-free anywhere outside text inputs.</p>' +
+    '<div class="kbd-grid">' + items.map(function(it) {
+      return '<div class="kbd-row"><span>' + esc(it[1]) + '</span><span class="kbd-keys">' +
+        it[0].map(function(k) { return '<kbd class="kbd">' + esc(k) + '</kbd>'; }).join("") + '</span></div>';
+    }).join("") + '</div>' +
+    '<div class="acts"><button class="btn" data-act="close">Got it</button></div>';
+  show(false);
+}
+
+document.addEventListener("keydown", function(e) {
+  var ovOn = $("ov").classList.contains("on");
+  var inArcade = ovOn && !!$("arc-grid");
+  var activeEl = document.activeElement;
+  var inSearchInput = activeEl && activeEl.id === "q";
+
+  if (inArcade && inSearchInput) {
+    if (e.key === "Escape" || e.key === "ArrowDown") {
+      e.preventDefault();
+      activeEl.blur();
+      renderArcadeGrid();
+    }
+    return;
+  }
+
+  if (e.key === "Escape") {
+    if (ovOn) { hide(); return; }
+    if (view === "universes" && cuState.selected) { cuState.selected = null; render(true); return; }
+    if (view === "explore" && ex.genre) { ex.genre = null; ex.sub = null; render(true); return; }
+    return;
+  }
+  if (document.body.classList.contains("locked")) return;
+  var tag = (e.target && e.target.tagName) || "";
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target && e.target.isContentEditable)) return;
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+
+  var k = e.key, kl = k.toLowerCase();
+
+  if (inArcade) {
+    var cols = arcadeCols(), total = arcade.items.length;
+    if (k === "/") { e.preventDefault(); var qi = $("q"); if (qi) qi.focus(); return; }
+    if (kl === "r") { e.preventDefault(); loadArcadeBatch(true); return; }
+    if (kl === "w" || k === "ArrowUp") {
+      e.preventDefault();
+      if (total) { arcade.cursor = Math.max(0, arcade.cursor - cols); renderArcadeGrid(); }
+      return;
+    }
+    if (kl === "s" || k === "ArrowDown") {
+      e.preventDefault();
+      if (total) { arcade.cursor = Math.min(total - 1, arcade.cursor + cols); renderArcadeGrid(); }
+      return;
+    }
+    if (kl === "a" || k === "ArrowLeft") {
+      e.preventDefault();
+      if (total) { arcade.cursor = Math.max(0, arcade.cursor - 1); renderArcadeGrid(); }
+      return;
+    }
+    if (kl === "d" || k === "ArrowRight") {
+      e.preventDefault();
+      if (total) { arcade.cursor = Math.min(total - 1, arcade.cursor + 1); renderArcadeGrid(); }
+      return;
+    }
+    if (e.code === "ShiftLeft" || (k === "Shift" && e.location === 1)) {
+      e.preventDefault();
+      if (arcade.items[arcade.cursor]) {
+        arcade.returnToArcade = true;
+        openDetail(arcade.items[arcade.cursor].id);
+      }
+      return;
+    }
+    if (k === " " || e.code === "Space") {
+      e.preventDefault();
+      arcadeInstantLog(arcade.cursor);
+      return;
+    }
+    return;
+  }
+
+  if (k === "?" || (k === "/" && e.shiftKey)) { e.preventDefault(); openShortcutsModal(); return; }
+  if (k === "/" || kl === "k") { e.preventDefault(); openSearch(); return; }
+  if (ovOn) return;
+
+  if (k === "1") { e.preventDefault(); if (view !== "home") goView("home"); return; }
+  if (k === "2") { e.preventDefault(); if (view !== "explore") goView("explore"); return; }
+  if (k === "3") { e.preventDefault(); if (view !== "universes") goView("universes"); return; }
+  if (k === "4") { e.preventDefault(); if (view !== "me") goView("me"); return; }
+  if (kl === "c") { e.preventDefault(); if (view !== "cinemography") goView("cinemography"); return; }
+  if (kl === "m") { e.preventDefault(); openAvatarPicker(); return; }
+
+  if (view === "universes") {
+    if (kl === "l") { e.preventDefault(); cuState.listMode = !cuState.listMode; render(true); return; }
+    if (k === "+" || k === "=") { e.preventDefault(); cuState.zoom = Math.min(4, cuState.zoom * 1.25); drawConstellation(); return; }
+    if (k === "-" || k === "_") { e.preventDefault(); cuState.zoom = Math.max(0.3, cuState.zoom * 0.8); drawConstellation(); return; }
+    if (k === "0") { e.preventDefault(); cuState.zoom = 1; cuState.panX = 0; cuState.panY = 0; cuState.selected = null; render(true); return; }
+    if (k === "ArrowLeft") { e.preventDefault(); cuState.panX += 48; drawConstellation(); return; }
+    if (k === "ArrowRight") { e.preventDefault(); cuState.panX -= 48; drawConstellation(); return; }
+    if (k === "ArrowUp") { e.preventDefault(); cuState.panY += 48; drawConstellation(); return; }
+    if (k === "ArrowDown") { e.preventDefault(); cuState.panY -= 48; drawConstellation(); return; }
+  } else if (view === "home") {
+    if (k === "ArrowRight" || k === "ArrowLeft") {
+      var tr = document.querySelector(".row-track");
+      if (tr) { tr.scrollBy({ left: k === "ArrowRight" ? 340 : -340, behavior: "smooth" }); }
+    }
+  }
+});
+
 (function(){var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}var a=accts();if(ss&&a[ss])start(ss);else{paint();showAuth()}})();
 
 /* ---- Cinematic Universes, Constellation Map, JARVIS Dashboard & Cinemography ---- */
@@ -1221,8 +1653,98 @@ function universesHTML() {
     if (!films.length) h += '<div class="cu-empty"><div class="cu-seed"></div><p class="dim" style="margin:0">Log your first film to ignite the first star in your observatory.</p></div>';
     h += '</div>';
   }
+  h += liveEntertainmentHTML();
   h += '</div>';
   return h;
+}
+
+/* ---- 3. Universes Page: Live Entertainment & Upcoming Releases Flash Cards ---- */
+var liveFeed = {
+  items: [],
+  lastFetched: 0,
+  loading: false,
+  timerId: null,
+  tickId: null
+};
+var LIVE_REFRESH_MS = 30 * 60 * 1000;
+
+function formatLiveCountdown() {
+  if (!liveFeed.lastFetched) return "Syncing feed…";
+  var rem = Math.max(0, LIVE_REFRESH_MS - (Date.now() - liveFeed.lastFetched));
+  var mins = Math.ceil(rem / 60000);
+  var ts = new Date(liveFeed.lastFetched).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  return "Updated " + ts + " · Next refresh in " + mins + "m";
+}
+
+function liveEntertainmentHTML() {
+  var cards = liveFeed.items.length
+    ? liveFeed.items.map(function(item) {
+        var yr = item.release_date ? item.release_date : "TBA";
+        var isUp = item._kind === "Upcoming Release";
+        return '<button type="button" class="flash-card" data-id="' + item.id + '">' +
+          (item.poster_path ? '<img loading="lazy" alt="" src="' + img(item.poster_path, "w185") + '">' : '<div class="f-ph"></div>') +
+          '<div style="min-width:0;flex:1"><span class="flash-pill' + (isUp ? ' up' : '') + '">' + esc(item._kind) + '</span>' +
+          '<span class="flash-title">' + esc(item.title) + '</span>' +
+          '<div class="flash-meta">Release: ' + esc(yr) + (item.vote_average ? ' · ★ ' + item.vote_average.toFixed(1) : '') + '</div>' +
+          '<div class="flash-meta" style="margin-top:4px">' + esc((item.overview || "Tap to inspect release details & credits.").slice(0, 74)) + '…</div></div></button>';
+      }).join("")
+    : '<p class="dim" style="margin:6px 0;font-size:13px">' + (liveFeed.loading ? "Fetching upcoming theatrical releases & trending entertainment…" : "Tap Refresh to load live releases.") + '</p>';
+
+  return '<section class="glass live-feed" aria-label="Live Entertainment and Upcoming Releases">' +
+    '<div class="live-head"><div><div class="cu-eyebrow"><i class="live-dot"></i>Live Entertainment & Upcoming Releases</div>' +
+    '<div class="dim" id="live-ts" style="font-size:12px;margin-top:3px">' + esc(formatLiveCountdown()) + '</div></div>' +
+    '<button type="button" class="ghost" onclick="refreshLiveFeed(true)" style="padding:6px 14px;font-size:13px">↻ Refresh now</button></div>' +
+    '<div class="live-strip" id="live-strip">' + cards + '</div></section>';
+}
+
+function refreshLiveFeed(force) {
+  if (liveFeed.loading) return;
+  if (!force && liveFeed.lastFetched && (Date.now() - liveFeed.lastFetched) < LIVE_REFRESH_MS && liveFeed.items.length) return;
+  liveFeed.loading = true;
+  var tsEl = $("live-ts");
+  if (tsEl) tsEl.textContent = "Refreshing live entertainment feed…";
+
+  Promise.all([
+    api("movie/upcoming", { page: 1 }).catch(function() { return { results: [] }; }),
+    api("trending/movie/day", { page: 1 }).catch(function() { return { results: [] }; })
+  ]).then(function(res) {
+    var seen = {}, merged = [], t = today();
+    (res[0].results || []).forEach(function(m) {
+      if (m && m.id && !seen[m.id] && (!m.release_date || m.release_date >= t)) {
+        seen[m.id] = 1; m._kind = "Upcoming Release"; merged.push(m);
+      }
+    });
+    (res[1].results || []).forEach(function(m) {
+      if (m && m.id && !seen[m.id]) {
+        seen[m.id] = 1; m._kind = "Trending Headline"; merged.push(m);
+      }
+    });
+    if (!merged.length) {
+      (res[0].results || []).forEach(function(m) {
+        if (m && m.id && !seen[m.id]) { seen[m.id] = 1; m._kind = "Upcoming Release"; merged.push(m); }
+      });
+    }
+    liveFeed.items = merged.slice(0, 14);
+    liveFeed.lastFetched = Date.now();
+    liveFeed.loading = false;
+    if (view === "universes" && $("live-strip")) render(true);
+  }).catch(function() {
+    liveFeed.loading = false;
+    if (tsEl) tsEl.textContent = formatLiveCountdown();
+  });
+}
+
+function ensureLiveFeedLoop() {
+  refreshLiveFeed(false);
+  if (!liveFeed.timerId) {
+    liveFeed.timerId = setInterval(function() { refreshLiveFeed(true); }, LIVE_REFRESH_MS);
+  }
+  if (!liveFeed.tickId) {
+    liveFeed.tickId = setInterval(function() {
+      var tsEl = $("live-ts");
+      if (tsEl && view === "universes") tsEl.textContent = formatLiveCountdown();
+    }, 30000);
+  }
 }
 
 function bindUniverseEvents() {
