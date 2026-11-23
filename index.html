@@ -216,7 +216,7 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .dna-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
 .dna-prog{height:3px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden;margin-bottom:4px}
 .dna-prog i{display:block;height:100%;background:linear-gradient(90deg,hsl(var(--h) 92% 62%),hsl(var(--h2) 92% 62%));transition:width .25s ease}
-.dna-stage{position:relative;height:76vh;min-height:560px;max-height:940px;overflow:hidden;padding:0;background:radial-gradient(ellipse at 50% 48%,rgba(115,45,145,.22),transparent 58%),radial-gradient(ellipse at 15% 12%,rgba(190,45,75,.16),transparent 48%),rgba(8,7,17,.72)}
+.dna-stage{position:relative;height:82vh;min-height:680px;max-height:1120px;overflow:hidden;padding:0;background:radial-gradient(ellipse at 50% 48%,rgba(164,67,220,.24),transparent 64%),radial-gradient(ellipse at 12% 12%,rgba(240,48,94,.19),transparent 52%),radial-gradient(ellipse at 86% 78%,rgba(25,185,210,.16),transparent 48%),radial-gradient(ellipse at 48% 55%,rgba(255,255,255,.035),transparent 70%),rgba(5,5,13,.94)}
 .dna-canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
 .dna-canvas.dragging{cursor:grabbing}
 .dna-hud-tl{position:absolute;left:14px;top:14px;display:flex;flex-direction:column;gap:8px;z-index:2;pointer-events:none}
@@ -238,15 +238,15 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .dna-chip{background:rgba(255,255,255,.07);border:1px solid var(--edge);border-radius:999px;padding:6px 12px;font-size:13px}
 .dna-chip:hover{background:rgba(255,255,255,.16)}
 
-.dna-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(300px,.75fr);gap:16px;align-items:stretch}
+.dna-layout{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(440px,.92fr);gap:22px;align-items:stretch}
 .dna-main{min-width:0;display:flex;flex-direction:column;gap:12px}
-.dna-profile{padding:22px;display:flex;flex-direction:column;gap:15px;min-width:0;background:linear-gradient(145deg,rgba(255,255,255,.095),rgba(255,255,255,.035))}
+.dna-profile{padding:32px 32px;display:flex;flex-direction:column;gap:22px;min-width:0;background:linear-gradient(145deg,rgba(255,255,255,.105),rgba(255,255,255,.045));border-color:rgba(255,255,255,.16)}
 .dna-eyebrow{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:rgba(225,197,255,.82);font-weight:700}
 .dna-profile h2{font-size:clamp(25px,3vw,38px);line-height:1.02;letter-spacing:-.035em}
 .dna-mantra{font:italic 500 16px/1.5 "Bricolage Grotesque",sans-serif;color:#e3c7ff}
-.dna-copy{font-size:14px;line-height:1.72;color:rgba(243,241,250,.78)}
-.dna-insight{border-top:1px solid rgba(255,255,255,.12);padding-top:12px}
-.dna-insight b{display:block;font:700 11px "Bricolage Grotesque",sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#e8d5ff;margin-bottom:5px}
+.dna-copy{font-size:15px;line-height:1.88;color:rgba(246,242,251,.86);max-width:68ch;margin:8px 0 0}
+.dna-insight{border-top:1px solid rgba(255,255,255,.12);padding-top:19px}
+.dna-insight b{display:block;font:700 11px "Bricolage Grotesque",sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#e8d5ff;margin-bottom:8px}
 .dna-tags{display:flex;flex-wrap:wrap;gap:7px}
 .dna-tag{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.055);border-radius:999px;padding:6px 10px;font-size:11px;color:rgba(250,245,255,.86)}
 .dna-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -256,13 +256,13 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .dna-subgenres{padding:15px 17px}
 .dna-subgenres h3{font-size:13px;margin-bottom:10px}
 .dna-tools{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}
-.dna-share{background:linear-gradient(110deg,#e9c5ff,#d8a4ff 55%,#ffc2a2);color:#1a1022;border:0;font-weight:800}
-.dna-share:hover{filter:brightness(1.08)}
+.dna-share{background:transparent;color:rgba(248,242,255,.78);border:1px solid rgba(255,255,255,.14);font-weight:500;box-shadow:none;padding:9px 14px;letter-spacing:.01em}
+.dna-share:hover{background:rgba(255,255,255,.055);border-color:rgba(255,255,255,.24);color:#fff}
 .dna-key{display:flex;gap:10px;flex-wrap:wrap;font-size:10px;color:var(--dim)}
 .dna-key span{display:inline-flex;align-items:center;gap:5px}
 .dna-key i{width:7px;height:7px;border-radius:50%;display:inline-block}
-@media(max-width:1000px){.dna-layout{grid-template-columns:1fr}.dna-profile{display:grid;grid-template-columns:1fr 1fr;align-items:start}.dna-profile .dna-profile-intro{grid-row:span 2}.dna-stage{height:68vh}}
-@media(max-width:620px){.dna-profile{display:flex;padding:17px}.dna-stage{height:64vh;min-height:420px}.dna-stats{grid-template-columns:repeat(3,1fr)}.dna-tools{align-items:flex-start}.dna-share{width:100%}}
+@media(max-width:1100px){.dna-layout{grid-template-columns:1fr}.dna-profile{display:grid;grid-template-columns:1fr 1fr;align-items:start}.dna-profile .dna-profile-intro{grid-row:span 2}.dna-stage{height:72vh}}
+@media(max-width:620px){.dna-profile{display:flex;padding:21px;gap:18px}.dna-stage{height:66vh;min-height:460px}.dna-stats{grid-template-columns:repeat(3,1fr)}.dna-tools{align-items:flex-start}.dna-share{width:auto}.dna-copy{font-size:14px;line-height:1.8}}
 @media (max-width:620px){
   .dna-stage{height:64vh;min-height:420px}
   .dna-hud-br{width:96px;height:72px}
@@ -933,9 +933,9 @@ function buildDnaModel() {
     if (f.country) countryFreq[f.country] = (countryFreq[f.country] || 0) + 1;
   });
 
-  var stepY = 58;
-  var twistStep = 0.62;
-  var radius = 64;
+  var stepY = 82;
+  var twistStep = 0.58;
+  var radius = 112;
   var nodes = [];
   var strandA = [];
   var strandB = [];
@@ -987,7 +987,7 @@ function buildDnaModel() {
     var anchor = arr[Math.floor(arr.length / 2)];
     var side = branches.length % 2 === 0 ? 1 : -1;
     var thick = arr.length >= 3 ? Math.min(8, 3.2 + arr.length * 0.75) : 2.1;
-    var len = Math.min(230, 85 + arr.length * 24);
+    var len = Math.min(520, 210 + arr.length * 58);
     var endX = side * (radius + len);
     var endY = anchor.y - 26;
     branches.push({
@@ -1013,7 +1013,7 @@ function buildDnaModel() {
     if (arr.length < 2) return;
     var anchor = arr[0];
     var side = branches.length % 2 === 0 ? 1 : -1;
-    var len = Math.min(180, 72 + arr.length * 16);
+    var len = Math.min(420, 165 + arr.length * 42);
     branches.push({
       type: "country",
       label: cname(co) + " cinema",
@@ -1117,15 +1117,17 @@ function buildDnaModel() {
           if (nr.id === rid) nr.sharedCount = reg.nodeIndices.length;
         });
       });
+      var hubSide = (sharedRoots.length % 2 === 0) ? -1 : 1;
+      var hubSpread = 210 + (sharedRoots.length % 7) * 72 + Math.min(260, reg.nodeIndices.length * 22);
       sharedRoots.push({
         id: rid,
         label: reg.label,
         kind: reg.kind,
         count: reg.nodeIndices.length,
-        mx: sumX / reg.nodeIndices.length,
+        mx: hubSide * hubSpread,
         my: sumY / reg.nodeIndices.length,
-        points: reg.nodeIndices.map(function(ni) {
-          return { x: nodes[ni].x, y: nodes[ni].y + 10, hue: nodes[ni].hue };
+        points: reg.nodeIndices.map(function(ni, pointIndex) {
+          return { x: nodes[ni].x + hubSide * (28 + (pointIndex % 3) * 16), y: nodes[ni].y + 10, hue: nodes[ni].hue };
         })
       });
     }
@@ -1134,7 +1136,7 @@ function buildDnaModel() {
   sharedRoots.forEach(function(sr, si){
     if(sr.count < 3) return;
     var side = si % 2 === 0 ? -1 : 1;
-    var len = Math.min(155, 58 + sr.count * 17);
+    var len = Math.min(340, 125 + sr.count * 38);
     var hueByKind = {actor:335,writer:278,composer:42,theme:188};
     branches.push({type:sr.kind,label:sr.label.split(" ").pop()+" ×"+sr.count,fullLabel:sr.label,count:sr.count,thick:Math.min(5.5,1.5+sr.count*.55),hue:hueByKind[sr.kind]||sr.points[0].hue,startX:sr.mx,startY:sr.my,ctrlX:sr.mx+side*len*.55,ctrlY:sr.my-34,endX:sr.mx+side*len,endY:sr.my-12,nodes:[]});
   });
@@ -1242,6 +1244,91 @@ function drawDnaCanvas() {
   drawStrand(model.strandA, hl ? 0.25 : 0.68);
   drawStrand(model.strandB, hl ? 0.25 : 0.52);
 
+  // Organic neural field: deterministic dendrites radiate from each film and
+  // split into smaller synaptic twigs. The canvas keeps this lightweight.
+  for (var ni = 0; ni < model.nodes.length; ni++) {
+    var nn = model.nodes[ni];
+    if (!inView(0, nn.y, 360)) continue;
+    var nrng = seededRand((nn.film.tid || ni + 17) * 97 + ni * 13);
+    var nodeDim = hl && !nodeActive(nn) ? 0.10 : 1;
+    var arms = Math.min(12, 8 + (nn.roots.length > 2 ? 4 : 0));
+    for (var ai = 0; ai < arms; ai++) {
+      var sideN = (ai % 2 === 0 ? -1 : 1);
+      var reach = 520 + nrng() * 1050 + Math.min(220, nn.roots.length * 22);
+      var bend = (nrng() - .5) * 210;
+      var rise = (nrng() - .5) * 190;
+      var sx0 = sideN * (78 + nrng() * 52);
+      var ex0 = sideN * reach;
+      var ey0 = nn.y + rise + (ai - 2) * 12;
+      var mx0 = sideN * (reach * (.42 + nrng() * .16));
+      var my0 = nn.y + bend;
+      if (!inView(ex0 * .5, (nn.y + ey0) * .5, 180)) continue;
+      var hueN = (nn.hue + ai * 19 + (ni % 3) * 7) % 360;
+      ctx.save();
+      ctx.globalAlpha = nodeDim * (0.30 + nrng() * .20);
+      ctx.strokeStyle = "hsla(" + hueN + ",95%,68%,.9)";
+      ctx.lineWidth = (1.05 + nrng() * 1.1) * dpr * Math.min(1.25, Math.max(.72, z));
+      ctx.beginPath();
+      ctx.moveTo(cx + sx0 * z * dpr, cy + nn.y * z * dpr);
+      ctx.bezierCurveTo(cx + mx0 * z * dpr, cy + my0 * z * dpr, cx + ex0 * .78 * z * dpr, cy + (ey0 - rise * .22) * z * dpr, cx + ex0 * z * dpr, cy + ey0 * z * dpr);
+      ctx.stroke();
+      // Side dendrites make the silhouette feel like a neural culture, not a chart.
+      for (var ti = 0; ti < 5; ti++) {
+        var t = .22 + ti * .14;
+        var tx0 = sx0 + (ex0 - sx0) * t;
+        var ty0 = nn.y + (ey0 - nn.y) * t + Math.sin(t * Math.PI) * bend * .28;
+        var twigSide = nrng() > .5 ? 1 : -1;
+        var twigLen = 48 + nrng() * 118;
+        ctx.globalAlpha = nodeDim * (0.20 + nrng() * .16);
+        ctx.lineWidth = .8 * dpr;
+        ctx.beginPath();
+        ctx.moveTo(cx + tx0 * z * dpr, cy + ty0 * z * dpr);
+        ctx.quadraticCurveTo(cx + (tx0 + twigSide * twigLen * .45) * z * dpr, cy + (ty0 - 28 - nrng() * 55) * z * dpr, cx + (tx0 + twigSide * twigLen) * z * dpr, cy + (ty0 - 52 - nrng() * 78) * z * dpr);
+        ctx.stroke();
+      }
+      var synX = cx + ex0 * z * dpr, synY = cy + ey0 * z * dpr;
+      ctx.globalAlpha = nodeDim * .52;
+      ctx.fillStyle = "hsla(" + hueN + ",100%,76%,.95)";
+      ctx.beginPath(); ctx.arc(synX, synY, Math.max(1.2, 2.1 * z * dpr), 0, Math.PI * 2); ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  // A woven neural mesh: long axons cross between non-adjacent films, with
+  // deterministic offsets so every account gets a stable, recognisable pattern.
+  if (!dnaState.lowDetail) {
+    var hopSet = [2, 3, 5, 7, 9];
+    for (var ci = 0; ci < model.nodes.length; ci++) {
+      var ca = model.nodes[ci];
+      for (var hi = 0; hi < hopSet.length; hi++) {
+        var cj = ci + hopSet[hi];
+        if (cj >= model.nodes.length) continue;
+        var cb = model.nodes[cj];
+        if (!inView(0, (ca.y + cb.y) * .5, 360)) continue;
+        var cSide = ((ci + hi) % 2) ? 1 : -1;
+        var meshHue = (ca.hue * .55 + cb.hue * .45 + hi * 13) % 360;
+        ctx.save();
+        ctx.globalAlpha = hl ? .025 : (.075 + (hi % 3) * .018);
+        ctx.strokeStyle = "hsla(" + meshHue + ",92%,72%,.9)";
+        ctx.lineWidth = (.75 + (hi === 0 ? .35 : 0)) * dpr;
+        ctx.beginPath();
+        ctx.moveTo(cx + cSide * (92 + hi * 15) * z * dpr, cy + ca.y * z * dpr);
+        ctx.bezierCurveTo(cx + cSide * (430 + hi * 90) * z * dpr, cy + (ca.y + 55 + hi * 12) * z * dpr, cx - cSide * (390 + hi * 72) * z * dpr, cy + (cb.y - 48 - hi * 9) * z * dpr, cx - cSide * (88 + hi * 14) * z * dpr, cy + cb.y * z * dpr);
+        ctx.stroke();
+        // Small junctions along the axon make it read as a living synapse web.
+        for (var ji = 1; ji <= 2; ji++) {
+          var jt = ji / 3;
+          var jx = cSide * (92 + hi * 15) * (1-jt) - cSide * (88 + hi * 14) * jt;
+          var jy = ca.y + (cb.y-ca.y)*jt;
+          ctx.globalAlpha = hl ? .04 : .24;
+          ctx.fillStyle = "hsla(" + meshHue + ",100%,78%,.95)";
+          ctx.beginPath(); ctx.arc(cx + jx * z * dpr, cy + jy * z * dpr, Math.max(1.1, 2.1 * z * dpr), 0, Math.PI*2); ctx.fill();
+        }
+        ctx.restore();
+      }
+    }
+  }
+
   for (var b = 0; b < model.branches.length; b++) {
     var br = model.branches[b];
     if (!inView((br.startX + br.endX) * 0.5, (br.startY + br.endY) * 0.5, 180)) continue;
@@ -1275,7 +1362,7 @@ function drawDnaCanvas() {
   }
 
   var hits = [];
-  if (!dnaState.lowDetail && z >= 0.85) {
+  if (!dnaState.lowDetail && z >= 0.25) {
     for (var s = 0; s < model.sharedRoots.length; s++) {
       var sr = model.sharedRoots[s];
       var isSel = hl === sr.id;
@@ -1502,63 +1589,95 @@ function dnaSubgenreData() {
 }
 function dnaTasteProfile() {
   var sub = dnaSubgenreData();
-  var genreCounts = {}, dirCounts = {}, countryCounts = {}, themeCounts = {};
+  var genreCounts = {}, dirCounts = {}, countryCounts = {}, themeCounts = {}, writerCounts = {}, composerCounts = {};
   films.forEach(function(f){
     (f.genres || []).forEach(function(g){genreCounts[g]=(genreCounts[g]||0)+1;});
     if(f.director)dirCounts[f.director]=(dirCounts[f.director]||0)+1;
     if(f.country)countryCounts[f.country]=(countryCounts[f.country]||0)+1;
     (f.keywords||[]).forEach(function(k){var n=typeof k==="string"?k:k.name;if(n)themeCounts[n]=(themeCounts[n]||0)+1;});
+    (f.writers||f.writerCredits||[]).forEach(function(w){var n=typeof w==="string"?w:w.name;if(n)writerCounts[n]=(writerCounts[n]||0)+1;});
+    if(f.writer && !f.writers && !f.writerCredits)writerCounts[f.writer]=(writerCounts[f.writer]||0)+1;
+    if(f.composer&&f.composer.name)composerCounts[f.composer.name]=(composerCounts[f.composer.name]||0)+1;
   });
   function top(map){return Object.keys(map).map(function(k){return {name:k,count:map[k]};}).sort(function(a,b){return b.count-a.count;});}
-  var gs=top(genreCounts), ds=top(dirCounts), cs=top(countryCounts), ts=top(themeCounts);
-  var dominant=sub[0]&&sub[0].count>=2?sub[0].name:(gs[0]?gs[0].name:"Cinema explorer");
-  var second=sub[1]&&sub[1].count>=2?sub[1].name:(gs[1]?gs[1].name:"");
-  var titles={"Psychological horror":"The Psychological Explorer","Supernatural horror":"The Unseen-Seeker","Folk horror":"The Keeper of Old Mysteries","Body horror":"The Form-Breaker","Slasher":"The Anatomy of Fear","Cosmic horror":"The Cosmic Questioner","Surrealist cinema":"The Surrealist Thinker","Neo-noir":"The Shadow Cartographer","Mind-bending sci-fi":"The Reality Questioner","Coming-of-age":"The Humanist Observer","Slow-burn thriller":"The Patient Investigator","Dark comedy":"The Darkly Curious","Existential drama":"The Existential Explorer"};
-  var title=titles[dominant]||("The " + dominant.replace(/\b\w/g,function(c){return c.toUpperCase();}) + " Observer");
-  var lead="Your film history points towards an interest in "+dominant.toLowerCase()+""+(second?" and "+second.toLowerCase():"")+". Across the films you've chosen, this pattern suggests an attraction to stories that explore ideas and emotional tensions rather than relying only on surface-level spectacle.";
-  var narrative="Your watchlist is still taking shape. As you log more films and add richer subgenre details, this portrait will become more specific.";
+  var gs=top(genreCounts), ds=top(dirCounts), cs=top(countryCounts), ts=top(themeCounts), ws=top(writerCounts), ms=top(composerCounts);
   var establishedSub=sub.filter(function(x){return x.count>=2;});
-  if(establishedSub.length){narrative="Your choices lean towards "+establishedSub.slice(0,3).map(function(x){return x.name.toLowerCase();}).join(", ")+(establishedSub.length>3?" and other related modes":"")+". That combination suggests you may enjoy films that build atmosphere, complicate certainty and leave room for interpretation.";}
-  var collaborators=ds.filter(function(x){return x.count>=2;});
-  var contradiction="Your filmography is not one-note. Its less frequent genres and one-off choices matter too: they show where your curiosity moves beyond the strongest pattern.";
-  if(gs.length>1 && gs[0].count-gs[1].count<=Math.max(2,Math.round(films.length*.12))) contradiction="Your taste has more than one centre of gravity. Rather than belonging to a single genre, you move between "+gs[0].name.toLowerCase()+" and "+gs[1].name.toLowerCase()+", creating a more layered cinematic profile.";
-  return {title:title,dominant:dominant,second:second,lead:lead,narrative:narrative,contradiction:contradiction,genres:gs,subgenres:sub,directors:collaborators,countries:cs,themes:ts,films:films.length};
+  var dominant=establishedSub[0]?establishedSub[0].name:(gs[0]?gs[0].name:"Cinema explorer");
+  var second=establishedSub[1]?establishedSub[1].name:(gs[1]?gs[1].name:"");
+  var titles={"Psychological horror":"The Horror Observer","Supernatural horror":"The Unseen-Seeker","Folk horror":"The Keeper of Old Mysteries","Body horror":"The Form-Breaker","Slasher":"The Anatomy of Fear","Cosmic horror":"The Cosmic Questioner","Surrealist cinema":"The Surrealist Thinker","Neo-noir":"The Shadow Cartographer","Mind-bending sci-fi":"The Reality Questioner","Coming-of-age":"The Humanist Observer","Slow-burn thriller":"The Patient Investigator","Dark comedy":"The Darkly Curious","Romantic drama":"The Intimate Observer","Existential drama":"The Existential Explorer"};
+  var title=titles[dominant]||("The "+dominant.replace(/\b\w/g,function(c){return c.toUpperCase();})+" Observer");
+  var subNames=establishedSub.slice(0,4).map(function(x){return x.name.toLowerCase();});
+  var filmExamples=films.slice().sort(function(a,b){return (b.at||0)-(a.at||0);}).slice(0,3).map(function(f){return f.title;});
+  var genreLine=gs.slice(0,3).map(function(x){return x.name+" ("+x.count+")";}).join(", ");
+  var lead="Across "+films.length+" logged films, your clearest recurring thread is "+dominant.toLowerCase()+(second?", with "+second.toLowerCase()+" close behind":"")+". That is more specific than simply saying you like "+(gs[0]?gs[0].name.toLowerCase():"cinema")+": it points to the kind of mood and dramatic pressure you repeatedly choose to spend time with. "+(subNames.length?"The subgenre mix — "+subNames.join(", ")+" — suggests that atmosphere, uncertainty and the inner lives of characters matter to you as much as the events of the plot.":"As your log grows, the subgenre pattern will help distinguish the exact kinds of stories within those broader genres that keep your attention.");
+  var narrative="Your film history leans towards stories that invite interpretation rather than passive viewing. The recurring labels and themes suggest an interest in how a story creates tension: through withheld information, unstable points of view, difficult choices, unusual worlds or relationships under pressure. You may enjoy leaving a film with something to untangle — not because every story needs a twist, but because ambiguity gives you room to form your own reading. This is a description of the viewing patterns in your log, not a claim about your personality outside cinema.";
+  if(subNames.length>1) narrative="The combination of "+subNames.slice(0,3).join(", ")+" gives your taste a particular shape. These subgenres approach tension in different ways, but they often reward close attention: to behaviour, atmosphere, symbolism and the gap between what characters say and what may actually be happening. That suggests you are not only choosing a genre; you are choosing a viewing experience — one that asks you to notice details, sit with uncertainty and keep thinking after the credits.";
+  var recurring=[];
+  if(ds.length)recurring.push("directors such as "+ds.slice(0,4).map(function(x){return x.name+(x.count>1?" ("+x.count+" films)":"");}).join(", "));
+  if(ws.length)recurring.push("writers including "+ws.slice(0,3).map(function(x){return x.name;}).join(", "));
+  if(ms.length)recurring.push("composer "+ms[0].name);
+  var signature=recurring.length?"There are familiar creative voices running through your watch history: "+recurring.join("; ")+". Repeated collaborators can reveal a preference that genre counts miss — a certain rhythm of dialogue, visual restraint, intensity, musical atmosphere or way of building a character. ":"Your creative-collaborator pattern is still taking shape, so the strongest evidence currently comes from the genres and themes in your log. ";
+  if(ts.length)signature+="The keywords that recur most often include "+ts.slice(0,6).map(function(x){return x.name.toLowerCase();}).join(", ")+". ";
+  if(cs.length)signature+="Your most represented cinema origins include "+cs.slice(0,3).map(function(x){return x.name+" ("+x.count+")";}).join(", ")+", adding another layer to the kinds of storytelling you seek out.";
+  var contradiction="A strong taste does not mean a narrow one. The films outside your dominant subgenres are worth keeping in view: they show where your curiosity wanders, and they may be the beginning of a new interest rather than exceptions to explain away. "+(gs.length>1?"Your broader genre spread — "+genreLine+" — suggests there is more than one emotional register in your collection. The contrast between those choices is part of the portrait, not a flaw in its consistency.":"As you log more films from different traditions, this section will become more specific about the contrast between your familiar territory and the films that surprise it.");
+  return {title:title,dominant:dominant,second:second,lead:lead,narrative:narrative,signature:signature,contradiction:contradiction,genres:gs,subgenres:sub,directors:ds,countries:cs,themes:ts,films:films.length,examples:filmExamples};
 }
 function dnaProfileHTML() {
   var p=dnaTasteProfile();
-  if(!films.length)return '<aside class="glass dna-profile"><div class="dna-eyebrow">The mind behind the movies</div><h2>Your cinematic identity is waiting.</h2><p class="dna-copy">Log a few films and Fourth wall will begin identifying your subgenre preferences, recurring themes, favourite collaborators and unexpected turns.</p></aside>';
-  var tags=p.subgenres.slice(0,5).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
-  if(!tags)tags=p.genres.slice(0,5).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
-  var stats='<div class="dna-stats"><div class="dna-stat"><strong>'+p.films+'</strong><span>Films logged</span></div><div class="dna-stat"><strong>'+p.subgenres.length+'</strong><span>Subgenres found</span></div><div class="dna-stat"><strong>'+p.directors.length+'</strong><span>Recurring directors</span></div></div>';
-  var directorLine=p.directors.length?'You return to filmmakers such as '+p.directors.slice(0,3).map(function(x){return x.name;}).join(", ")+'. ':'';
-  var themeLine=p.themes.length?'Recurring keywords include '+p.themes.slice(0,3).map(function(x){return x.name;}).join(", ")+'.':'';
-  return '<aside class="glass dna-profile"><div class="dna-profile-intro"><div class="dna-eyebrow">The mind behind the movies</div><h2>'+esc(p.title)+'</h2><div class="dna-mantra">“Your watchlist is a map of the stories you keep returning to.”</div>'+stats+'</div><div><div class="dna-insight"><b>Your cinematic instincts</b><p class="dna-copy">'+esc(p.lead)+'</p></div><div class="dna-insight"><b>Your storytelling territory</b><p class="dna-copy">'+esc(p.narrative)+'</p></div><div class="dna-insight"><b>Your recurring signatures</b><p class="dna-copy">'+esc(directorLine+themeLine)+'</p></div><div class="dna-insight"><b>Your contradictions</b><p class="dna-copy">'+esc(p.contradiction)+'</p></div></div><div class="dna-insight"><b>Subgenre fingerprints</b><div class="dna-tags">'+tags+'</div><p class="dim" style="font-size:10px;margin:9px 0 0">Inferred from available film keywords and metadata; patterns strengthen as your log grows.</p></div></aside>';
+  if(!films.length)return '<aside class="glass dna-profile"><div class="dna-eyebrow">The mind behind the movies</div><h2>Your cinematic identity is waiting.</h2><p class="dna-copy">Log a few films and Fourth wall will begin noticing the precise subgenres, storytelling rhythms, recurring collaborators and themes that make your film history distinct.</p></aside>';
+  var tags=p.subgenres.slice(0,7).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
+  if(!tags)tags=p.genres.slice(0,7).map(function(x){return '<span class="dna-tag">'+esc(x.name)+' · '+x.count+'</span>';}).join("");
+  var stats='<div class="dna-stats"><div class="dna-stat"><strong>'+p.films+'</strong><span>Films logged</span></div><div class="dna-stat"><strong>'+p.subgenres.length+'</strong><span>Subgenres found</span></div><div class="dna-stat"><strong>'+p.directors.filter(function(x){return x.count>1;}).length+'</strong><span>Returning directors</span></div></div>';
+  return '<aside class="glass dna-profile"><div class="dna-profile-intro"><div class="dna-eyebrow">The mind behind the movies</div><h2>'+esc(p.title)+'</h2><div class="dna-mantra">“Your film history is a map of the stories, moods and ideas you keep returning to.”</div>'+stats+'</div><div class="dna-insight"><b>The pattern beneath your genres</b><p class="dna-copy">'+esc(p.lead)+'</p></div><div class="dna-insight"><b>The kind of storytelling you seek</b><p class="dna-copy">'+esc(p.narrative)+'</p></div><div class="dna-insight"><b>The signatures and contradictions</b><p class="dna-copy">'+esc(p.signature+' '+p.contradiction)+'</p></div><div class="dna-insight"><b>Your subgenre fingerprints</b><div class="dna-tags">'+tags+'</div><p class="dim" style="font-size:11px;line-height:1.6;margin:12px 0 0">This portrait is built from the films and metadata you have logged. It describes patterns in your cinematic taste, not a fixed personality type.</p></div></aside>';
 }
+
 function exportDnaStory() {
   var p=dnaTasteProfile(), model=buildDnaModel(), c=document.createElement("canvas");
-  c.width=1080;c.height=1920;var x=c.getContext("2d");
-  var bg=x.createLinearGradient(0,0,1080,1920);bg.addColorStop(0,"#100713");bg.addColorStop(.48,"#080914");bg.addColorStop(1,"#16091f");x.fillStyle=bg;x.fillRect(0,0,1080,1920);
-  for(var q=0;q<90;q++){var px=(q*197)%1080,py=(q*317)%1920;x.fillStyle="rgba(255,255,255,"+(.12+(q%5)*.035)+")";x.beginPath();x.arc(px,py,(q%3)+1,0,Math.PI*2);x.fill();}
-  var cx=540,top=360,step=42,rad=128;
+  c.width=1080;c.height=1920;
+  var x=c.getContext("2d");
+  var bg=x.createLinearGradient(0,0,1080,1920);bg.addColorStop(0,"#160711");bg.addColorStop(.48,"#080914");bg.addColorStop(1,"#10091d");x.fillStyle=bg;x.fillRect(0,0,1080,1920);
+  var glow=x.createRadialGradient(540,760,20,540,760,760);glow.addColorStop(0,"rgba(150,65,210,.22)");glow.addColorStop(1,"rgba(10,5,18,0)");x.fillStyle=glow;x.fillRect(0,0,1080,1920);
+  for(var q=0;q<180;q++){var px=(q*197)%1080,py=(q*317)%1920;x.fillStyle="rgba(255,255,255,"+(.10+(q%5)*.025)+")";x.beginPath();x.arc(px,py,(q%3)+.7,0,Math.PI*2);x.fill();}
+  var cx=540,top=340,step= Math.min(34,760/Math.max(1,model.nodes.length)),rad=112;
   x.save();x.translate(cx,top);
-  function strand(offset,color){x.beginPath();for(var i=0;i<Math.max(12,model.nodes.length*2);i++){var yy=i*step/2,xx=Math.sin(i*.43+offset)*rad;if(i===0)x.moveTo(xx,yy);else x.lineTo(xx,yy);}x.strokeStyle=color;x.lineWidth=4;x.shadowColor=color;x.shadowBlur=16;x.stroke();x.shadowBlur=0;}
-  strand(0,"rgba(235,195,255,.85)");strand(Math.PI,"rgba(255,171,190,.68)");
-  for(var n=0;n<model.nodes.length;n++){var yy=n*step,xx=Math.sin(n*.43)*rad,hh=model.nodes[n].hue;x.strokeStyle="hsla("+hh+",90%,68%,.9)";x.lineWidth=2.5;x.beginPath();x.moveTo(xx,yy);x.lineTo(-xx,yy);x.stroke();x.fillStyle="hsla("+hh+",100%,75%,.95)";x.beginPath();x.arc(0,yy,5,0,Math.PI*2);x.fill();if(n%3===0){x.strokeStyle="hsla("+hh+",90%,70%,.42)";x.lineWidth=1.5;x.beginPath();x.moveTo(xx,yy);x.quadraticCurveTo(xx*1.7,yy+34,xx*2.1,yy+70);x.stroke();}}
+  // Layered neural branches first, so the luminous helix sits above the network.
+  for(var ni=0;ni<model.nodes.length;ni++){
+    var nn=model.nodes[ni],seed=seededRand((nn.film.tid||ni+1)*97+ni*13);
+    for(var ai=0;ai<10;ai++){
+      var side=ai%2?-1:1,reach=300+seed()*420,ey=ni*step+(seed()-.5)*110;
+      var hueN=(nn.hue+ai*17)%360;
+      x.beginPath();x.moveTo(side*rad*.7,ni*step);
+      x.bezierCurveTo(side*reach*.42,ni*step+(seed()-.5)*130,side*reach*.78,ey-35,side*reach,ey);
+      x.strokeStyle="hsla("+hueN+",95%,68%,.30)";x.lineWidth=1.3;x.stroke();
+      for(var tw=0;tw<3;tw++){var t=.28+tw*.23,tx=side*rad*.7+(side*reach-side*rad*.7)*t,ty=ni*step+(ey-ni*step)*t;x.beginPath();x.moveTo(tx,ty);x.quadraticCurveTo(tx+side*(30+seed()*45),ty-35,tx+side*(70+seed()*65),ty-80);x.strokeStyle="hsla("+hueN+",95%,70%,.22)";x.lineWidth=.8;x.stroke();}
+    }
+  }
+  for(var li=0;li<model.nodes.length;li++){
+    for(var hop=2;hop<=6;hop+=2){if(li+hop>=model.nodes.length)continue;var sideL=li%2?-1:1;x.beginPath();x.moveTo(sideL*rad,li*step);x.bezierCurveTo(sideL*430,li*step+35,-sideL*430,(li+hop)*step-35,-sideL*rad,(li+hop)*step);x.strokeStyle="rgba(190,145,255,.18)";x.lineWidth=1;x.stroke();}
+  }
+  function strand(offset,color){x.beginPath();for(var i=0;i<Math.max(12,model.nodes.length*2);i++){var yy=i*step/2,xx=Math.sin(i*.43+offset)*rad;if(i===0)x.moveTo(xx,yy);else x.lineTo(xx,yy);}x.strokeStyle=color;x.lineWidth=5;x.shadowColor=color;x.shadowBlur=20;x.stroke();x.shadowBlur=0;}
+  strand(0,"rgba(235,195,255,.96)");strand(Math.PI,"rgba(255,171,190,.84)");
+  for(var n=0;n<model.nodes.length;n++){var yy=n*step,xx=Math.sin(n*.43)*rad,hh=model.nodes[n].hue;x.strokeStyle="hsla("+hh+",96%,72%,.95)";x.lineWidth=3;x.beginPath();x.moveTo(xx,yy);x.lineTo(-xx,yy);x.stroke();x.fillStyle="hsla("+hh+",100%,78%,1)";x.beginPath();x.arc(0,yy,6,0,Math.PI*2);x.fill();x.shadowColor="hsla("+hh+",100%,70%,.8)";x.shadowBlur=14;x.fill();x.shadowBlur=0;}
   x.restore();
-  x.textAlign="center";x.fillStyle="#f4eaff";x.font="600 30px Georgia";x.fillText("F O U R T H   W A L L",540,115);
-  x.fillStyle="#cda8f2";x.font="700 19px Arial";x.fillText("YOUR CINEMA DNA",540,190);
-  x.fillStyle="#fff";x.font="800 62px Arial";wrapCanvasText(x,p.title.toUpperCase(),540,1430,900,72);
-  x.fillStyle="#ddc8ed";x.font="italic 27px Georgia";wrapCanvasText(x,p.lead,540,1570,850,42);
-  x.fillStyle="rgba(255,255,255,.78)";x.font="500 22px Arial";x.fillText(p.films+" FILMS  ·  "+p.subgenres.length+" SUBGENRES",540,1780);
+  x.textAlign="center";x.fillStyle="#f4eaff";x.font="600 30px Georgia";x.fillText("F O U R T H   W A L L",540,105);
+  x.fillStyle="#cda8f2";x.font="700 20px Arial";x.fillText("YOUR CINEMA DNA",540,172);
+  x.fillStyle="#fff";x.font="800 58px Arial";wrapCanvasText(x,p.title.toUpperCase(),540,1290,920,68);
+  x.fillStyle="#ddc8ed";x.font="italic 25px Georgia";wrapCanvasText(x,p.lead,540,1430,850,42);
+  x.fillStyle="rgba(255,255,255,.82)";x.font="500 23px Arial";x.fillText(p.films+" FILMS  ·  "+p.subgenres.length+" SUBGENRES",540,1730);
+  var topSubs=p.subgenres.slice(0,3).map(function(v){return v.name;}).join("  ·  ");
+  if(topSubs){x.fillStyle="rgba(226,205,245,.72)";x.font="18px Arial";x.fillText(topSubs.slice(0,72),540,1780);}
   x.fillStyle="#c9b6d8";x.font="18px Arial";x.fillText("DISCOVER YOUR CINEMA DNA  ·  FOURTH WALL",540,1850);
-  var a=document.createElement("a");a.download="fourth-wall-cinema-dna.png";a.href=c.toDataURL("image/png");a.click();
+  function downloadBlob(blob){var url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="my-cinema-dna.jpg";document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},1500);}
+  if(c.toBlob){c.toBlob(function(blob){if(blob&&blob.type==="image/jpeg")downloadBlob(blob);else{var data=c.toDataURL("image/jpeg",.94),a=document.createElement("a");a.href=data;a.download="my-cinema-dna.jpg";a.click();}},"image/jpeg",.94);}
+  else {var a=document.createElement("a");a.href=c.toDataURL("image/jpeg",.94);a.download="my-cinema-dna.jpg";a.click();}
 }
+
 function wrapCanvasText(ctx,text,cx,y,maxWidth,lineHeight){var words=String(text).split(" "),line="",lines=[];for(var i=0;i<words.length;i++){var test=line?line+" "+words[i]:words[i];if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=words[i];}else line=test;}if(line)lines.push(line);for(var j=0;j<lines.length&&j<4;j++)ctx.fillText(lines[j],cx,y+j*lineHeight);}
 
 function dnaHTML() {
   var h = '<div class="dna-wrap">';
   h += '<div class="dna-head"><div><div class="dna-eyebrow">A living map of your film taste</div><h1 class="pg" style="margin:0">Cinema DNA</h1></div>';
-  h += '<div class="dna-tools"><button class="ghost" data-dnalist="1" aria-pressed="' + (dnaState.listMode ? "true" : "false") + '">' + (dnaState.listMode ? "Helix view" : "List view") + '</button><button class="ghost" data-dnareset="1">Reset view</button><button class="ghost dna-share" data-dnashare="1">↓ Save DNA Story</button></div></div>';
+  h += '<div class="dna-tools"><button class="ghost" data-dnalist="1" aria-pressed="' + (dnaState.listMode ? "true" : "false") + '">' + (dnaState.listMode ? "Helix view" : "List view") + '</button><button class="ghost" data-dnareset="1">Reset view</button><button class="ghost dna-share" data-dnashare="1">↓ Save JPEG</button></div></div>';
   h += '<div class="dna-prog"><i id="dna-prog-bar" style="width:0%"></i></div><div class="dim" id="dna-prog-lbl" style="font-size:12px;min-height:12px">' + esc(dnaState.backfillMsg || "") + '</div>';
   if (dnaState.listMode) {
     var byDir = {};
@@ -1568,7 +1687,7 @@ function dnaHTML() {
     else Object.keys(byDir).forEach(function(dir) { h += '<div class="dna-grp"><h3>' + esc(dir) + ' (' + byDir[dir].length + ')</h3><div class="dna-grp-items">'; byDir[dir].forEach(function(f) { h += '<button class="dna-chip" data-id="' + f.tid + '">' + esc(f.title) + (f.year ? " (" + f.year + ")" : "") + '</button>'; }); h += '</div></div>'; });
     h += '</div>';
   } else {
-    h += '<div class="dna-layout"><div class="dna-main"><div class="glass dna-stage"><canvas id="dna-canvas" class="dna-canvas" aria-label="Interactive Cinema DNA helix"></canvas>';
+    h += '<div class="dna-layout"><div class="dna-main"><div class="glass dna-stage"><canvas id="dna-canvas" class="dna-canvas" aria-label="Interactive Cinema DNA neural network showing relationships between films, people and themes"></canvas>';
     h += '<div class="dna-hud-tl"><span class="dna-badge" id="dna-zoom-badge">Zoom ' + dnaState.zoom.toFixed(1) + 'x · ' + films.length + (films.length === 1 ? " film" : " films") + '</span>';
     if (dnaState.highlightRoot) h += '<span class="dna-badge" id="dna-hl-badge">Connection: ' + esc(dnaState.highlightRoot.split(":").slice(1).join(":")) + '</span>';
     h += '</div><div class="dna-hud-tr"><button class="dna-zbtn" type="button" data-dnazoom="in" aria-label="Zoom in">+</button><button class="dna-zbtn" type="button" data-dnazoom="out" aria-label="Zoom out">−</button></div><div class="dna-hud-bl">';
