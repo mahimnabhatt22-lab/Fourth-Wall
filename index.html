@@ -115,6 +115,7 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 .avatar-trigger:hover{border-color:rgba(255,255,255,.45);transform:scale(1.04)}
 
 /* Sidebar & Sealed Glass Gas-Chamber Pipe */
+.side .who b{display:block;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .side{position:fixed;left:20px;top:20px;bottom:100px;width:182px;padding:18px 16px;display:none;flex-direction:column;gap:14px;overflow:auto;z-index:2;scrollbar-width:none}
 .side::-webkit-scrollbar{display:none}
 @media (min-width:1001px){.side{display:flex}}
@@ -559,7 +560,8 @@ function hue(g){return G[g]!==undefined?G[g]:230}
 function mix(hs,ws){var x=0,y=0;hs.forEach(function(h,i){var a=h*Math.PI/180,w=ws?ws[i]:1;x+=w*Math.cos(a);y+=w*Math.sin(a)});return(Math.atan2(y,x)*180/Math.PI+360)%360}
 function filmHue(f){return mix(f.genres.slice(0,3).map(hue),[1,.8,.5])}
 function img(p,s){return p?"https://image.tmdb.org/t/p/"+s+p:""}
-function api(p,o){var q="p="+encodeURIComponent(p);for(var k in o||{})if(o[k]!==undefined&&o[k]!=="")q+="&"+k+"="+encodeURIComponent(o[k]);return fetch("/api/tmdb?"+q).then(function(r){if(!r.ok)throw new Error(r.status);return r.json()})}
+function apiWarn(m){var b=document.getElementById("apibar");if(!b){b=document.createElement("div");b.id="apibar";b.className="glass";b.setAttribute("role","alert");b.style.cssText="position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:50;padding:10px 18px;max-width:92vw;font-size:14px;cursor:pointer";b.onclick=function(){b.remove()};document.body.appendChild(b)}b.textContent="Movie data isn’t loading"+(m?": "+m:"")+" (tap to dismiss)"}
+function api(p,o){var q="p="+encodeURIComponent(p);for(var k in o||{})if(o[k]!==undefined&&o[k]!=="")q+="&"+k+"="+encodeURIComponent(o[k]);return fetch("/api/tmdb?"+q).then(function(r){if(!r.ok)return r.json().catch(function(){return{}}).then(function(j){apiWarn(j&&j.error);throw new Error(r.status)});return r.json()})}
 function pc(id,title,poster){return'<button class="pc glass" data-id="'+id+'">'+(poster?'<img loading="lazy" decoding="async" alt="" src="'+img(poster,"w342")+'">':'<div class="ph">'+esc(title)+'</div>')+'<span>'+esc(title)+'</span></button>'}
 function carouselRow(innerHTML){
  return'<div class="row-shell"><div class="row-track">'+innerHTML+'</div><button class="row-next" type="button" data-rownext="1" aria-label="Scroll row right"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg></button></div>'}
@@ -1177,7 +1179,7 @@ document.addEventListener("click",function(e){
 /* ---- Global Keyboard Shortcuts ---- */
 function openShortcutsModal() {
   var items = [
-    [["Tab", "/", "K"], "Toggle Quick-Log Arcade"],
+    [["Tab", "+", "/", "K"], "Toggle Quick-Log Arcade (+ zooms the map on Universes)"],
     [["W A S D"], "Move cursor in Arcade"],
     [["Space"], "Instant-log + feed similar"],
     [["L-Shift"], "Inspect film details in Arcade"],
@@ -1232,6 +1234,7 @@ document.addEventListener("keydown", function(e) {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
 
   if (e.key === "Tab") {
+    if (ovOn && !inArcade) return;
     e.preventDefault();
     if (inArcade) hide();
     else openSearch();
@@ -1242,6 +1245,7 @@ document.addEventListener("keydown", function(e) {
 
   if (inArcade) {
     var cols = arcadeCols(), total = arcade.items.length;
+    if (kl === "k" || k === "+" || k === "=") { e.preventDefault(); hide(); return; }
     if (k === "/") { e.preventDefault(); var qi = $("q"); if (qi) qi.focus(); return; }
     if (kl === "r") { e.preventDefault(); loadArcadeBatch(true); return; }
     if (kl === "w" || k === "ArrowUp") {
@@ -1281,7 +1285,7 @@ document.addEventListener("keydown", function(e) {
   }
 
   if (k === "?" || (k === "/" && e.shiftKey)) { e.preventDefault(); openShortcutsModal(); return; }
-  if (k === "/" || kl === "k") { e.preventDefault(); openSearch(); return; }
+  if (k === "/" || kl === "k" || (k === "+" && view !== "universes")) { e.preventDefault(); openSearch(); return; }
   if (ovOn) return;
 
   if (k === "1") { e.preventDefault(); if (view !== "home") goView("home"); return; }
@@ -1320,23 +1324,6 @@ document.addEventListener("keydown", function(e) {
     }
   }
 });
-
-(function(){
- try{
-  var sp=new URLSearchParams(window.location.search).get("p");
-  if(sp){
-   var dec=JSON.parse(decodeURIComponent(escape(atob(sp))));
-   if(dec&&dec.name){ppState.shared=dec;ppState.open=true;ppState.page=0;}
-  }
- }catch(e){}
- var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}
- var a=accts();
- if(ss&&a[ss]){start(ss);if(ppState.shared)goView("universes");}
- else if(ppState.shared){
-  user="guest_viewer";films=[];document.body.classList.remove("locked");$("auth").classList.remove("on");goView("universes");
- }
- else{paint();showAuth()}
-})();
 
 /* ---- Cinematic Universes, Constellation Map, Universe Index & Cinemography ---- */
 var UNIVERSE_CATALOG = [
@@ -2083,7 +2070,7 @@ function liveEntertainmentHTML() {
 
 function refreshLiveFeed(force) {
   if (liveFeed.loading) return;
-  if (!force && liveFeed.lastFetched && (Date.now() - liveFeed.lastFetched) < LIVE_REFRESH_MS && liveFeed.items.length) return;
+  if (!force && liveFeed.lastFetched && (Date.now() - liveFeed.lastFetched) < (liveFeed.items.length ? LIVE_REFRESH_MS : 60000)) return;
   liveFeed.loading = true;
   var tsEl = $("live-ts");
   if (tsEl) tsEl.textContent = "Refreshing live entertainment feed…";
@@ -2108,10 +2095,11 @@ function refreshLiveFeed(force) {
         if (m && m.id && !seen[m.id]) { seen[m.id] = 1; m._kind = "Upcoming Release"; merged.push(m); }
       });
     }
+    var changed = merged.slice(0, 14).length !== liveFeed.items.length;
     liveFeed.items = merged.slice(0, 14);
     liveFeed.lastFetched = Date.now();
     liveFeed.loading = false;
-    if (view === "universes" && $("live-strip")) render(true);
+    if (view === "universes" && $("live-strip") && (changed || force)) render(true);
   }).catch(function() {
     liveFeed.loading = false;
     if (tsEl) tsEl.textContent = formatLiveCountdown();
@@ -2348,6 +2336,26 @@ function exportCinemographyStory() {
     setTimeout(function() { URL.revokeObjectURL(url); }, 1500);
   }, "image/png");
 }
+
+
+/* ---- App start (runs after every declaration above has executed) ---- */
+(function(){
+ try{
+  var sp=new URLSearchParams(window.location.search).get("p");
+  if(sp){
+   var dec=JSON.parse(decodeURIComponent(escape(atob(sp))));
+   if(dec&&dec.name){ppState.shared=dec;ppState.open=true;ppState.page=0;}
+  }
+ }catch(e){}
+ var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}
+ var a=accts();
+ if(ss&&a[ss]){start(ss);if(ppState.shared)goView("universes");}
+ else if(ppState.shared){
+  user="guest_viewer";films=[];document.body.classList.remove("locked");$("auth").classList.remove("on");goView("universes");
+ }
+ else{paint();showAuth()}
+})();
+
 
 </script>
 </body>
