@@ -434,6 +434,47 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .gc-row{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:13px}
 .gc-dot{width:10px;height:10px;border-radius:50%;flex:none}
 
+
+/* Fourth Wall mobile refinement — glass Arcade, compact controls, draggable + */
+@media (max-width:680px){
+  body{font-size:14px}
+  main{padding:calc(14px + env(safe-area-inset-top,0px)) 14px 104px}
+  .brand{font-size:clamp(25px,8vw,36px);letter-spacing:.1em;margin-bottom:18px}
+  .pg{font-size:27px;margin-bottom:12px}
+  .sec{font-size:17px;margin:6px 0 9px}
+  .glass{border-radius:19px}
+  .dock{gap:2px;padding:4px;bottom:calc(10px + env(safe-area-inset-bottom,0px));max-width:calc(100vw - 24px)}
+  .dock button{padding:8px 12px;font-size:12px;white-space:nowrap}
+  .fab{width:50px;height:50px;font-size:28px;right:18px;bottom:calc(78px + env(safe-area-inset-bottom,0px));touch-action:none;cursor:grab}
+  .fab.dragging{cursor:grabbing;transition:none!important;box-shadow:0 12px 34px rgba(0,0,0,.55),0 0 28px hsl(var(--h) 90% 55%/.45)}
+  .pc{flex-basis:118px;width:118px}
+  .pc span{font-size:12px;padding:7px 8px 9px}
+  .stat{padding:15px 16px}.num{font-size:27px}
+  .seg{margin-bottom:14px}.seg button{padding:6px 12px;font-size:12px}
+  #ov:has(#arc-grid){padding:calc(7px + env(safe-area-inset-top,0px)) 7px calc(7px + env(safe-area-inset-bottom,0px));backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px)}
+  #panel:has(#arc-grid){padding:13px 12px 12px;border-radius:23px;background:rgba(14,14,24,.72);backdrop-filter:blur(28px) saturate(165%);-webkit-backdrop-filter:blur(28px) saturate(165%);border:1px solid rgba(255,255,255,.19);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 22px 65px rgba(0,0,0,.5)}
+  #panel:has(#arc-grid) .arc-top{margin-bottom:8px}
+  #panel:has(#arc-grid) .arc-top h2{font-size:18px}
+  #panel:has(#arc-grid) .arc-top button{font-size:11px;padding:7px 9px;min-height:32px}
+  #panel:has(#arc-grid) #q{font-size:14px;padding:10px 12px;margin-bottom:8px}
+  #panel:has(#arc-grid) .arc-status{font-size:10px;min-height:14px;margin-bottom:5px}
+  #panel:has(#arc-grid) .arc-grid{padding:3px 0 6px;overflow:visible;perspective:900px;touch-action:pan-y}
+  #panel:has(#arc-grid) .arc-card.active{width:min(68vw,286px);border:1px solid rgba(255,255,255,.23);border-radius:19px;background:rgba(255,255,255,.075);backdrop-filter:blur(22px) saturate(155%);-webkit-backdrop-filter:blur(22px) saturate(155%);box-shadow:inset 0 1px 0 rgba(255,255,255,.2),0 20px 48px rgba(0,0,0,.48);overflow:hidden;will-change:transform,filter,opacity}
+  #panel:has(#arc-grid) .arc-card.active img,#panel:has(#arc-grid) .arc-card.active .ph{height:auto;max-height:calc(100% - 38px);aspect-ratio:2/3;object-fit:cover;background:rgba(0,0,0,.18)}
+  #panel:has(#arc-grid) .arc-card .arc-t{font-size:12px;padding:9px 10px;line-height:1.2}
+  .arc-mobile-actions{gap:7px;padding-top:8px}
+  .arc-mobile-actions button{min-height:40px;border-radius:12px;font-size:11px;padding:7px 5px}
+  .arc-mobile-actions [data-arc-log]{background:rgba(255,255,255,.92);color:#090912}
+  .arc-card.arc-dragging{transition:none!important}
+  .arc-card.arc-moving{transform:translate3d(var(--swipe-x,0),0,0) rotate(var(--swipe-tilt,0));filter:blur(var(--swipe-blur,0)) saturate(.82);opacity:.9;}
+  .arc-card.arc-exit-right{transform:translate3d(125vw,-12px,0) rotate(17deg);filter:blur(9px);opacity:0;transition:transform .19s cubic-bezier(.2,.75,.25,1),filter .19s ease,opacity .19s ease!important}
+  .arc-card.arc-exit-left{transform:translate3d(-125vw,-12px,0) rotate(-17deg);filter:blur(9px);opacity:0;transition:transform .19s cubic-bezier(.2,.75,.25,1),filter .19s ease,opacity .19s ease!important}
+  .arc-badge{font-size:9px;top:6px;left:6px}
+}
+.fab-arrive{animation:fabArrive .42s cubic-bezier(.2,.8,.2,1)}
+@keyframes fabArrive{0%{transform:translate(-8px,12px) scale(.94);opacity:.35;filter:blur(8px)}65%{transform:translate(0,0) scale(1.025);opacity:1;filter:blur(0)}100%{transform:none}}
+@media(prefers-reduced-motion:reduce){.arc-card.arc-exit-left,.arc-card.arc-exit-right,.fab-arrive{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body class="locked">
@@ -1101,22 +1142,48 @@ function bindArcadeSwipe() {
   var grid = $("arc-grid");
   if (!grid || grid.dataset.swipeBound) return;
   grid.dataset.swipeBound = "1";
-  var sx = 0, sy = 0, tracking = false;
+  var sx = 0, sy = 0, tracking = false, card = null;
   grid.addEventListener("pointerdown", function(e) {
     if (e.pointerType === "mouse") return;
+    card = e.target.closest(".arc-card.active");
+    if (!card) return;
     sx = e.clientX; sy = e.clientY; tracking = true;
+    card.classList.remove("arc-exit-left", "arc-exit-right", "arc-dragging");
+    card.classList.add("arc-dragging");
+  });
+  grid.addEventListener("pointermove", function(e) {
+    if (!tracking || !card) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) > Math.abs(dy) * 0.8) {
+      card.style.setProperty("--swipe-x", dx + "px");
+      card.style.setProperty("--swipe-tilt", (dx * .035) + "deg");
+      card.style.setProperty("--swipe-blur", Math.min(7, Math.abs(dx) / 24) + "px");
+      card.classList.add("arc-moving");
+    }
   });
   grid.addEventListener("pointerup", function(e) {
     if (!tracking) return;
     tracking = false;
-    var dx = e.clientX - sx, dy = e.clientY - sy;
-    if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy, outgoing = card;
+    if (Math.abs(dx) < 72 || Math.abs(dx) < Math.abs(dy) * 1.25) {
+      if (outgoing) { outgoing.classList.remove("arc-dragging", "arc-moving"); outgoing.style.removeProperty("--swipe-x"); outgoing.style.removeProperty("--swipe-tilt"); outgoing.style.removeProperty("--swipe-blur"); }
+      card = null; return;
+    }
     arcade.suppressCardClick = true;
-    if (dx > 0) arcadeInstantLog(arcade.cursor);
-    else arcadeSkipCurrent();
-    setTimeout(function(){ arcade.suppressCardClick = false; }, 350);
+    if (outgoing) outgoing.classList.add(dx > 0 ? "arc-exit-right" : "arc-exit-left");
+    setTimeout(function() {
+      if (dx > 0) arcadeInstantLog(arcade.cursor);
+      else arcadeSkipCurrent();
+      if (outgoing) { outgoing.classList.remove("arc-dragging", "arc-moving", "arc-exit-left", "arc-exit-right"); outgoing.style.removeProperty("--swipe-x"); outgoing.style.removeProperty("--swipe-tilt"); outgoing.style.removeProperty("--swipe-blur"); }
+      arcade.suppressCardClick = false;
+    }, 190);
+    card = null;
   });
-  grid.addEventListener("pointercancel", function(){ tracking = false; });
+  grid.addEventListener("pointercancel", function(){
+    tracking = false;
+    if (card) { card.classList.remove("arc-dragging", "arc-moving"); card.style.removeProperty("--swipe-x"); card.style.removeProperty("--swipe-tilt"); card.style.removeProperty("--swipe-blur"); }
+    card = null;
+  });
 }
 
 function loadArcadeBatch(forceRandomGenre) {
@@ -1303,10 +1370,22 @@ function openDetail(id){
    '<div class="acts">'+(logged?'<button class="ghost" data-act="remove">Remove from my log</button>':'<button class="btn" data-act="log">Log it</button>')+(arcade.returnToArcade?'<button class="ghost" onclick="openSearch(true)">← Back to Arcade</button>':'')+'<button class="ghost" data-act="close">Close</button></div></div></div>'
  }).catch(function(){$("panel").innerHTML='<p>Couldn’t load that film.</p><div class="acts"><button class="ghost" data-act="close">Close</button></div>'})}
 
+// Mobile + button: draggable, remembers its position for this browser.
+(function bindDraggableFab(){
+ var fab=$("logbtn"); if(!fab || fab.dataset.dragReady) return; fab.dataset.dragReady="1";
+ var sx=0,sy=0,left=0,top=0,moved=false,dragging=false;
+ try { var saved=JSON.parse(localStorage.getItem("fwFabPosition")||"null"); if(saved && window.matchMedia("(max-width:680px)").matches){fab.style.left=saved.left+"px";fab.style.top=saved.top+"px";fab.style.right="auto";fab.style.bottom="auto";} } catch(e){}
+ fab.addEventListener("pointerdown",function(e){if(e.pointerType==="mouse" && window.matchMedia("(max-width:680px)").matches===false)return;var r=fab.getBoundingClientRect();sx=e.clientX;sy=e.clientY;left=r.left;top=r.top;moved=false;dragging=true;fab.setPointerCapture&&fab.setPointerCapture(e.pointerId);});
+ fab.addEventListener("pointermove",function(e){if(!dragging)return;var dx=e.clientX-sx,dy=e.clientY-sy;if(Math.abs(dx)+Math.abs(dy)>7)moved=true;if(!moved)return;fab.classList.add("dragging");var x=Math.max(8,Math.min(window.innerWidth-fab.offsetWidth-8,left+dx));var y=Math.max(8,Math.min(window.innerHeight-fab.offsetHeight-8,top+dy));fab.style.left=x+"px";fab.style.top=y+"px";fab.style.right="auto";fab.style.bottom="auto";});
+ fab.addEventListener("pointerup",function(){if(!dragging)return;dragging=false;fab.classList.remove("dragging");if(moved){try{var r=fab.getBoundingClientRect();localStorage.setItem("fwFabPosition",JSON.stringify({left:Math.round(r.left),top:Math.round(r.top)}));}catch(e){}fab.dataset.justDragged="1";setTimeout(function(){fab.dataset.justDragged="";},180);}});
+ fab.addEventListener("pointercancel",function(){dragging=false;fab.classList.remove("dragging");});
+})();
+
 document.addEventListener("click",function(e){
  var t=e.target;
+ if(t.closest("#logbtn") && $("logbtn").dataset.justDragged==="1"){e.preventDefault();return;}
  if(t.id==="ov"||t.closest("[data-act=close]")){hide();return}
- if(t.closest("#logbtn")){if($("ov").classList.contains("on")&&$("logbtn").classList.contains("open"))hide();else openSearch();return}
+ if(t.closest("#logbtn")){if($("ov").classList.contains("on")&&$("logbtn").classList.contains("open"))hide();else{openSearch();var g=$("arc-grid");if(g){g.classList.remove("fab-arrive");void g.offsetWidth;g.classList.add("fab-arrive");}}return}
  if(t.closest("[data-avopen]")){openAvatarPicker();return}
  var rn=t.closest("[data-rownext]");
  if(rn){
