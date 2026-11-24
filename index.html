@@ -314,6 +314,25 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .arc-card.logged-flash{animation:arcPop .38s ease}
 @keyframes arcPop{0%{transform:scale(1.05);box-shadow:0 0 0 6px rgba(82,183,136,.75)}100%{transform:scale(.94);opacity:.2}}
 .arc-badge{position:absolute;top:7px;left:7px;padding:3px 7px;border-radius:999px;background:rgba(10,10,18,.82);border:1px solid rgba(255,255,255,.22);font:700 10px/1 "Bricolage Grotesque",sans-serif;color:#e9d5ff}
+.arc-mobile-actions{display:none}
+@media (max-width:680px){
+  #ov:has(#arc-grid){padding:calc(8px + env(safe-area-inset-top,0px)) 8px calc(8px + env(safe-area-inset-bottom,0px))}
+  #panel:has(#arc-grid){max-width:none;height:100%;max-height:100%;padding:17px 14px;border-radius:22px;display:flex;flex-direction:column}
+  #panel:has(#arc-grid) .arc-top{align-items:center;margin-bottom:12px}
+  #panel:has(#arc-grid) .arc-top h2{font-size:21px;margin:0}
+  #panel:has(#arc-grid) .arc-hud{display:none}
+  #panel:has(#arc-grid) #q{font-size:16px;margin-bottom:10px}
+  #panel:has(#arc-grid) .arc-status{font-size:11px;margin:0 0 8px}
+  #panel:has(#arc-grid) .arc-grid{display:flex;flex:1;min-height:0;max-height:none;overflow:hidden;justify-content:center;align-items:center;padding:0;touch-action:pan-y}
+  #panel:has(#arc-grid) .arc-card{display:none}
+  #panel:has(#arc-grid) .arc-card.active{display:flex;flex-direction:column;width:min(72vw,330px);max-height:100%;flex:none;border-radius:18px;transform:none;box-shadow:0 18px 50px rgba(0,0,0,.45)}
+  #panel:has(#arc-grid) .arc-card.active img,#panel:has(#arc-grid) .arc-card.active .ph{width:100%;height:auto;max-height:calc(100% - 44px);aspect-ratio:2/3;object-fit:contain;background:rgba(0,0,0,.22)}
+  #panel:has(#arc-grid) .arc-card .arc-t{font-size:14px;padding:11px 12px;white-space:normal;text-align:center}
+  .arc-mobile-actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;padding-top:12px}
+  .arc-mobile-actions button{min-height:48px;border-radius:14px;border:1px solid var(--edge);background:rgba(255,255,255,.08);font-weight:700;font-size:13px}
+  .arc-mobile-actions [data-arc-skip]{border-color:rgba(255,255,255,.2)}
+  .arc-mobile-actions [data-arc-log]{background:#f3f1fa;color:#090912;border-color:#f3f1fa}
+}
 
 /* 3. Universes Page: Live Entertainment & Upcoming Releases Flash Cards */
 .live-feed{padding:18px 20px;margin-top:4px}
@@ -1025,7 +1044,8 @@ var arcade = {
   seenIds: {},
   statusMsg: "",
   busyLog: false,
-  returnToArcade: false
+  returnToArcade: false,
+  suppressCardClick: false
 };
 
 function arcadeCols() {
@@ -1034,6 +1054,7 @@ function arcadeCols() {
 
 function renderArcadeGrid() {
   var grid = $("arc-grid"), st = $("arc-status");
+  var mobile = window.matchMedia && window.matchMedia("(max-width: 680px)").matches;
   if (st) st.innerHTML = '<span>' + esc(arcade.statusMsg || ("Batch: " + arcade.genreName)) + '</span><span class="dim">' + arcade.items.length + ' ready</span>';
   if (!grid) return;
   if (!arcade.items.length) {
@@ -1041,16 +1062,61 @@ function renderArcadeGrid() {
     return;
   }
   if (arcade.cursor >= arcade.items.length) arcade.cursor = Math.max(0, arcade.items.length - 1);
-  grid.innerHTML = arcade.items.map(function(m, idx) {
-    var act = idx === arcade.cursor ? " active" : "";
+  var list = mobile ? [arcade.items[arcade.cursor]] : arcade.items;
+  grid.innerHTML = list.map(function(m, idx) {
+    var actualIdx = mobile ? arcade.cursor : idx;
+    var act = actualIdx === arcade.cursor ? " active" : "";
     var yr = m.release_date ? " (" + m.release_date.slice(0, 4) + ")" : "";
     var badge = m._tag ? '<span class="arc-badge">' + esc(m._tag) + '</span>' : "";
-    return '<button type="button" class="arc-card' + act + '" data-arcidx="' + idx + '">' + badge +
-      (m.poster_path ? '<img loading="lazy" decoding="async" alt="" src="' + img(m.poster_path, "w342") + '">' : '<div class="ph">' + esc(m.title) + '</div>') +
+    return '<button type="button" class="arc-card' + act + '" data-arcidx="' + actualIdx + '" aria-label="' + esc(m.title) + '">' + badge +
+      (m.poster_path ? '<img loading="lazy" decoding="async" alt="" src="' + img(m.poster_path, "w500") + '">' : '<div class="ph">' + esc(m.title) + '</div>') +
       '<span class="arc-t">' + esc(m.title + yr) + '</span></button>';
   }).join("");
+  if (mobile) {
+    var actions = document.getElementById("arc-mobile-actions");
+    if (actions) actions.innerHTML = '<button type="button" data-arc-skip>← Skip</button><button type="button" data-arc-log>Log film</button><button type="button" data-arc-details>Details</button>';
+  }
   var activeEl = grid.querySelector(".arc-card.active");
-  if (activeEl) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  if (activeEl && !mobile) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
+}
+
+function arcadeSkipCurrent() {
+  if (!arcade.items.length || arcade.busyLog) return;
+  arcade.cursor++;
+  if (arcade.cursor >= arcade.items.length) {
+    arcade.statusMsg = "You've reached the end of this batch. Refresh for more films.";
+    arcade.cursor = Math.max(0, arcade.items.length - 1);
+  } else arcade.statusMsg = "Skipped — here's the next film.";
+  renderArcadeGrid();
+}
+
+function arcadeShowCurrentDetails() {
+  var m = arcade.items[arcade.cursor];
+  if (!m) return;
+  arcade.returnToArcade = true;
+  openDetail(m.id);
+}
+
+function bindArcadeSwipe() {
+  var grid = $("arc-grid");
+  if (!grid || grid.dataset.swipeBound) return;
+  grid.dataset.swipeBound = "1";
+  var sx = 0, sy = 0, tracking = false;
+  grid.addEventListener("pointerdown", function(e) {
+    if (e.pointerType === "mouse") return;
+    sx = e.clientX; sy = e.clientY; tracking = true;
+  });
+  grid.addEventListener("pointerup", function(e) {
+    if (!tracking) return;
+    tracking = false;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if (Math.abs(dx) < 65 || Math.abs(dx) < Math.abs(dy) * 1.25) return;
+    arcade.suppressCardClick = true;
+    if (dx > 0) arcadeInstantLog(arcade.cursor);
+    else arcadeSkipCurrent();
+    setTimeout(function(){ arcade.suppressCardClick = false; }, 350);
+  });
+  grid.addEventListener("pointercancel", function(){ tracking = false; });
 }
 
 function loadArcadeBatch(forceRandomGenre) {
@@ -1099,8 +1165,6 @@ function arcadeInstantLog(idx) {
   }
   arcade.busyLog = true;
   arcade.statusMsg = "Logging " + m.title + " & feeding recommendations…";
-  var cardEl = document.querySelector('[data-arcidx="' + idx + '"]');
-  if (cardEl) cardEl.classList.add("logged-flash");
   renderArcadeGrid();
 
   api("movie/" + m.id).then(function(full) {
@@ -1190,8 +1254,10 @@ function openSearch(preserveState) {
     '</div>' +
     '<input id="q" class="inp" style="margin-bottom:10px" placeholder="Press / or click here to search by title (Esc / ↓ returns to grid)…" autocomplete="off" aria-label="Search for a film">' +
     '<div id="arc-status" class="arc-status"></div>' +
-    '<div id="arc-grid" class="arc-grid"></div>';
+    '<div id="arc-grid" class="arc-grid"></div>' +
+    '<div id="arc-mobile-actions" class="arc-mobile-actions"></div>';
   show(true);
+  bindArcadeSwipe();
 
   if (preserveState && arcade.items.length) {
     renderArcadeGrid();
@@ -1276,7 +1342,10 @@ document.addEventListener("click",function(e){
  if(a&&cur){if(a.dataset.act==="log"){cur.date=today();cur.at=Date.now();cur.v=3;films.push(cur);save();cuCache.key="";hide();loadRows();render(true)}
   else if(a.dataset.act==="remove"){films=films.filter(function(f){return f.tid!==cur.tid});save();cuCache.key="";cuState.selected=null;hide();loadRows();render(true)}return}
  var dm=t.closest("[data-dirmodal]");if(dm){openDirectorModal(dm.dataset.dirmodal);return}
- var acard=t.closest("[data-arcidx]");if(acard){var aidx=+acard.dataset.arcidx;if(arcade.cursor===aidx)arcadeInstantLog(aidx);else{arcade.cursor=aidx;renderArcadeGrid()}return}
+ if(t.closest("[data-arc-skip]")){arcadeSkipCurrent();return}
+ if(t.closest("[data-arc-log]")){arcadeInstantLog(arcade.cursor);return}
+ if(t.closest("[data-arc-details]")){arcadeShowCurrentDetails();return}
+ var acard=t.closest("[data-arcidx]");if(acard){if(arcade.suppressCardClick)return;var aidx=+acard.dataset.arcidx;if(window.matchMedia&&window.matchMedia("(max-width: 680px)").matches){arcadeShowCurrentDetails()}else if(arcade.cursor===aidx)arcadeInstantLog(aidx);else{arcade.cursor=aidx;renderArcadeGrid()}return}
  var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
 
 /* ---- Global Keyboard Shortcuts ---- */
