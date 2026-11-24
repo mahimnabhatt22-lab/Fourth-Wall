@@ -495,7 +495,14 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
   #panel:has(#arc-grid) .arc-card .arc-t,#panel:has(#arc-grid) .arc-card .arc-badge{display:none!important}
   #panel:has(#arc-grid) .arc-card.arc-moving{transform:translate(-50%,-50%) translate3d(var(--swipe-x,0),0,0) rotateY(var(--arc-angle)) rotateZ(var(--swipe-tilt,0));filter:blur(var(--swipe-blur,0))}
   #panel:has(#arc-grid) .arc-card.arc-exit-right{transform:translate(-50%,-50%) translate3d(125vw,-12px,0) rotateZ(17deg);opacity:0;filter:blur(9px)}
-  #panel:has(#arc-grid) .arc-card.arc-exit-left{transform:translate(-50%,-50%) translate3d(-125vw,-12px,0) rotateZ(-17deg);opacity:0;filter:blur(9px)}
+  #panel:has(#arc-grid) .arc-card.arc-exit-left{transform:translate(-50%,-50%) translate3d(-125vw,-12px,0) rotateZ(-17deg)!important;opacity:0;filter:blur(9px)}
+  /* Hard-centre every poster on the viewport; keep the cylinder centred on narrow Android screens. */
+  #panel:has(#arc-grid) .arc-grid{left:0!important;right:0!important;margin:0!important;width:100vw!important;max-width:100vw!important;}
+  #panel:has(#arc-grid) .arc-card{left:50%!important;top:50%!important;margin:0!important;transform:translate3d(-50%,-50%,0) rotateY(var(--arc-angle)) translateZ(170px)!important;}
+  #panel:has(#arc-grid) .arc-card.active{left:50%!important;top:50%!important;transform:translate3d(-50%,-50%,0) rotateY(0deg) translateZ(0)!important;}
+  #panel:has(#arc-grid) .arc-card.arc-moving{transform:translate3d(calc(-50% + var(--swipe-x,0px)),-50%,0) rotateY(var(--arc-angle)) rotateZ(var(--swipe-tilt,0deg))!important;}
+  #panel:has(#arc-grid) .arc-card.arc-exit-right{transform:translate3d(125vw,-50%,0) rotateZ(17deg)!important;}
+  #panel:has(#arc-grid) .arc-card.arc-exit-left{transform:translate3d(-125vw,-50%,0) rotateZ(-17deg)!important;}
 }
 
 </style>
