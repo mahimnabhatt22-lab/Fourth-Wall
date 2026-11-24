@@ -328,7 +328,7 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 .flash-title{display:block;font:800 14px/1.2 "Bricolage Grotesque",sans-serif;margin-bottom:4px}
 .flash-meta{font-size:11px;color:var(--dim);line-height:1.35}
 
-/* 1. Taste Meter Overflow Fix & Clickable Trigger */
+/* Taste Meter Overflow Fix & Clickable Trigger */
 .side h3.tm-trigger{cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:color .2s ease}
 .side h3.tm-trigger:hover{color:#fff}
 .meter.tm-clickable{cursor:pointer}
@@ -735,7 +735,7 @@ function render(noAnim){
   h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
   h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
   h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
- app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>';if(view==="universes"){bindUniverseEvents();drawPassportMiniConstellation();backfillFilmDetails();ensureLiveFeedLoop()}}
+ app.innerHTML='<div class="view-stage'+(noAnim?" still":"")+'">'+h+'</div>';if(view==="universes"){bindUniverseEvents();requestAnimationFrame(function(){drawConstellation();drawPassportMiniConstellation();});backfillFilmDetails();ensureLiveFeedLoop()}}
 
 
 /* ---- Custom avatar creator ---- */
