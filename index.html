@@ -1,1774 +1,1948 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fourth wall — Personal Cinematic Observatory</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700;800&family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --h:268;--h2:312;
-  --bg:#090811;--ink:#f5f2fc;--dim:rgba(235,230,250,.64);
-  --glass:rgba(255,255,255,.06);--line:rgba(255,255,255,.15);
-}
-*{box-sizing:border-box}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:400 15px/1.55 "Plus Jakarta Sans",system-ui,sans-serif;overflow-x:hidden}
-body.locked{overflow:hidden}
-button,input,select{font:inherit;color:inherit}
-button{cursor:pointer;border:0;background:none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FOURTH WALL — Your Living Film Taste & Universe Observatory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg-void: #07060d;
+      --bg-card: #12111a;
+      --bg-elevated: #1b1926;
+      --bg-input: #e9eff8;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-glow: rgba(217, 70, 239, 0.45);
+      --text-primary: #f5f3ff;
+      --text-secondary: #9d99b3;
+      --accent-magenta: #d946ef;
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #22d3ee;
+      --accent-gold: #f59e0b;
+      --aura-color: #d946ef;
+      --aura-1: rgba(217, 70, 239, 0.22);
+      --aura-2: rgba(139, 92, 246, 0.16);
+    }
 
-/* Dynamic Atmospheric Sky Aura */
-.sky{position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:
-    radial-gradient(65vw 55vh at 18% 12%,hsla(var(--h),88%,48%,.24),transparent 65%),
-    radial-gradient(60vw 50vh at 84% 78%,hsla(var(--h2),85%,46%,.2),transparent 65%),
-    linear-gradient(180deg,#0b0a16 0%,#07060d 100%);
-  transition:background 1.1s ease}
-.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.035;background-image:radial-gradient(#fff 1px,transparent 0);background-size:24px 24px}
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-void);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background-image:
+        radial-gradient(circle at 18% 12%, var(--aura-1), transparent 46%),
+        radial-gradient(circle at 84% 85%, var(--aura-2), transparent 52%);
+      transition: background-image 0.7s ease;
+    }
 
-/* Glass Surfaces */
-.glass{background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid var(--line);border-radius:22px;box-shadow:0 20px 50px rgba(0,0,0,.42),inset 0 1px 0 rgba(255,255,255,.14)}
-.btn{padding:10px 18px;border-radius:999px;font-weight:600;font-size:13.5px;background:linear-gradient(135deg,hsl(var(--h) 85% 60%),hsl(var(--h2) 82% 56%));color:#fff;box-shadow:0 8px 24px hsla(var(--h),85%,50%,.34);transition:transform .2s ease,box-shadow .2s ease}
-.btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px hsla(var(--h),85%,55%,.46)}
-.ghost{padding:9px 16px;border-radius:999px;font-weight:500;font-size:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);transition:background .2s ease,border-color .2s ease}
-.ghost:hover{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32)}
-.dim{color:var(--dim)}
-.num{font-family:"Bricolage Grotesque",sans-serif;font-weight:800}
+    /* ================= SHARED VIEW BANNER ================= */
+    #shared-banner {
+      display: none;
+      background: linear-gradient(90deg, rgba(34, 211, 238, 0.16), rgba(217, 70, 239, 0.16));
+      border-bottom: 1px solid rgba(34, 211, 238, 0.35);
+      padding: 10px 24px;
+      font-size: 13px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    #shared-banner.visible { display: flex; }
 
-/* App Shell & Left Taste Meter Sidebar */
-.app{position:relative;z-index:2;display:grid;grid-template-columns:192px 1fr;min-height:100vh}
-@media(max-width:860px){.app{grid-template-columns:1fr}}
-.side{position:sticky;top:0;height:100vh;padding:20px 14px 96px;border-right:1px solid rgba(255,255,255,.1);background:rgba(10,9,20,.65);backdrop-filter:blur(20px);display:flex;flex-direction:column;gap:12px}
-@media(max-width:860px){.side{position:static;height:auto;border-right:0;border-bottom:1px solid rgba(255,255,255,.1);padding:14px}}
-.side h3{margin:4px 0 0;font:700 11px/1 "Bricolage Grotesque",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
-.who{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);text-align:left}
-.who:hover{background:rgba(255,255,255,.12)}
-.who b{display:block;font-size:13.5px;line-height:1.2}
-.who small{color:var(--dim);font-size:11.5px}
-.face{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;background:radial-gradient(circle at 30% 30%,hsla(var(--h),85%,62%,.38),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.22);overflow:hidden}
-.face svg{width:24px;height:24px}
-.face img{width:100%;height:100%;object-fit:cover}
-.face.sil{background:radial-gradient(circle at 50% 36%,rgba(255,255,255,.22) 0 22%,transparent 24%),radial-gradient(circle at 50% 92%,rgba(255,255,255,.18) 0 40%,transparent 42%),rgba(255,255,255,.06)}
+    /* ================= AUTH SCREEN ================= */
+    #auth-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: #14131c;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 24px;
+      padding: 36px 32px;
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.75);
+    }
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+    .brand-logo {
+      width: 44px;
+      height: 36px;
+      border: 1px solid rgba(245, 215, 160, 0.45);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(245, 158, 11, 0.25), transparent);
+      color: #f5d7a0;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+    .brand-title {
+      font-family: 'Cinzel', serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: #ffffff;
+    }
+    .brand-sub {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+    .auth-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: #1d1c26;
+      padding: 4px;
+      border-radius: 999px;
+      margin-bottom: 22px;
+    }
+    .auth-tab {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .auth-tab.active {
+      background: #46444f;
+      color: #ffffff;
+    }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .auth-input {
+      width: 100%;
+      height: 48px;
+      border-radius: 12px;
+      border: 2px solid transparent;
+      background: var(--bg-input);
+      color: #111827;
+      font-size: 14.5px;
+      font-weight: 500;
+      padding: 0 16px;
+      outline: none;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .auth-input:focus {
+      border-color: var(--accent-magenta);
+      box-shadow: 0 0 0 3px rgba(217, 70, 239, 0.25);
+    }
+    .auth-error {
+      display: none;
+      background: rgba(239, 68, 68, 0.14);
+      border: 1px solid rgba(239, 68, 68, 0.45);
+      color: #fca5a5;
+      font-size: 13px;
+      padding: 10px 14px;
+      border-radius: 10px;
+    }
+    .auth-error.visible { display: block; }
+    .btn-primary {
+      height: 48px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      box-shadow: 0 8px 25px rgba(217, 70, 239, 0.35);
+      transition: transform 0.15s ease, filter 0.15s ease;
+    }
+    .btn-primary:hover { filter: brightness(1.08); transform: translateY(-1px); }
+    .btn-guest {
+      height: 46px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #23222c;
+      color: #e5e7eb;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .btn-guest:hover { background: #2d2b38; }
 
-/* Test Tube Meter (Clickable + No Clipped Percentages) */
-.meter{display:flex;gap:10px;flex:1;min-height:240px;align-items:stretch;cursor:pointer;padding:6px;margin:-6px;border-radius:16px;transition:background .25s ease}
-.meter:hover{background:rgba(255,255,255,.06)}
-.tube{width:34px;flex:none;display:flex;flex-direction:column;align-items:center}
-.rim{width:40px;height:7px;border-radius:999px;background:rgba(255,255,255,.32);border:1px solid rgba(255,255,255,.45)}
-.pipe{position:relative;width:30px;flex:1;border-radius:0 0 18px 18px;border:1.5px solid rgba(255,255,255,.28);border-top:0;background:rgba(255,255,255,.04);overflow:hidden;box-shadow:inset 0 0 14px rgba(0,0,0,.55)}
-.fill{position:absolute;inset:0;display:flex;flex-direction:column-reverse;transition:opacity .5s ease}
-.fill.empty{opacity:.38}
-.band{flex:var(--f,1);background:hsl(var(--c,268) 85% 56%);box-shadow:0 0 16px hsl(var(--c,268) 85% 52%);animation:pulseBand var(--dur,7s) ease-in-out infinite alternate}
-@keyframes pulseBand{from{filter:brightness(.92)}to{filter:brightness(1.18)}}
-.bub{position:absolute;bottom:-10px;left:var(--x,10px);width:var(--sz,4px);height:var(--sz,4px);border-radius:50%;background:rgba(255,255,255,.55);animation:rise var(--bd,5s) linear var(--bl,0s) infinite}
-@keyframes rise{to{transform:translateY(-360px);opacity:0}}
-.legend{display:flex;flex-direction:column;justify-content:center;gap:11px;font-size:12px;min-width:0;flex:1;padding-right:2px}
-.legend div{display:flex;align-items:center;gap:6px;min-width:0}
-.legend em{width:8px;height:8px;border-radius:50%;flex:none;font-style:normal;box-shadow:0 0 8px currentColor}
-.legend b.lg-name{font-weight:400;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.legend span{color:var(--dim);flex:none;white-space:nowrap;font-variant-numeric:tabular-nums;font-size:11.5px}
+    /* ================= APP SHELL & LAYOUT ================= */
+    #app-shell { display: none; min-height: 100vh; }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      background: rgba(7, 6, 13, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .nav-pills {
+      display: flex;
+      gap: 6px;
+      background: var(--bg-card);
+      padding: 4px;
+      border-radius: 999px;
+      border: 1px solid var(--border-subtle);
+    }
+    .nav-pill {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .nav-pill.active {
+      background: linear-gradient(90deg, #9333ea, #db2777);
+      color: #fff;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chip-btn {
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-primary);
+      padding: 7px 13px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+    .chip-btn:hover { border-color: var(--border-glow); background: #242133; }
+    .kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      background: rgba(255, 255, 255, 0.11);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #e9d5ff;
+    }
 
-/* Main Content Stage & Top Brand */
-.main{padding:24px 28px 112px;max-width:1280px;width:100%;margin:0 auto}
-@media(max-width:640px){.main{padding:18px 16px 112px}}
-.brandbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand img{width:38px;height:38px;object-fit:contain;border-radius:10px}
-.brand-name{font:700 18px/1.1 "Cinzel",Georgia,serif;letter-spacing:.14em;text-transform:uppercase}
-.brand-tag{font-size:11.5px;color:var(--dim)}
-h1.pg{font:800 clamp(26px,3.6vw,38px)/1.12 "Bricolage Grotesque",sans-serif;margin:0 0 18px;letter-spacing:-.02em}
-h2{font:800 22px/1.2 "Bricolage Grotesque",sans-serif;margin:0 0 12px}
-h3{font:700 17px/1.25 "Bricolage Grotesque",sans-serif;margin:0}
+    .workspace {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+    @media (max-width: 960px) {
+      .workspace { grid-template-columns: 1fr; }
+    }
 
-/* Poster Grids & Shelves */
-.shelf{margin-bottom:28px}
-.shelf-hd{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:12px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(152px,1fr));gap:16px}
-.card{position:relative;border-radius:18px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;text-align:left;padding:0;display:flex;flex-direction:column}
-.card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.36);box-shadow:0 18px 36px rgba(0,0,0,.5)}
-.card img,.card .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:linear-gradient(145deg,rgba(255,255,255,.1),rgba(255,255,255,.03))}
-.card .meta{padding:10px 11px}
-.card .t{font-weight:600;font-size:13.5px;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .y{font-size:11.5px;color:var(--dim);margin-top:3px}
-.chip{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);margin:0 6px 6px 0}
+    /* ================= SIDEBAR: ME CARD & TASTE METER ================= */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: sticky;
+      top: 74px;
+    }
+    @media (max-width: 960px) {
+      .sidebar { position: static; }
+    }
+    .side-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 18px;
+      min-width: 0;
+    }
+    .me-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .mood-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--aura-color), #3b82f6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+      box-shadow: 0 0 20px var(--aura-1);
+    }
+    .director-spotlight {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 11px 12px;
+      margin-top: 10px;
+    }
+    .spotlight-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-gold);
+      font-weight: 700;
+    }
+    .switch-dir-btn {
+      background: rgba(245, 158, 11, 0.15);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fde68a;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+      cursor: pointer;
+    }
+    .switch-dir-btn:hover { background: rgba(245, 158, 11, 0.28); }
 
-/* Bottom Floating Navigation Dock */
-.dock{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:6px;padding:7px;border-radius:999px;background:rgba(14,13,26,.82);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,.18);box-shadow:0 18px 46px rgba(0,0,0,.62)}
-.dock button{padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;color:var(--dim);transition:all .2s ease}
-.dock button:hover{color:#fff}
-.dock button.on{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.2)}
-.dock .plus{width:42px;height:42px;padding:0;display:grid;place-items:center;font-size:22px;font-weight:700;color:#fff;background:linear-gradient(135deg,hsl(var(--h) 88% 60%),hsl(var(--h2) 85% 56%));box-shadow:0 6px 20px hsla(var(--h),88%,54%,.45)}
-.dock .plus:hover{transform:scale(1.07)}
+    /* Upgrade 1 & 5: Clickable Taste Meter with Overflow Fix */
+    .taste-meter-card {
+      cursor: pointer;
+      transition: border-color 0.2s ease, transform 0.15s ease;
+    }
+    .taste-meter-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-1px);
+    }
+    .meter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      margin-bottom: 9px;
+      min-width: 0;
+    }
+    .meter-row:last-child { margin-bottom: 0; }
+    .meter-label {
+      flex: 0 1 104px;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text-secondary);
+    }
+    .meter-track {
+      flex: 1 1 auto;
+      min-width: 40px;
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .meter-fill { height: 100%; border-radius: 999px; transition: width 0.45s ease; }
+    .meter-pct {
+      white-space: nowrap;
+      flex-shrink: 0;
+      width: 38px;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
 
-/* Me / Profile Stats */
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-bottom:22px}
-.stat{padding:20px}
-.stat .num{font-size:36px;line-height:1.1;margin:6px 0}
-.stat.dir{display:flex;align-items:center;gap:14px}
-.stat.dir .face{width:62px;height:62px;font-weight:800;font-size:20px}
-.stat.dir .num{font-size:20px;margin:3px 0}
-.stat.dir .msg{font-size:13.5px;margin:4px 0;color:var(--ink)}
-.dir-wrap{position:relative}
-.dir-switch{margin-top:8px;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:11px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.2);color:var(--ink)}
-.dir-switch:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.4)}
+    /* ================= MAIN CONTENT VIEWS ================= */
+    .view-section { display: none; min-width: 0; }
+    .view-section.active { display: block; }
 
-/* Modal Overlay & Quick-Log Arcade */
-.ov{position:fixed;inset:0;z-index:40;background:rgba(5,4,12,.76);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:18px;overflow-y:auto}
-.ov.on{display:flex}
-.panel{width:100%;max-width:740px;max-height:90vh;overflow-y:auto;padding:24px;position:relative}
-.panel.arcade{max-width:980px}
-.acts{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
-.detail{display:grid;grid-template-columns:190px 1fr;gap:20px}
-@media(max-width:600px){.detail{grid-template-columns:1fr}}
-.detail img,.detail .ph{width:100%;aspect-ratio:2/3;border-radius:16px;object-fit:cover;background:rgba(255,255,255,.07)}
+    .constellation-box {
+      position: relative;
+      background: #0b0a14;
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+    #constellation-canvas {
+      width: 100%;
+      height: 320px;
+      display: block;
+    }
+    .constellation-overlay {
+      position: absolute;
+      top: 14px;
+      left: 18px;
+      pointer-events: none;
+    }
 
-/* Quick-Log Arcade Controls */
-.arc-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
-.arc-search{display:flex;gap:10px;margin-bottom:14px}
-.arc-search input{flex:1;padding:11px 16px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);outline:none}
-.arc-search input:focus{border-color:hsl(var(--h) 85% 65%)}
-.arc-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-@media(max-width:760px){.arc-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.arc-card{position:relative;border-radius:16px;overflow:hidden;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.14);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;cursor:pointer}
-.arc-card.sel{transform:translateY(-4px) scale(1.02);border-color:hsl(var(--h) 92% 68%);box-shadow:0 0 0 2px hsla(var(--h),92%,68%,.35),0 18px 34px rgba(0,0,0,.55)}
-.arc-card.logged{opacity:.62}
-.arc-card img,.arc-card .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:rgba(255,255,255,.06)}
-.arc-card .meta{padding:9px 10px}
-.arc-badge{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:999px;font-size:10.5px;font-weight:700;background:rgba(12,11,22,.85);border:1px solid rgba(255,255,255,.24)}
-.arc-hud{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.12);font-size:12px;color:var(--dim)}
-.kbd{display:inline-block;padding:2px 7px;border-radius:6px;font:700 11px/1.3 monospace;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);color:#fff;margin-right:4px}
+    .grid-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .film-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(245px, 1fr));
+      gap: 14px;
+    }
+    .film-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 10px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .film-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-glow);
+    }
+    .film-meta {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .film-title { font-size: 15.5px; font-weight: 700; }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(139, 92, 246, 0.16);
+      color: #ddd6fe;
+    }
+    .rating-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: #f59e0b;
+      white-space: nowrap;
+    }
 
-/* Cinematic Universes, Constellation Map & Upgraded List View */
-.cu-wrap{display:flex;flex-direction:column;gap:18px}
-.cu-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;flex-wrap:wrap}
-.cu-eyebrow{font:700 11px/1 "Bricolage Grotesque",sans-serif;letter-spacing:.16em;text-transform:uppercase;color:hsl(var(--h) 88% 74%)}
-.cu-prog{height:3px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
-.cu-prog i{display:block;height:100%;background:linear-gradient(90deg,hsl(var(--h) 88% 62%),hsl(var(--h2) 85% 60%));transition:width .3s ease}
-.cu-stage{position:relative;height:540px;overflow:hidden;padding:0}
-.cu-canvas{width:100%;height:100%;display:block;cursor:grab}
-.cu-canvas:active{cursor:grabbing}
-.cu-hud-tl{position:absolute;top:14px;left:14px;z-index:3}
-.cu-hud-tr{position:absolute;top:14px;right:14px;z-index:3;display:flex;gap:6px}
-.cu-hud-bl{position:absolute;bottom:14px;left:14px;right:14px;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;pointer-events:none}
-.cu-badge{padding:6px 12px;border-radius:999px;font-size:12px;background:rgba(11,10,22,.82);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(12px)}
-.cu-zbtn{width:34px;height:34px;border-radius:50%;background:rgba(11,10,22,.82);border:1px solid rgba(255,255,255,.2);font-weight:700;font-size:16px}
-.cu-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;padding:6px 12px;border-radius:999px;background:rgba(11,10,22,.82);border:1px solid rgba(255,255,255,.16)}
-.cu-legend span{display:inline-flex;align-items:center;gap:6px}
-.cu-legend i{width:8px;height:8px;border-radius:50%;display:inline-block}
-.cu-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;pointer-events:none}
-.cu-insp{position:absolute;top:56px;right:14px;z-index:4;width:270px;padding:16px;border-radius:18px;background:rgba(12,11,24,.92);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(18px)}
-.cu-status{display:inline-block;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.04em;background:hsla(var(--h),85%,55%,.22);border:1px solid hsla(var(--h),85%,65%,.45);color:#f3e8ff}
-.cu-status.done{background:rgba(255,214,102,.18);border-color:rgba(255,214,102,.55);color:#ffd666}
-.cu-bar{height:6px;border-radius:999px;background:rgba(255,255,255,.12);overflow:hidden}
-.cu-bar i{display:block;height:100%;background:linear-gradient(90deg,hsl(var(--h) 88% 62%),hsl(var(--h2) 85% 60%))}
+    /* ================= UNIVERSES TAB: MULTI-PAGE 3D PASSPORT + UPGRADED LIST ================= */
+    .news-ticker {
+      background: linear-gradient(90deg, rgba(217, 70, 239, 0.12), rgba(34, 211, 238, 0.1));
+      border: 1px solid rgba(217, 70, 239, 0.28);
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
 
-/* Upgraded Universe List Cards */
-.cu-grid-v2{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:16px}
-.cu-card-v2{padding:18px;display:flex;flex-direction:column;gap:12px;text-align:left;position:relative;overflow:hidden;transition:transform .28s cubic-bezier(.22,1,.36,1),border-color .28s ease,box-shadow .28s ease}
-.cu-card-v2:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.38);box-shadow:0 20px 44px rgba(0,0,0,.48)}
-.cu-card-v2.complete{border-color:rgba(255,214,102,.48);box-shadow:inset 0 1px 0 rgba(255,214,102,.3),0 18px 40px rgba(0,0,0,.4)}
-.cu-posters{display:flex;gap:8px;align-items:center}
-.cu-posters img,.cu-posters .cu-pph{width:46px;height:68px;border-radius:9px;object-fit:cover;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);flex:none}
-.cu-card-meta{display:flex;flex-wrap:wrap;gap:6px;font-size:11.5px;color:var(--dim)}
-.cu-pill{padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.13)}
-.cu-card-acts{display:flex;gap:8px;margin-top:auto;padding-top:4px}
+    /* 3D Cinematic Passport Booklet */
+    .passport-stage {
+      background: radial-gradient(circle at top, rgba(255, 255, 255, 0.03), transparent 70%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 22px;
+      padding: 24px 20px;
+      margin-bottom: 26px;
+    }
+    .passport-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+    .passport-book-wrap {
+      perspective: 1800px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 410px;
+    }
+    .passport-cover {
+      width: 100%;
+      max-width: 340px;
+      height: 420px;
+      border-radius: 10px 22px 22px 10px;
+      background: linear-gradient(145deg, #161324 0%, #0c0a14 100%);
+      border: 2px solid var(--aura-color);
+      box-shadow:
+        -8px 0 0 #090810,
+        0 24px 60px rgba(0, 0, 0, 0.85),
+        inset 0 0 36px var(--aura-1);
+      padding: 32px 26px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+      cursor: pointer;
+      transform-origin: left center;
+      transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    }
+    .passport-cover:hover {
+      transform: rotateY(-12deg);
+    }
+    .emblem-ring {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(245, 215, 160, 0.65);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      color: #f5d7a0;
+      box-shadow: 0 0 28px rgba(245, 215, 160, 0.2);
+    }
 
-/* Full Taste Breakdown Circle Donut Modal */
-.tm-modal{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:center;margin-top:8px}
-@media(max-width:640px){.tm-modal{grid-template-columns:1fr}}
-.tm-ring{position:relative;width:200px;height:200px;margin:0 auto;display:grid;place-items:center}
-.tm-ring svg{width:200px;height:200px;transform:rotate(-90deg)}
-.tm-ring-center{position:absolute;text-align:center;pointer-events:none;padding:0 16px}
-.tm-ring-center strong{display:block;font:800 30px/1 "Bricolage Grotesque",sans-serif}
-.tm-ring-center span{display:block;font-size:11px;color:var(--dim);margin-top:4px}
-.tm-list{display:flex;flex-direction:column;gap:9px;max-height:52vh;overflow-y:auto;padding-right:4px}
-.tm-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);font-size:13.5px}
-.tm-dot{width:10px;height:10px;border-radius:50%;flex:none}
-.tm-bar-bg{flex:1;height:6px;border-radius:999px;background:rgba(255,255,255,.1);overflow:hidden}
-.tm-bar-fg{height:100%;border-radius:999px}
+    .passport-spread {
+      width: 100%;
+      max-width: 780px;
+      background: linear-gradient(135deg, #171522 0%, #12101b 49.6%, #0b0a12 50%, #14121e 50.4%, #181624 100%);
+      border: 1.5px solid rgba(245, 215, 160, 0.32);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.8);
+      animation: hingeOpen 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    @keyframes hingeOpen {
+      from { opacity: 0; transform: perspective(1400px) rotateY(-28deg) scale(0.97); }
+      to { opacity: 1; transform: perspective(1400px) rotateY(0deg) scale(1); }
+    }
+    .spread-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 740px) {
+      .spread-grid { grid-template-columns: 1fr; }
+    }
+    .passport-leaf {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 320px;
+    }
+    .mrz-strip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      color: rgba(245, 215, 160, 0.75);
+      background: rgba(0, 0, 0, 0.38);
+      padding: 9px 10px;
+      border-radius: 8px;
+      margin-top: 14px;
+      line-height: 1.5;
+      word-break: break-all;
+    }
+    .stamps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .visa-stamp {
+      border: 2px dashed rgba(34, 211, 238, 0.65);
+      color: #67e8f9;
+      border-radius: 12px;
+      padding: 12px 10px;
+      text-align: center;
+      background: rgba(34, 211, 238, 0.05);
+      transition: transform 0.2s ease;
+    }
+    .visa-stamp.gold {
+      border-style: solid;
+      border-color: #f59e0b;
+      color: #fde68a;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.18), rgba(245, 158, 11, 0.04));
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.22);
+    }
+    .passport-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-subtle);
+    }
 
-/* Multi-Page Cinematic Passport */
-.pp-shell{display:flex;flex-direction:column;align-items:center;gap:14px;perspective:1800px}
-.pp-topbar{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.pp-stage{position:relative;width:100%;display:flex;align-items:center;justify-content:center;gap:12px}
-.pp-arrow{width:42px;height:42px;border-radius:50%;flex:none;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.24);display:grid;place-items:center;font-size:18px;color:#fff}
-.pp-arrow:hover:not(:disabled){background:rgba(255,255,255,.22);border-color:#fff;transform:scale(1.06)}
-.pp-arrow:disabled{opacity:.28;cursor:not-allowed}
+    /* Upgrade 4: Upgraded Universe List View */
+    .universe-list-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 16px;
+    }
+    .u-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: border-color 0.2s ease;
+    }
+    .u-card:hover { border-color: var(--border-glow); }
+    .poster-strip {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .poster-tile {
+      flex: 0 0 54px;
+      height: 74px;
+      border-radius: 8px;
+      padding: 6px;
+      display: flex;
+      align-items: flex-end;
+      font-size: 9.5px;
+      font-weight: 700;
+      line-height: 1.2;
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+    }
+    .u-progress-track {
+      height: 7px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .u-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #8b5cf6, #ec4899);
+      border-radius: 999px;
+    }
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+    }
+    .u-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 2px;
+    }
 
-/* Closed Passport Cover */
-.pp-cover{width:100%;max-width:420px;aspect-ratio:3/4.15;border-radius:12px 26px 26px 12px;padding:34px 28px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;position:relative;overflow:hidden;cursor:pointer;
-  background:radial-gradient(circle at 25% 20%,hsl(var(--h) 70% 24%/.45),transparent 65%),linear-gradient(155deg,#171528 0%,#0b0a14 100%);
-  border:1.5px solid hsla(var(--h),88%,68%,.45);
-  box-shadow:-8px 0 0 #090810,inset 10px 0 18px rgba(0,0,0,.65),0 24px 60px rgba(0,0,0,.68),0 0 42px hsla(var(--h),90%,55%,.25);
-  transform-origin:left center;transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .45s ease}
-.pp-cover:hover{transform:rotateY(-8deg) scale(1.01)}
-.pp-cover.opening{transform:rotateY(-105deg);opacity:0;pointer-events:none}
-.pp-cover::before{content:"";position:absolute;inset:14px;border-radius:8px 20px 20px 8px;border:1px solid rgba(245,215,142,.28);pointer-events:none}
-.pp-cover-top{font:700 11px/1.3 "Cinzel",Georgia,serif;letter-spacing:.26em;color:rgba(245,215,142,.82);text-transform:uppercase}
-.pp-emblem{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,rgba(245,215,142,.16),transparent 70%);border:1.5px solid rgba(245,215,142,.42);box-shadow:0 0 36px rgba(245,215,142,.18);padding:18px}
-.pp-emblem img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))}
-.pp-cover-title{font:700 26px/1.15 "Cinzel",Georgia,serif;letter-spacing:.14em;color:#f7e7c4;text-transform:uppercase}
-.pp-cover-sub{font-size:12px;color:var(--dim);letter-spacing:.08em}
-
-/* Open Booklet Pages */
-.pp-book{width:100%;max-width:680px;min-height:470px;border-radius:22px;padding:24px 26px;position:relative;overflow:hidden;
-  background:radial-gradient(circle at 85% 15%,hsla(var(--h),80%,40%,.18),transparent 58%),linear-gradient(160deg,rgba(26,24,44,.96),rgba(13,12,24,.98));
-  border:1px solid rgba(255,255,255,.22);box-shadow:0 24px 60px rgba(0,0,0,.6);
-  animation:ppPageIn .38s cubic-bezier(.22,1,.36,1)}
-@keyframes ppPageIn{from{opacity:0;transform:rotateY(14deg) scale(.98)}to{opacity:1;transform:none}}
-.pp-book::after{content:"";position:absolute;inset:10px;border-radius:16px;border:1px dashed rgba(255,255,255,.11);pointer-events:none}
-.pp-hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(255,255,255,.12);padding-bottom:12px;margin-bottom:14px}
-.pp-id-grid{display:grid;grid-template-columns:1fr 165px;gap:16px;align-items:start}
-@media(max-width:620px){.pp-id-grid{grid-template-columns:1fr}}
-.pp-const-box{border-radius:16px;padding:10px;background:rgba(6,6,14,.85);border:1px solid rgba(255,255,255,.16);text-align:center}
-.pp-const-box canvas{width:145px;height:145px;display:block;margin:0 auto;border-radius:10px}
-.pp-const-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-top:6px}
-.pp-bio{font-size:13.5px;line-height:1.65;color:rgba(245,242,252,.9);background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:12px 14px;margin:12px 0}
-.pp-mrz{margin-top:12px;padding:10px 12px;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.12);font:600 11px/1.55 monospace;letter-spacing:.08em;color:rgba(225,197,255,.82);overflow:hidden}
-.pp-films-strip{display:flex;gap:8px;margin-top:10px}
-.pp-films-strip img,.pp-films-strip .pp-fph{width:48px;height:72px;border-radius:8px;object-fit:cover;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08)}
-
-/* Passport Stamps Grid */
-.pp-stamps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:8px}
-@media(max-width:560px){.pp-stamps{grid-template-columns:1fr}}
-.pp-stamp{padding:14px 16px;border-radius:16px;border:2px dashed hsla(var(--sc,270),88%,68%,.62);background:hsla(var(--sc,270),80%,45%,.09);transform:rotate(var(--rot,-1.5deg));position:relative;display:flex;flex-direction:column;gap:4px;box-shadow:inset 0 0 18px hsla(var(--sc,270),85%,55%,.12)}
-.pp-stamp.gold{border-style:solid;border-color:rgba(255,214,102,.78);background:rgba(255,214,102,.1);box-shadow:0 0 22px rgba(255,214,102,.18)}
-.pp-stamp.hex{border-radius:24px 8px 24px 8px}
-.pp-stamp-top{display:flex;justify-content:space-between;align-items:center;font:800 10px/1 "Bricolage Grotesque",sans-serif;letter-spacing:.14em;text-transform:uppercase;color:hsla(var(--sc,270),95%,78%,1)}
-.pp-stamp.gold .pp-stamp-top{color:#ffd666}
-.pp-stamp-name{font:800 16px/1.2 "Bricolage Grotesque",sans-serif}
-.pp-stamp-meta{font-size:11.5px;color:var(--dim)}
-.pp-overlap{padding:16px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.16);margin-top:10px}
-
-/* Universe Index Dashboard Modal */
-.jv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:12px;margin-top:14px}
-.jv-item{border-radius:14px;overflow:hidden;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);padding:0;text-align:left}
-.jv-item img,.jv-item .ph{width:100%;aspect-ratio:2/3;object-fit:cover;display:block;background:rgba(255,255,255,.06)}
-.jv-item.unwatched img{filter:grayscale(1) brightness(.55)}
-.jv-item .meta{padding:8px 9px}
-
-/* Live Entertainment Flash Cards */
-.news-wrap{margin-top:26px;padding:20px}
-.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:14px}
-.news-card{padding:14px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12);display:flex;gap:12px;text-align:left}
-.news-card img{width:54px;height:80px;border-radius:10px;object-fit:cover;flex:none}
-
-/* Cinemography Poster View */
-.cg-wrap{max-width:780px;margin:0 auto}
-.cg-sheet{padding:32px;background:radial-gradient(circle at 20% 15%,hsla(var(--h),85%,48%,.25),transparent 60%),linear-gradient(160deg,#141226,#0a0914)}
-.cg-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0}
-.cg-box{padding:14px;border-radius:16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
-
-/* Onboarding Walkthrough & Auth Gate */
-.gate{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:20px;background:rgba(6,5,14,.86);backdrop-filter:blur(22px)}
-.gate.off{display:none}
-.gate-card{width:100%;max-width:420px;padding:30px}
-.gate-card input{width:100%;padding:12px 15px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);margin-bottom:12px;outline:none}
-.gate-card input:focus{border-color:hsl(var(--h) 85% 65%)}
-.tabs{display:flex;gap:6px;margin-bottom:18px;background:rgba(255,255,255,.06);padding:5px;border-radius:999px}
-.tabs button{flex:1;padding:8px;border-radius:999px;font-weight:600;font-size:13px;color:var(--dim)}
-.tabs button.on{background:rgba(255,255,255,.16);color:#fff}
-.ob-dots{display:flex;gap:6px;margin:16px 0}
-.ob-dots i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.22)}
-.ob-dots i.on{width:22px;border-radius:999px;background:hsl(var(--h) 88% 64%)}
-</style>
+    /* ================= MODALS (ARCADE, UNIVERSE INDEX, GENRE CIRCLE, GUIDE) ================= */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 3, 9, 0.84);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      width: 100%;
+      max-width: 540px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: #151420;
+      border: 1px solid rgba(217, 70, 239, 0.45);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 25px 70px rgba(0, 0, 0, 0.88);
+    }
+    .arcade-field {
+      width: 100%;
+      background: #1f1d2e;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-top: 5px;
+      margin-bottom: 12px;
+    }
+    .index-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      margin-bottom: 8px;
+      font-size: 13.5px;
+    }
+    .index-row.logged {
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(16, 185, 129, 0.08);
+    }
+  </style>
 </head>
 <body>
-<div class="sky"></div>
-<div class="grain"></div>
 
-<div class="app">
-  <aside class="side" id="side"></aside>
-  <main class="main">
-    <div class="brandbar">
-      <div class="brand">
-        <img src="logo.png" alt="" onerror="this.style.display='none'">
+  <!-- SHARED PASSPORT BANNER (?p=...) -->
+  <div id="shared-banner">
+    <div id="shared-banner-text">Viewing Shared Cinematic Passport</div>
+    <button type="button" id="exit-shared-btn" class="chip-btn">Return to My Observatory</button>
+  </div>
+
+  <!-- ================= AUTHENTICATION SCREEN ================= -->
+  <section id="auth-screen">
+    <div class="auth-card">
+      <div class="brand-header">
+        <div class="brand-logo" aria-hidden="true">✦</div>
         <div>
-          <div class="brand-name">Fourth wall</div>
-          <div class="brand-tag">Personal Cinematic Observatory</div>
+          <div class="brand-title">FOURTH WALL</div>
+          <div class="brand-sub">Your living film taste &amp; universe observatory</div>
         </div>
       </div>
-      <div style="display:flex;gap:8px">
-        <button class="ghost" onclick="openShortcuts()" title="Keyboard controls">Controls (?)</button>
+
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" data-auth-tab="signin">Sign in</button>
+        <button type="button" class="auth-tab" data-auth-tab="signup">Create account</button>
       </div>
+
+      <form id="auth-form" class="auth-form" novalidate>
+        <input
+          id="auth-identifier"
+          name="username"
+          type="text"
+          autocomplete="username"
+          class="auth-input"
+          placeholder="Username or Email"
+          required
+        />
+        <input
+          id="auth-password"
+          name="password"
+          type="password"
+          autocomplete="current-password"
+          class="auth-input"
+          placeholder="Password"
+          required
+        />
+        <div id="auth-error" class="auth-error" role="alert"></div>
+
+        <button type="submit" id="auth-submit-btn" class="btn-primary">Enter Observatory</button>
+        <button type="button" id="guest-enter-btn" class="btn-guest">Continue as Guest</button>
+      </form>
     </div>
-    <div id="view"></div>
-  </main>
-</div>
+  </section>
 
-<nav class="dock" aria-label="Primary navigation">
-  <button id="n-home" class="on" onclick="goView('home')">Home</button>
-  <button id="n-log" onclick="goView('log')">My Log</button>
-  <button class="plus" onclick="openSearch()" title="Quick-Log Arcade (Tab or +)">+</button>
-  <button id="n-universes" onclick="goView('universes')">Universes</button>
-  <button id="n-me" onclick="goView('me')">Me</button>
-</nav>
-
-<div class="ov" id="ov" onclick="if(event.target===this)hide()">
-  <div class="panel glass" id="panel"></div>
-</div>
-
-<div class="gate" id="gate">
-  <div class="gate-card glass">
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-      <img src="logo.png" alt="" style="width:42px;height:42px;object-fit:contain" onerror="this.style.display='none'">
-      <div>
-        <div class="brand-name">Fourth wall</div>
-        <div class="dim" style="font-size:12px">Your living film taste & universe observatory</div>
+  <!-- ================= MAIN OBSERVATORY SHELL ================= -->
+  <div id="app-shell">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div class="brand-logo" style="width:36px;height:30px;font-size:15px;">✦</div>
+        <div>
+          <div class="brand-title" style="font-size:16px;">FOURTH WALL</div>
+          <div id="active-user-label" style="font-size:11.5px;color:var(--text-secondary);">Observatory</div>
+        </div>
       </div>
-    </div>
-    <div class="tabs">
-      <button id="t-in" class="on" onclick="authTab('in')">Sign in</button>
-      <button id="t-up" onclick="authTab('up')">Create account</button>
-    </div>
-    <form id="auth-form" onsubmit="submitAuth(event)">
-      <input id="a-user" placeholder="Username" autocomplete="username" required>
-      <input id="a-pass" type="password" placeholder="Password" autocomplete="current-password" required>
-      <div id="a-err" style="color:#ff8fa3;font-size:12.5px;min-height:18px;margin-bottom:8px"></div>
-      <button class="btn" style="width:100%" id="a-btn" type="submit">Enter Observatory</button>
-    </form>
-    <div style="margin-top:14px;text-align:center">
-      <button class="ghost" style="width:100%" onclick="guestEnter()">Continue as Guest</button>
+
+      <nav class="nav-pills" aria-label="Primary">
+        <button type="button" class="nav-pill active" data-view="observatory">Observatory</button>
+        <button type="button" class="nav-pill" data-view="universes">Universes &amp; Passport</button>
+      </nav>
+
+      <div class="topbar-actions">
+        <button type="button" id="open-arcade-btn" class="chip-btn">
+          + Quick-Log Arcade <span class="kbd">Tab</span>
+        </button>
+        <button type="button" id="open-tour-btn" class="chip-btn">Guide</button>
+        <button type="button" id="logout-btn" class="chip-btn">Sign out</button>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <!-- SIDEBAR: ME CARD + DIRECTOR SPOTLIGHT + CLICKABLE TASTE METER -->
+      <aside class="sidebar">
+        <div class="side-card">
+          <div class="me-header">
+            <div class="mood-avatar" id="sidebar-avatar">🎬</div>
+            <div style="min-width:0;">
+              <div id="me-name" style="font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Observer</div>
+              <div id="me-archetype" style="font-size:11.5px;color:var(--accent-cyan);">Atmospheric Architect</div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-secondary);">
+            <span>Logged Films: <strong id="me-total-films" style="color:#fff;">0</strong></span>
+            <span>Mean Score: <strong id="me-mean-score" style="color:#f59e0b;">0.0</strong></span>
+          </div>
+
+          <!-- Upgrade 3: Most-Watched Director Spotlight Selector (3+ Films) -->
+          <div id="director-spotlight-box" class="director-spotlight" style="display:none;">
+            <div class="spotlight-top">
+              <span>★ Director Spotlight</span>
+              <button type="button" id="switch-director-btn" class="switch-dir-btn" style="display:none;">↻ Switch</button>
+            </div>
+            <div id="spotlight-director-name" style="font-weight:700;font-size:13.5px;margin-top:5px;"></div>
+            <div id="spotlight-director-meta" style="font-size:11.5px;color:var(--text-secondary);margin-top:2px;"></div>
+          </div>
+        </div>
+
+        <!-- Upgrade 1 & 5: Overflow-Fixed & Clickable Taste Meter -->
+        <div class="side-card taste-meter-card" id="open-genre-circle-btn" role="button" tabindex="0" title="Click for Full Genre Circle Breakdown">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-family:'Cinzel',serif;font-size:13px;letter-spacing:0.08em;">TASTE METER</span>
+            <span style="font-size:11px;color:var(--accent-magenta);">Circle View ↗</span>
+          </div>
+          <div id="taste-bars"></div>
+        </div>
+      </aside>
+
+      <!-- MAIN VIEWS -->
+      <main style="min-width:0;">
+        <!-- VIEW 1: OBSERVATORY -->
+        <section id="view-observatory" class="view-section active">
+          <div class="constellation-box">
+            <div class="constellation-overlay">
+              <div style="font-family:'Cinzel',serif;font-size:14px;letter-spacing:0.1em;">CONSTELLATION STAR MAP</div>
+              <div style="font-size:12px;color:var(--text-secondary);">Nodes linked by shared directorial &amp; universe DNA</div>
+            </div>
+            <canvas id="constellation-canvas"></canvas>
+          </div>
+
+          <div class="grid-header">
+            <h2 style="font-family:'Cinzel',serif;font-size:17px;letter-spacing:0.06em;">VIEWING LOG (<span id="film-count">0</span>)</h2>
+            <input id="search-films" type="search" placeholder="Filter by title, director, or genre..." style="background:var(--bg-card);border:1px solid var(--border-subtle);color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;min-width:230px;" />
+          </div>
+          <div class="film-grid" id="film-grid"></div>
+        </section>
+
+        <!-- VIEW 2: UNIVERSES & MULTI-PAGE CINEMATIC PASSPORT -->
+        <section id="view-universes" class="view-section">
+          <div class="news-ticker">
+            <div>
+              <div style="font-size:10.5px;font-weight:700;letter-spacing:0.12em;color:var(--accent-cyan);">UNIVERSE DISPATCH</div>
+              <div id="flash-news-text" style="font-size:13.5px;font-weight:500;margin-top:3px;">Loading dispatch...</div>
+            </div>
+            <button type="button" id="next-flash-btn" class="chip-btn">Next →</button>
+          </div>
+
+          <!-- MULTI-PAGE CINEMATIC PASSPORT BOOKLET -->
+          <div class="passport-stage">
+            <div class="passport-toolbar">
+              <div>
+                <h2 style="font-family:'Cinzel',serif;font-size:17px;letter-spacing:0.08em;">CINEMATIC PASSPORT</h2>
+                <div style="font-size:12px;color:var(--text-secondary);">Click cover or use ← / → arrow keys to flip pages</div>
+              </div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button type="button" id="toggle-passport-btn" class="chip-btn">Open Booklet</button>
+                <button type="button" id="share-passport-btn" class="chip-btn">🔗 Share Passport Link</button>
+              </div>
+            </div>
+
+            <div class="passport-book-wrap" id="passport-book-container"></div>
+          </div>
+
+          <!-- UPGRADED UNIVERSE LIST VIEW -->
+          <div class="grid-header">
+            <h2 style="font-family:'Cinzel',serif;font-size:17px;letter-spacing:0.06em;">EXPLORED UNIVERSES</h2>
+          </div>
+          <div class="universe-list-grid" id="universe-list-grid"></div>
+        </section>
+      </main>
     </div>
   </div>
-</div>
 
-<script>
-var $ = function(id) { return document.getElementById(id); };
-var esc = function(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function(c) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); };
-var img = function(p, sz) { return p ? "https://image.tmdb.org/t/p/" + (sz || "w342") + p : ""; };
-var today = function() { return new Date().toISOString().slice(0, 10); };
+  <!-- ================= QUICK-LOG ARCADE MODAL (Tab Toggle) ================= -->
+  <div id="arcade-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="arcade-heading">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h3 id="arcade-heading" style="font-family:'Cinzel',serif;letter-spacing:0.08em;">QUICK-LOG ARCADE (+)</h3>
+        <button type="button" id="close-arcade-btn" class="chip-btn">Tab / ESC</button>
+      </div>
+      <form id="arcade-form">
+        <label style="font-size:12px;color:var(--text-secondary);">Film Title</label>
+        <input id="arc-title" class="arcade-field" type="text" placeholder="e.g. Dune: Part Two" required />
 
-/* Genre Hues & Dynamic Sky Aura */
-var GENRE_HUES = {
-  "Science Fiction": 195, "Sci-Fi": 195, "Action": 16, "Adventure": 34, "Animation": 148,
-  "Comedy": 46, "Crime": 348, "Documentary": 172, "Drama": 268, "Family": 92,
-  "Fantasy": 286, "History": 28, "Horror": 355, "Music": 318, "Mystery": 244,
-  "Romance": 332, "Thriller": 218, "War": 10, "Western": 30
-};
-function hue(g) {
-  if (!g) return 268;
-  if (GENRE_HUES[g] != null) return GENRE_HUES[g];
-  var h = 0;
-  for (var i = 0; i < g.length; i++) h = (h * 31 + g.charCodeAt(i)) % 360;
-  return h;
-}
-function applyAura() {
-  if (!films.length) {
-    document.documentElement.style.setProperty("--h", 268);
-    document.documentElement.style.setProperty("--h2", 312);
-    return;
-  }
-  var cnt = {};
-  sorted().slice(0, 12).forEach(function(f) {
-    var g = (f.genres && f.genres[0]) || "Drama";
-    cnt[g] = (cnt[g] || 0) + 1;
-  });
-  var ks = Object.keys(cnt).sort(function(a, b) { return cnt[b] - cnt[a]; });
-  var h1 = hue(ks[0]);
-  var h2 = ks[1] ? hue(ks[1]) : (h1 + 42) % 360;
-  document.documentElement.style.setProperty("--h", h1);
-  document.documentElement.style.setProperty("--h2", h2);
-}
+        <label style="font-size:12px;color:var(--text-secondary);">Director</label>
+        <input id="arc-director" class="arcade-field" type="text" placeholder="e.g. Denis Villeneuve" required />
 
-/* State & Persistence */
-var user = null;
-var films = [];
-var view = "home";
-var ovOn = false;
-var inArcade = false;
-var recs = [];
-var arcItems = [];
-var arcSel = 0;
-var arcGenre = 878;
-var arcQuery = "";
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+          <div>
+            <label style="font-size:12px;color:var(--text-secondary);">Universe / Genre</label>
+            <select id="arc-universe" class="arcade-field">
+              <option value="Sci-Fi Mythos">Sci-Fi Mythos</option>
+              <option value="Folk & Psychological">Folk &amp; Psychological</option>
+              <option value="Neo-Noir & Crime">Neo-Noir &amp; Crime</option>
+              <option value="Sonic & Action">Sonic &amp; Action</option>
+              <option value="Indie & Slice of Life">Indie &amp; Slice of Life</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:12px;color:var(--text-secondary);">Rating (<span id="arc-rating-val">4.5</span> / 5.0)</label>
+            <input id="arc-rating" class="arcade-field" type="range" min="1" max="5" step="0.5" value="4.5" />
+          </div>
+        </div>
 
-var MOODS = [
-  { id: "noir", name: "Noir Detective", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="6"/><path d="M4 10h16M7 10l2-5h6l2 5"/></svg>' },
-  { id: "sci", name: "Starlight Voyager", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><path d="M5 12h14M12 5a10 10 0 0 1 0 14"/></svg>' },
-  { id: "indie", name: "Celluloid Dreamer", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="6" width="16" height="12" rx="2"/><circle cx="9" cy="12" r="2"/><circle cx="15" cy="12" r="2"/></svg>' },
-  { id: "horror", name: "Midnight Watchman", icon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/></svg>' }
-];
-var avatar = MOODS[1];
-function avatarGraphic() { return avatar.icon; }
+        <label style="font-size:12px;color:var(--text-secondary);">Field Note</label>
+        <input id="arc-note" class="arcade-field" type="text" placeholder="Framing, sound design, silence..." />
 
-function ukey(suf) { return "fw_u_" + (user || "guest") + "_" + suf; }
-function loadUserData() {
-  try {
-    var raw = localStorage.getItem(ukey("films"));
-    films = raw ? JSON.parse(raw) : [];
-    var avId = localStorage.getItem(ukey("avatar"));
-    var found = MOODS.filter(function(m) { return m.id === avId; })[0];
-    avatar = found || MOODS[1];
-  } catch (e) { films = []; }
-}
-function saveUserData() {
-  try {
-    localStorage.setItem(ukey("films"), JSON.stringify(films));
-    localStorage.setItem(ukey("avatar"), avatar.id);
-  } catch (e) {}
-}
-function sorted() {
-  return films.slice().sort(function(a, b) { return (b.at || 0) - (a.at || 0); });
-}
-function hasFilm(tid) {
-  return films.some(function(f) { return String(f.tid) === String(tid); });
-}
+        <button type="submit" class="btn-primary" style="width:100%;">Log to Constellation</button>
+      </form>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--text-secondary);margin-top:12px;padding-top:10px;border-top:1px solid var(--border-subtle);">
+        <span><span class="kbd">Tab</span> Toggle Modal</span>
+        <span><span class="kbd">A</span>/<span class="kbd">D</span> Rating</span>
+        <span><span class="kbd">R</span> Randomize</span>
+      </div>
+    </div>
+  </div>
 
-/* TMDB Serverless Proxy Helper */
-function api(endpoint, params) {
-  var u = new URL("/api/tmdb", window.location.origin);
-  u.searchParams.set("endpoint", endpoint);
-  if (params) {
-    Object.keys(params).forEach(function(k) {
-      if (params[k] !== undefined && params[k] !== null && params[k] !== "") {
-        u.searchParams.set(k, params[k]);
-      }
-    });
-  }
-  return fetch(u.toString()).then(function(r) {
-    if (!r.ok) throw new Error("TMDB HTTP " + r.status);
-    return r.json();
-  });
-}
+  <!-- ================= UNIVERSE INDEX MODAL (Renamed from legacy completion modal) ================= -->
+  <div id="universe-index-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <div>
+          <div style="font-size:10.5px;letter-spacing:0.12em;color:var(--accent-gold);font-weight:700;">UNIVERSE INDEX</div>
+          <h3 id="u-index-title" style="font-family:'Cinzel',serif;margin-top:2px;">Universe Catalog</h3>
+        </div>
+        <button type="button" id="close-u-index-btn" class="chip-btn">Close</button>
+      </div>
+      <div id="u-index-subtitle" style="font-size:12.5px;color:var(--text-secondary);margin-bottom:14px;"></div>
+      <div id="u-index-list"></div>
+    </div>
+  </div>
 
-/* Auth & Onboarding */
-var authMode = "in";
-function authTab(m) {
-  authMode = m;
-  $("t-in").classList.toggle("on", m === "in");
-  $("t-up").classList.toggle("on", m === "up");
-  $("a-btn").textContent = m === "in" ? "Enter Observatory" : "Create Account & Start";
-  $("a-err").textContent = "";
-}
-function submitAuth(e) {
-  e.preventDefault();
-  var u = $("a-user").value.trim().toLowerCase();
-  var p = $("a-pass").value;
-  if (!u || !p) return;
-  var accounts = {};
-  try { accounts = JSON.parse(localStorage.getItem("fw_accounts") || "{}"); } catch (err) {}
-  if (authMode === "up") {
-    if (accounts[u]) { $("a-err").textContent = "Username already exists."; return; }
-    accounts[u] = p;
-    try { localStorage.setItem("fw_accounts", JSON.stringify(accounts)); } catch (err) {}
-    enterSession(u, true);
-  } else {
-    if (!accounts[u] || accounts[u] !== p) { $("a-err").textContent = "Invalid username or password."; return; }
-    enterSession(u, false);
-  }
-}
-function guestEnter() { enterSession("guest", false); }
-function signOut() {
-  user = null;
-  try { localStorage.removeItem("fw_session"); } catch (e) {}
-  $("gate").classList.remove("off");
-  document.body.classList.add("locked");
-}
-function enterSession(u, isNew) {
-  user = u;
-  try { localStorage.setItem("fw_session", u); } catch (e) {}
-  loadUserData();
-  $("gate").classList.add("off");
-  document.body.classList.remove("locked");
-  render(true);
-  refreshRecs();
-  backfillConstellation();
-  var seenOb = false;
-  try { seenOb = localStorage.getItem(ukey("ob_done")) === "1"; } catch (e) {}
-  if (ppState.friendData) {
-    setTimeout(function() { openPassportModal(0); }, 300);
-  } else if (isNew || !seenOb) {
-    setTimeout(function() { openOnboarding(0); }, 260);
-  }
-}
+  <!-- ================= FULL GENRE CIRCLE BREAKDOWN MODAL ================= -->
+  <div id="genre-circle-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <h3 style="font-family:'Cinzel',serif;letter-spacing:0.08em;">GENRE CIRCLE BREAKDOWN</h3>
+        <button type="button" id="close-genre-circle-btn" class="chip-btn">Close</button>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:18px;">
+        <div id="svg-donut-container"></div>
+        <div id="ranked-genre-list" style="width:100%;"></div>
+      </div>
+    </div>
+  </div>
 
-/* 4-Step Interactive Onboarding Walkthrough */
-var OB_STEPS = [
-  { title: "Welcome to Fourth wall", body: "Every film you log shifts the living atmosphere of your observatory—coloring your sky aura and filling your Taste Meter in real time." },
-  { title: "Quick-Log Arcade (+ or Tab)", body: "Press Tab or + anytime to open the Arcade deck. Navigate with W A S D, press Spacebar to log a film immediately, and watch fresh recommendations auto-populate." },
-  { title: "Constellation & Cinematic Passport", body: "Head to Universes to explore how your films connect across franchises, directors, and cast—and flip open your personal Cinematic Passport stamped with every universe you discover." },
-  { title: "Cinemography & Director Spotlights", body: "Check Me to track your total hours, unlock your 3-film Director Spotlight, and export a 9:16 Cinemography poster card." }
-];
-function openOnboarding(step) {
-  var s = OB_STEPS[step] || OB_STEPS[0];
-  var dots = OB_STEPS.map(function(_, i) { return '<i class="' + (i === step ? 'on' : '') + '"></i>'; }).join("");
-  $("panel").innerHTML =
-    '<div class="cu-eyebrow">Observatory Walkthrough · Step ' + (step + 1) + ' of ' + OB_STEPS.length + '</div>' +
-    '<h2 style="margin-top:8px">' + esc(s.title) + '</h2>' +
-    '<p class="dim" style="font-size:15px;line-height:1.65">' + esc(s.body) + '</p>' +
-    '<div class="ob-dots">' + dots + '</div>' +
-    '<div class="acts">' +
-      '<button class="ghost" onclick="finishOnboarding()">Skip</button>' +
-      (step > 0 ? '<button class="ghost" onclick="openOnboarding(' + (step - 1) + ')">Back</button>' : '') +
-      (step < OB_STEPS.length - 1
-        ? '<button class="btn" onclick="openOnboarding(' + (step + 1) + ')">Next</button>'
-        : '<button class="btn" onclick="finishOnboarding()">Start Exploring</button>') +
-    '</div>';
-  show(false);
-}
-function finishOnboarding() {
-  try { localStorage.setItem(ukey("ob_done"), "1"); } catch (e) {}
-  hide();
-}
+  <!-- ================= ONBOARDING WALKTHROUGH MODAL ================= -->
+  <div id="tour-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal-box">
+      <div style="font-size:11px;color:var(--accent-magenta);font-weight:700;letter-spacing:0.12em;" id="tour-step-label">STEP 1 OF 3</div>
+      <h3 id="tour-title" style="font-family:'Cinzel',serif;margin:8px 0 10px;">Welcome to Fourth Wall</h3>
+      <p id="tour-body" style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;"></p>
+      <div style="display:flex;justify-content:space-between;">
+        <button type="button" id="skip-tour-btn" class="chip-btn">Skip</button>
+        <button type="button" id="next-tour-btn" class="btn-primary" style="padding:0 24px;height:40px;">Next</button>
+      </div>
+    </div>
+  </div>
 
-/* Test Tube Taste Meter + Full Genre Circle Breakdown Modal */
-function side() {
-  var el = $("side"), n = films.length;
-  var h = '<button class="who" onclick="openAvatarModal()" title="Change cinema mood avatar"><div class="face">' + avatarGraphic() + '</div><div><b>' + esc(user || avatar.name) + '</b><small>' + n + (n === 1 ? " film" : " films") + '</small></div></button><h3>Taste meter</h3>';
-  var bubs = "";
-  for (var i = 0; i < 6; i++) bubs += '<i class="bub" style="--x:' + (7 + i * 5.5) + 'px;--sz:' + (3 + i % 3 * 2) + 'px;--bd:' + (4 + i * .9).toFixed(1) + 's;--bl:' + (-i * 1.3).toFixed(1) + 's"></i>';
-  function tube(bands) {
-    return '<div class="tube"><div class="rim"></div><div class="pipe"><div class="fill' + (n ? "" : " empty") + '">' + bands + '</div>' + bubs + '</div></div>';
-  }
-  if (!n) {
-    h += '<div class="meter" role="button" tabindex="0" onclick="openTasteMeterModal()" title="View full genre breakdown">' + tube('<div class="band" style="--c:230;--f:1;--dur:8s"></div><div class="band" style="--c:275;--f:1;--dur:9s"></div>') + '<p class="dim" style="font-size:12.5px;align-self:center">Log films and your taste fills the tube.</p></div>';
-  } else {
-    var cnt = {}, tot = 0;
-    sorted().slice(0, 12).forEach(function(f) {
-      var g = (f.genres && f.genres[0]) || "Drama";
-      cnt[g] = (cnt[g] || 0) + 1;
-      tot++;
-    });
-    var ks = Object.keys(cnt).sort(function(a, b) { return cnt[b] - cnt[a]; });
-    h += '<div class="meter" role="button" tabindex="0" onclick="openTasteMeterModal()" title="Click for full genre circle breakdown">' +
-      tube(ks.map(function(g, i) { return '<div class="band" style="--c:' + hue(g) + ';--f:' + (cnt[g] / tot).toFixed(3) + ';--dur:' + (6 + i * 1.2).toFixed(1) + 's"></div>'; }).join("")) +
-      '<div class="legend">' + ks.slice(0, 6).map(function(g) {
-        var c = "hsl(" + hue(g) + " 85% 58%)";
-        var label = g === "Science Fiction" ? "Sci-Fi" : g;
-        return '<div><em style="background:' + c + ';color:' + c + '"></em><b class="lg-name" title="' + esc(g) + '">' + esc(label) + '</b><span>' + Math.round(cnt[g] / tot * 100) + '%</span></div>';
-      }).join("") + '</div></div>';
-  }
-  if (el._h !== h) { el._h = h; el.innerHTML = h; }
-}
+  <script>
+    (function () {
+      "use strict";
 
-function openTasteMeterModal() {
-  var cnt = {}, tot = 0;
-  films.forEach(function(f) {
-    var gs = (f.genres && f.genres.length) ? f.genres : ["Drama"];
-    gs.forEach(function(g) { cnt[g] = (cnt[g] || 0) + 1; tot++; });
-  });
-  var list = Object.keys(cnt).map(function(g) {
-    return { name: g, count: cnt[g], pct: tot ? (cnt[g] / tot * 100) : 0, hue: hue(g) };
-  }).sort(function(a, b) { return b.count - a.count; });
-
-  var R = 76, C = 2 * Math.PI * R, offset = 0;
-  var segs = list.length ? list.map(function(item) {
-    var len = (item.pct / 100) * C;
-    var seg = '<circle cx="100" cy="100" r="' + R + '" fill="none" stroke="hsl(' + item.hue + ' 88% 58%)" stroke-width="24" stroke-dasharray="' + len.toFixed(2) + ' ' + C.toFixed(2) + '" stroke-dashoffset="' + (-offset).toFixed(2) + '"></circle>';
-    offset += len;
-    return seg;
-  }).join("") : '<circle cx="100" cy="100" r="' + R + '" fill="none" stroke="rgba(255,255,255,0.14)" stroke-width="24"></circle>';
-
-  var topName = list[0] ? list[0].name : "Empty";
-  var rowsHtml = list.length ? list.map(function(item) {
-    var col = 'hsl(' + item.hue + ' 88% 58%)';
-    return '<div class="tm-row"><span class="tm-dot" style="background:' + col + ';box-shadow:0 0 8px ' + col + '"></span><strong style="min-width:118px;font-weight:600">' + esc(item.name) + '</strong><div class="tm-bar-bg"><div class="tm-bar-fg" style="width:' + Math.max(3, item.pct).toFixed(1) + '%;background:' + col + '"></div></div><span class="dim" style="font-size:12px;min-width:86px;text-align:right;font-variant-numeric:tabular-nums">' + item.pct.toFixed(1) + '% (' + item.count + ')</span></div>';
-  }).join("") : '<p class="dim">No films logged yet. Press Tab or + to log your first film.</p>';
-
-  $("panel").innerHTML =
-    '<h2>Full Genre Taste Breakdown</h2>' +
-    '<p class="dim" style="margin:-6px 0 12px;font-size:14px">Complete genre distribution across all ' + films.length + (films.length === 1 ? ' logged film' : ' logged films') + '.</p>' +
-    '<div class="tm-modal">' +
-      '<div class="tm-ring"><svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="' + R + '" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="24"></circle>' + segs + '</svg>' +
-      '<div class="tm-ring-center"><strong>' + (list[0] ? Math.round(list[0].pct) + '%' : '0%') + '</strong><span>' + esc(topName) + '</span></div></div>' +
-      '<div class="tm-list">' + rowsHtml + '</div>' +
-    '</div>' +
-    '<div class="acts"><button class="btn" data-act="close">Close</button></div>';
-  show(false);
-}
-
-function openAvatarModal() {
-  $("panel").innerHTML = '<h2>Today's Cinema Mood</h2><p class="dim">Choose the persona shown in your Taste Meter and Cinematic Passport.</p>' +
-    '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:14px">' +
-    MOODS.map(function(m) {
-      return '<button class="glass" style="padding:16px;text-align:center;border-color:' + (m.id === avatar.id ? 'hsl(var(--h) 90% 65%)' : 'var(--line)') + '" onclick="pickMood('' + m.id + '')"><div class="face" style="margin:0 auto 10px;width:48px;height:48px">' + m.icon + '</div><b>' + esc(m.name) + '</b></button>';
-    }).join("") + '</div><div class="acts"><button class="ghost" data-act="close">Done</button></div>';
-  show(false);
-}
-function pickMood(id) {
-  avatar = MOODS.filter(function(m) { return m.id === id; })[0] || MOODS[1];
-  saveUserData();
-  render(true);
-  hide();
-}
-
-/* Modal Show / Hide & Delegated Actions */
-function show(arcadeMode) {
-  ovOn = true;
-  inArcade = !!arcadeMode;
-  $("panel").classList.toggle("arcade", inArcade);
-  $("ov").classList.add("on");
-}
-function hide() {
-  ovOn = false;
-  inArcade = false;
-  $("ov").classList.remove("on");
-}
-$("panel").addEventListener("click", function(e) {
-  var btn = e.target.closest("[data-act]");
-  if (!btn) return;
-  var act = btn.getAttribute("data-act");
-  if (act === "close") hide();
-  else if (act === "log") {
-    var tid = Number(btn.getAttribute("data-tid"));
-    logFilmById(tid, true);
-  } else if (act === "del") {
-    var did = Number(btn.getAttribute("data-tid"));
-    films = films.filter(function(f) { return f.tid !== did; });
-    saveUserData();
-    render(true);
-    hide();
-  }
-});
-
-/* Logging & TMDB Detail Hydration */
-function logFilmById(tid, closeAfter) {
-  if (hasFilm(tid)) { if (closeAfter) hide(); return Promise.resolve(); }
-  return api("movie/" + tid, { append_to_response: "credits" }).then(function(d) {
-    if (hasFilm(tid)) return;
-    var crew = (d.credits && d.credits.crew) || [];
-    var cast = (d.credits && d.credits.cast) || [];
-    var dirObj = crew.filter(function(c) { return c.job === "Director"; })[0] || {};
-    var entry = {
-      tid: d.id,
-      title: d.title || d.original_title || "Untitled",
-      year: (d.release_date || "").slice(0, 4),
-      date: today(),
-      at: Date.now(),
-      poster: d.poster_path || "",
-      runtime: d.runtime || 110,
-      genres: (d.genres || []).map(function(g) { return g.name; }),
-      director: dirObj.name || "",
-      dphoto: dirObj.profile_path || "",
-      cast: cast.slice(0, 5).map(function(c) { return c.name; }),
-      countries: (d.production_countries || []).map(function(c) { return c.name; }),
-      collection: d.belongs_to_collection ? { id: d.belongs_to_collection.id, name: d.belongs_to_collection.name } : null
-    };
-    films.push(entry);
-    saveUserData();
-    render(true);
-    refreshRecs();
-    if (closeAfter) hide();
-  }).catch(function() {
-    if (closeAfter) hide();
-  });
-}
-
-function openMovieDetail(tid) {
-  var logged = films.filter(function(f) { return String(f.tid) === String(tid); })[0];
-  $("panel").innerHTML = '<p class="dim">Loading film dossier…</p>';
-  show(false);
-  api("movie/" + tid, { append_to_response: "credits" }).then(function(d) {
-    var crew = (d.credits && d.credits.crew) || [];
-    var cast = (d.credits && d.credits.cast) || [];
-    var dir = (crew.filter(function(c) { return c.job === "Director"; })[0] || {}).name || "Unknown";
-    var gs = (d.genres || []).map(function(g) { return '<span class="chip">' + esc(g.name) + '</span>'; }).join("");
-    var isWatched = hasFilm(d.id);
-    $("panel").innerHTML =
-      '<div class="detail">' +
-        (d.poster_path ? '<img alt="" src="' + img(d.poster_path, "w342") + '">' : '<div class="ph"></div>') +
-        '<div>' +
-          '<div class="cu-eyebrow">' + esc((d.release_date || "").slice(0, 4)) + ' · ' + (d.runtime || "—") + ' min</div>' +
-          '<h2 style="margin:6px 0 10px">' + esc(d.title) + '</h2>' +
-          '<div>' + gs + '</div>' +
-          '<p class="dim" style="font-size:14px;line-height:1.6">' + esc(d.overview || "No synopsis available.") + '</p>' +
-          '<p style="font-size:13px"><b>Director:</b> ' + esc(dir) + '<br><b>Cast:</b> ' + esc(cast.slice(0, 4).map(function(c) { return c.name; }).join(", ") || "—") + '</p>' +
-          (d.belongs_to_collection ? '<span class="cu-status">' + esc(d.belongs_to_collection.name) + '</span>' : '') +
-        '</div>' +
-      '</div>' +
-      '<div class="acts">' +
-        '<button class="ghost" data-act="close">Close</button>' +
-        (isWatched
-          ? '<button class="ghost" style="border-color:#ff8fa3;color:#ff8fa3" data-act="del" data-tid="' + d.id + '">Remove from Log</button>'
-          : '<button class="btn" data-act="log" data-tid="' + d.id + '">+ Log as Watched</button>') +
-      '</div>';
-  }).catch(function() {
-    if (logged) {
-      $("panel").innerHTML = '<h2>' + esc(logged.title) + '</h2><p class="dim">Logged on ' + esc(logged.date) + '</p><div class="acts"><button class="ghost" data-act="close">Close</button><button class="ghost" style="color:#ff8fa3" data-act="del" data-tid="' + logged.tid + '">Remove</button></div>';
-    } else {
-      $("panel").innerHTML = '<p class="dim">Could not load film details.</p><div class="acts"><button class="ghost" data-act="close">Close</button></div>';
-    }
-  });
-}
-
-/* Quick-Log Arcade Deck (+ or Tab) */
-var ARCADE_GENRES = [878, 28, 53, 18, 27, 16, 35, 9648, 12, 80];
-function openSearch() {
-  arcSel = 0;
-  arcQuery = "";
-  renderArcadeShell();
-  show(true);
-  loadArcadeBatch();
-}
-function renderArcadeShell() {
-  $("panel").innerHTML =
-    '<div class="arc-top">' +
-      '<div><div class="cu-eyebrow">Quick-Log Arcade</div><h2 style="margin:2px 0 0">Rapid Film Discovery & Logging</h2></div>' +
-      '<div style="display:flex;gap:8px"><button class="ghost" onclick="cycleArcadeGenre()">R · Shuffle Batch</button><button class="ghost" data-act="close">Esc / Tab</button></div>' +
-    '</div>' +
-    '<div class="arc-search">' +
-      '<input id="arc-q" placeholder="Press / to search any movie title, director, or franchise…" value="' + esc(arcQuery) + '" oninput="onArcadeInput(this.value)">' +
-    '</div>' +
-    '<div class="arc-grid" id="arc-grid"><p class="dim">Loading films…</p></div>' +
-    '<div class="arc-hud">' +
-      '<span><b class="kbd">W A S D</b>Move cursor</span>' +
-      '<span><b class="kbd">Space</b>Instant Log</span>' +
-      '<span><b class="kbd">Shift</b>Inspect Dossier</span>' +
-      '<span><b class="kbd">R</b>New Batch</span>' +
-      '<span><b class="kbd">/</b>Search Title</span>' +
-      '<span><b class="kbd">Tab</b>Close</span>' +
-    '</div>';
-}
-var arcTimer = null;
-function onArcadeInput(val) {
-  arcQuery = val;
-  clearTimeout(arcTimer);
-  arcTimer = setTimeout(function() {
-    if (arcQuery.trim()) {
-      api("search/movie", { query: arcQuery.trim(), include_adult: "false" }).then(function(d) {
-        arcItems = (d.results || []).slice(0, 8);
-        arcSel = 0;
-        paintArcadeGrid();
-      }).catch(function() {});
-    } else {
-      loadArcadeBatch();
-    }
-  }, 260);
-}
-function cycleArcadeGenre() {
-  var idx = ARCADE_GENRES.indexOf(arcGenre);
-  arcGenre = ARCADE_GENRES[(idx + 1) % ARCADE_GENRES.length];
-  arcQuery = "";
-  if ($("arc-q")) $("arc-q").value = "";
-  loadArcadeBatch();
-}
-function loadArcadeBatch() {
-  var page = Math.floor(Math.random() * 4) + 1;
-  api("discover/movie", { with_genres: arcGenre, sort_by: "popularity.desc", page: page }).then(function(d) {
-    arcItems = (d.results || []).filter(function(m) { return !hasFilm(m.id); }).slice(0, 8);
-    arcSel = 0;
-    paintArcadeGrid();
-  }).catch(function() {
-    if ($("arc-grid")) $("arc-grid").innerHTML = '<p class="dim">Configure TMDB_API_KEY in Vercel to load live films.</p>';
-  });
-}
-function paintArcadeGrid() {
-  var g = $("arc-grid");
-  if (!g) return;
-  if (!arcItems.length) {
-    g.innerHTML = '<p class="dim">No matching titles found.</p>';
-    return;
-  }
-  g.innerHTML = arcItems.map(function(m, i) {
-    var isSel = i === arcSel;
-    var watched = hasFilm(m.id);
-    return '<div class="arc-card' + (isSel ? ' sel' : '') + (watched ? ' logged' : '') + '" onclick="arcCardClick(' + i + ')">' +
-      (watched ? '<span class="arc-badge">✓ Logged</span>' : '<span class="arc-badge">+ Space</span>') +
-      (m.poster_path ? '<img alt="" src="' + img(m.poster_path, "w342") + '">' : '<div class="ph"></div>') +
-      '<div class="meta"><div class="t">' + esc(m.title) + '</div><div class="y">' + esc((m.release_date || "").slice(0, 4)) + '</div></div>' +
-    '</div>';
-  }).join("");
-}
-function arcCardClick(i) {
-  arcSel = i;
-  paintArcadeGrid();
-  quickLogArcadeSelected();
-}
-function quickLogArcadeSelected() {
-  var item = arcItems[arcSel];
-  if (!item || hasFilm(item.id)) return;
-  logFilmById(item.id, false).then(function() {
-    api("movie/" + item.id + "/similar").then(function(sim) {
-      var replacement = (sim.results || []).filter(function(r) {
-        return !hasFilm(r.id) && !arcItems.some(function(x) { return x.id === r.id; });
-      })[0];
-      if (replacement) arcItems[arcSel] = replacement;
-      paintArcadeGrid();
-    }).catch(function() { paintArcadeGrid(); });
-  });
-}
-
-/* Recommendations Shelf on Home */
-function refreshRecs() {
-  var seed = sorted()[0];
-  var req = seed ? api("movie/" + seed.tid + "/recommendations") : api("trending/movie/week");
-  req.then(function(d) {
-    recs = (d.results || []).filter(function(m) { return !hasFilm(m.id); }).slice(0, 8);
-    if (view === "home") render(false);
-  }).catch(function() {});
-}
-
-/* Views: Home, My Log, Me, Cinemography */
-function posterCard(m) {
-  var id = m.tid || m.id;
-  var p = m.poster || m.poster_path;
-  var yr = m.year || (m.release_date || "").slice(0, 4);
-  return '<button class="card" onclick="openMovieDetail(' + id + ')">' +
-    (p ? '<img loading="lazy" alt="" src="' + img(p, "w342") + '">' : '<div class="ph"></div>') +
-    '<div class="meta"><div class="t">' + esc(m.title) + '</div><div class="y">' + esc(yr) + '</div></div>' +
-  '</button>';
-}
-
-function homeHTML() {
-  var recent = sorted().slice(0, 8);
-  var h = '<h1 class="pg">Your Observatory</h1>';
-  h += '<div class="shelf"><div class="shelf-hd"><h2>Recently Logged</h2><button class="ghost" onclick="openSearch()">+ Quick-Log (Tab)</button></div>';
-  if (!recent.length) {
-    h += '<div class="glass" style="padding:26px"><p class="dim" style="margin:0 0 12px">Your observatory sky is waiting for its first film.</p><button class="btn" onclick="openSearch()">Open Quick-Log Arcade</button></div>';
-  } else {
-    h += '<div class="grid">' + recent.map(posterCard).join("") + '</div>';
-  }
-  h += '</div>';
-
-  h += '<div class="shelf"><div class="shelf-hd"><h2>Tuned to Your Aura</h2><span class="dim" style="font-size:12.5px">' + (recent[0] ? 'Because you watched ' + esc(recent[0].title) : 'Trending this week') + '</span></div>';
-  h += recs.length ? '<div class="grid">' + recs.map(posterCard).join("") + '</div>' : '<p class="dim">Loading recommendations…</p>';
-  h += '</div>';
-  return h;
-}
-
-function logHTML() {
-  var all = sorted();
-  var h = '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px"><h1 class="pg" style="margin:0">My Film Log (' + all.length + ')</h1><button class="btn" onclick="openSearch()">+ Log Film</button></div>';
-  if (!all.length) return h + '<div class="glass" style="padding:24px"><p class="dim" style="margin:0">No films logged yet.</p></div>';
-  return h + '<div class="grid">' + all.map(posterCard).join("") + '</div>';
-}
-
-/* Most-Watched Director Spotlight Selector (3+ Films Milestone) */
-function getChosenDirector() {
-  try { return user ? localStorage.getItem(ukey("favdir")) || "" : ""; } catch (e) { return ""; }
-}
-function setChosenDirector(name) {
-  try { if (user) localStorage.setItem(ukey("favdir"), name); } catch (e) {}
-  render(true);
-}
-function cycleChosenDirector() {
-  var m = {};
-  films.forEach(function(f) { if (f.director) m[f.director] = (m[f.director] || 0) + 1; });
-  var elig = Object.keys(m).filter(function(k) { return m[k] >= 3; }).sort(function(a, b) { return m[b] - m[a] || a.localeCompare(b); });
-  if (elig.length < 2) return;
-  var curDir = getChosenDirector();
-  var idx = elig.indexOf(curDir);
-  var next = elig[(idx + 1) % elig.length];
-  setChosenDirector(next);
-}
-function dirBox() {
-  var m = {}, best = null, c = 0;
-  films.forEach(function(f) { if (f.director) m[f.director] = (m[f.director] || 0) + 1; });
-  var n = Object.keys(m);
-  var elig = n.filter(function(k) { return m[k] >= 3; }).sort(function(a, b) { return m[b] - m[a] || a.localeCompare(b); });
-  n.forEach(function(k) { if (m[k] > c) { c = m[k]; best = k; } });
-  if (elig.length) {
-    var chosen = getChosenDirector();
-    var featured = elig.indexOf(chosen) >= 0 ? chosen : elig[0];
-    var fc = m[featured];
-    var ph = (films.filter(function(f) { return f.director === featured && f.dphoto; })[0] || {}).dphoto;
-    var ini = featured.split(" ").map(function(w) { return w[0]; }).join("").slice(0, 2);
-    var swBtn = elig.length > 1
-      ? '<button type="button" class="dir-switch" onclick="cycleChosenDirector()" title="Switch featured 3+ film director">↻ Switch (' + (elig.indexOf(featured) + 1) + '/' + elig.length + ')</button>'
-      : '';
-    return '<div class="stat glass dir dir-wrap">' + (ph ? '<img class="face" alt="" src="' + img(ph, "w185") + '">' : '<div class="face">' + esc(ini) + '</div>') + '<div><small>Most-watched director</small><div class="num">' + esc(featured) + '</div><small>' + fc + ' films</small>' + swBtn + '</div></div>';
-  }
-  var msg = !n.length ? "Log a film to start." : c >= 2 ? (3 - c) + " more film by " + best + " to unlock." : "Watch 3 films by one director to unlock.";
-  return '<div class="stat glass dir"><div class="face sil"></div><div><small>Most-watched director</small><div class="msg">' + esc(msg) + '</div><small>' + n.length + (n.length === 1 ? " director" : " directors") + ' so far</small></div></div>';
-}
-
-function meHTML() {
-  var mins = films.reduce(function(s, f) { return s + (f.runtime || 110); }, 0);
-  var hrs = Math.round(mins / 60);
-  var c = analyzeCinemography();
-  var h = '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">' +
-    '<h1 class="pg" style="margin:0">' + esc(user || "Guest") + '</h1>' +
-    '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-      '<button class="btn" onclick="goView('cinemography')">Cinemography Card</button>' +
-      '<button class="ghost" onclick="openOnboarding(0)">Replay Tutorial</button>' +
-      '<button class="ghost" onclick="signOut()">Sign out</button>' +
-    '</div></div>';
-
-  h += '<div class="stats">' +
-    '<div class="stat glass"><small class="dim">Films logged</small><div class="num">' + films.length + '</div><small class="dim">' + hrs + ' hours watched</small></div>' +
-    dirBox() +
-    '<div class="stat glass"><small class="dim">Universes explored</small><div class="num">' + c.universes.length + '</div><small class="dim">' + c.countries.length + ' countries visited</small></div>' +
-  '</div>';
-
-  h += '<div class="glass" style="padding:22px"><div class="cu-eyebrow" style="margin-bottom:6px">Cinema Taste Portrait</div><p style="margin:0;font-size:15px;line-height:1.65">' + esc(c.portrait) + '</p></div>';
-  return h;
-}
-
-/* Constellation Graph Engine & Universe Definitions */
-var CURATED_UNIVERSES = [
-  { id: "mcu", name: "Marvel Cinematic Universe", kind: "Shared Universe", hue: 355, collectionIds: [86311, 131295, 131292, 131296, 284433, 531241, 422837, 623911, 529892, 617284], desc: "Interconnected superhero saga spanning the Infinity and Multiverse eras." },
-  { id: "dceu", name: "DC Extended Universe", kind: "Shared Universe", hue: 215, collectionIds: [209131, 468552, 531242, 724848, 573693], desc: "Mythic DC heroes united across Metropolis, Gotham, Themyscira, and Atlantis." },
-  { id: "wizarding", name: "Wizarding World", kind: "Franchise", hue: 42, collectionIds: [1241, 435259], desc: "Hogwarts and the broader magical world across decades." },
-  { id: "starwars", name: "Star Wars Galaxy", kind: "Saga", hue: 48, collectionIds: [10], desc: "The Skywalker saga and galactic anthology stories." },
-  { id: "monsterverse", name: "MonsterVerse", kind: "Shared Universe", hue: 165, collectionIds: [535313, 374509], desc: "Titans colliding across Skull Island and Hollow Earth." },
-  { id: "conjuring", name: "The Conjuring Universe", kind: "Horror Universe", hue: 345, collectionIds: [313086, 402074, 531330], desc: "Paranormal casefiles of Ed and Lorraine Warren." },
-  { id: "middleearth", name: "Middle-earth", kind: "Fantasy Saga", hue: 135, collectionIds: [119, 121938], desc: "Tolkien's Third Age quests through the Shire, Rohan, and Mordor." },
-  { id: "dune", name: "Dune Saga", kind: "Sci-Fi Saga", hue: 34, collectionIds: [726871], desc: "Spice, prophecy, and imperial politics on Arrakis." }
-];
-
-var cuState = {
-  zoom: 1,
-  panX: 0,
-  panY: 0,
-  selected: null,
-  listMode: false,
-  colCache: {},
-  backfillMsg: ""
-};
-
-function mostCommon(arr) {
-  var m = {}, b = "", c = 0;
-  arr.forEach(function(x) { m[x] = (m[x] || 0) + 1; if (m[x] > c) { c = m[x]; b = x; } });
-  return b;
-}
-
-function buildConstellationModel() {
-  var nodes = films.map(function(f, idx) {
-    var g = (f.genres && f.genres[0]) || "Drama";
-    return { id: "f_" + f.tid, film: f, hue: hue(g), idx: idx, x: 0, y: 0, uId: null };
-  });
-
-  var univMap = {};
-  nodes.forEach(function(n) {
-    var col = n.film.collection;
-    if (!col || !col.id) return;
-    var cur = CURATED_UNIVERSES.filter(function(cu) { return cu.collectionIds.indexOf(col.id) >= 0; })[0];
-    var uid = cur ? cur.id : "col_" + col.id;
-    if (!univMap[uid]) {
-      univMap[uid] = {
-        id: uid,
-        name: cur ? cur.name : col.name.replace(/\s*Collection$/i, ""),
-        kind: cur ? cur.kind : "Film Collection",
-        hue: cur ? cur.hue : n.hue,
-        desc: cur ? cur.desc : "Connected entries in " + col.name + ".",
-        collectionIds: cur ? cur.collectionIds.slice() : [col.id],
-        watchedNodes: [],
-        x: 0,
-        y: 0
+      const STORAGE_KEYS = {
+        ACCOUNTS: "fw_accounts_v3",
+        SESSION: "fw_active_session_v3",
+        FILMS_PREFIX: "fw_films_v3_",
+        TOUR_DONE: "fw_tour_completed_v3"
       };
-    }
-    if (univMap[uid].collectionIds.indexOf(col.id) < 0) univMap[uid].collectionIds.push(col.id);
-    univMap[uid].watchedNodes.push(n);
-    n.uId = uid;
-  });
 
-  var universes = Object.keys(univMap).map(function(k) { return univMap[k]; });
-  var uCount = universes.length;
-  universes.forEach(function(u, i) {
-    var ang = (i / Math.max(1, uCount)) * Math.PI * 2 - Math.PI / 2;
-    var rad = uCount === 1 ? 0 : 145;
-    u.x = Math.cos(ang) * rad;
-    u.y = Math.sin(ang) * rad;
-    u.watchedNodes.forEach(function(n, j) {
-      var a2 = ang + ((j - (u.watchedNodes.length - 1) / 2) * 0.55);
-      var r2 = uCount === 1 ? 110 : 74;
-      n.x = u.x + Math.cos(a2) * r2;
-      n.y = u.y + Math.sin(a2) * r2;
-    });
-  });
+      const UNIVERSE_CATALOG = {
+        "Sci-Fi Mythos": {
+          color: "#22d3ee",
+          entries: ["Dune: Part One", "Dune: Part Two", "Arrival", "Blade Runner 2049"]
+        },
+        "Folk & Psychological": {
+          color: "#d946ef",
+          entries: ["Midsommar", "Hereditary", "The Witch", "The Lighthouse"]
+        },
+        "Neo-Noir & Crime": {
+          color: "#8b5cf6",
+          entries: ["Oppenheimer", "Pulp Fiction", "Inception", "Reservoir Dogs"]
+        },
+        "Sonic & Action": {
+          color: "#f59e0b",
+          entries: ["Black Panther", "Mad Max: Fury Road", "Whiplash", "Baby Driver"]
+        },
+        "Indie & Slice of Life": {
+          color: "#10b981",
+          entries: ["OTP 4320", "Past Lives", "Aftersun", "Paterson"]
+        }
+      };
 
-  var orphans = nodes.filter(function(n) { return !n.uId; });
-  orphans.forEach(function(n, i) {
-    var ang = (i / Math.max(1, orphans.length)) * Math.PI * 2 + 0.35;
-    var rad = (uCount ? 255 : 155) + (i % 2) * 34;
-    n.x = Math.cos(ang) * rad;
-    n.y = Math.sin(ang) * rad;
-  });
+      const DEFAULT_FILMS = [
+        { id: 1, title: "Dune: Part One", director: "Denis Villeneuve", universe: "Sci-Fi Mythos", rating: 4.5, note: "Tactile scale and hypnotic score." },
+        { id: 2, title: "Dune: Part Two", director: "Denis Villeneuve", universe: "Sci-Fi Mythos", rating: 5.0, note: "Monumental sound architecture and mythic dread." },
+        { id: 3, title: "Arrival", director: "Denis Villeneuve", universe: "Sci-Fi Mythos", rating: 5.0, note: "Emotional core built around memory and time." },
+        { id: 4, title: "Midsommar", director: "Ari Aster", universe: "Folk & Psychological", rating: 4.5, note: "Sunlit ritual horror and catharsis." },
+        { id: 5, title: "Oppenheimer", director: "Christopher Nolan", universe: "Neo-Noir & Crime", rating: 5.0, note: "Deafening silence and rhythmic momentum." },
+        { id: 6, title: "Pulp Fiction", director: "Quentin Tarantino", universe: "Neo-Noir & Crime", rating: 4.5, note: "Razor-sharp dialogue and nonlinear tension." },
+        { id: 7, title: "Black Panther", director: "Ryan Coogler", universe: "Sonic & Action", rating: 4.5, note: "Cultural instrumentation fused with tragic stakes." },
+        { id: 8, title: "OTP 4320", director: "Mahimna Bhatt", universe: "Indie & Slice of Life", rating: 5.0, note: "Intimate indie framing driven by pure human emotion." }
+      ];
 
-  var edges = [];
-  universes.forEach(function(u) {
-    for (var i = 0; i < u.watchedNodes.length; i++) {
-      for (var j = i + 1; j < u.watchedNodes.length; j++) {
-        edges.push({ a: u.watchedNodes[i], b: u.watchedNodes[j], isUniverse: true, label: u.name });
+      const FLASH_NEWS = [
+        "Dune: Messiah lore expands into Arrakis political intrigue.",
+        "Ari Aster retrospective highlights practical daylight folk cinematography.",
+        "Christopher Nolan next IMAX feature locks global theatrical window.",
+        "Independent smartphone cinema wave surges across South Asian festivals."
+      ];
+
+      const TOUR_STEPS = [
+        {
+          title: "Taste Meter & Circle Breakdown",
+          body: "Your Taste Meter locks clean percentage alignment on the sidebar. Click it anytime to inspect your full SVG Genre Circle Breakdown."
+        },
+        {
+          title: "3D Multi-Page Cinematic Passport",
+          body: "Open the Universes & Passport tab to flip through your embossed cover, live Constellation Print, ink visa stamps, and shareable passport URL."
+        },
+        {
+          title: "Instant Tab Toggle (+)",
+          body: "Press Tab anywhere outside a text input to immediately open or close the Quick-Log Arcade."
+        }
+      ];
+
+      let authMode = "signin";
+      let currentUser = null;
+      let films = [];
+      let flashIndex = 0;
+      let tourStep = 0;
+
+      // Director Spotlight state
+      let spotlightIndex = 0;
+
+      // Multi-page Passport state
+      let passportOpen = false;
+      let passportSpreadIndex = 0; // 0 = Page 1 (Identity & Bio), 1+ = Stamps Pages
+      let sharedSnapshot = null;
+
+      function normalizeId(raw) {
+        return String(raw || "").trim().toLowerCase();
       }
-    }
-  });
-  for (var i = 0; i < nodes.length; i++) {
-    for (var j = i + 1; j < nodes.length; j++) {
-      if (nodes[i].uId && nodes[i].uId === nodes[j].uId) continue;
-      var shared = [];
-      if (nodes[i].film.director && nodes[i].film.director === nodes[j].film.director) {
-        shared.push("Director: " + nodes[i].film.director);
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
       }
-      var cA = nodes[i].film.cast || [], cB = nodes[j].film.cast || [];
-      cA.forEach(function(actor) { if (cB.indexOf(actor) >= 0) shared.push("Cast: " + actor); });
-      if (shared.length) {
-        edges.push({ a: nodes[i], b: nodes[j], isUniverse: false, label: shared[0] });
+
+      function getAccounts() {
+        try {
+          return JSON.parse(localStorage.getItem(STORAGE_KEYS.ACCOUNTS)) || {};
+        } catch (e) {
+          return {};
+        }
       }
-    }
-  }
 
-  return { nodes: nodes, universes: universes, edges: edges };
-}
+      function saveAccounts(accounts) {
+        localStorage.setItem(STORAGE_KEYS.ACCOUNTS, JSON.stringify(accounts));
+      }
 
-function backfillConstellation() {
-  var missing = films.filter(function(f) { return f.collection === undefined; });
-  if (!missing.length) return;
-  cuState.backfillMsg = "Syncing universe metadata for " + missing.length + " films…";
-  Promise.all(missing.slice(0, 8).map(function(f) {
-    return api("movie/" + f.tid).then(function(d) {
-      f.collection = d.belongs_to_collection ? { id: d.belongs_to_collection.id, name: d.belongs_to_collection.name } : null;
-    }).catch(function() { f.collection = null; });
-  })).then(function() {
-    cuState.backfillMsg = "";
-    saveUserData();
-    if (view === "universes") render(true);
-  });
-}
+      function showAuthError(msg) {
+        const el = document.getElementById("auth-error");
+        el.textContent = msg;
+        el.classList.add("visible");
+      }
 
-function getUniverseScopeCount(u) {
-  var total = 0, seen = {}, t = today();
-  (u.collectionIds || []).forEach(function(cid) {
-    var col = cuState.colCache[cid];
-    if (col && Array.isArray(col.parts)) {
-      col.parts.forEach(function(p) {
-        if (p && p.id && !seen[p.id] && (!p.release_date || p.release_date <= t)) {
-          seen[p.id] = 1;
-          total++;
+      function clearAuthError() {
+        const el = document.getElementById("auth-error");
+        el.textContent = "";
+        el.classList.remove("visible");
+      }
+
+      function loadUserFilms(userKey) {
+        try {
+          const saved = localStorage.getItem(STORAGE_KEYS.FILMS_PREFIX + userKey);
+          if (saved) {
+            films = JSON.parse(saved);
+            return;
+          }
+        } catch (e) {}
+        films = DEFAULT_FILMS.map(function (f) { return Object.assign({}, f); });
+        saveUserFilms();
+      }
+
+      function saveUserFilms() {
+        if (!currentUser || sharedSnapshot) return;
+        localStorage.setItem(STORAGE_KEYS.FILMS_PREFIX + currentUser.key, JSON.stringify(films));
+      }
+
+      function getActiveFilms() {
+        return sharedSnapshot ? sharedSnapshot.films : films;
+      }
+
+      function getActiveDisplayName() {
+        return sharedSnapshot ? sharedSnapshot.displayName : (currentUser ? currentUser.displayName : "Observer");
+      }
+
+      function enterObservatory(userObj) {
+        currentUser = userObj;
+        localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(userObj));
+        loadUserFilms(userObj.key);
+
+        document.getElementById("auth-screen").style.display = "none";
+        document.getElementById("app-shell").style.display = "block";
+        document.getElementById("active-user-label").textContent = "Observer: " + userObj.displayName;
+
+        renderAll();
+
+        if (!sharedSnapshot && !localStorage.getItem(STORAGE_KEYS.TOUR_DONE)) {
+          openTour();
+        }
+      }
+
+      // Auth Tabs
+      document.querySelectorAll("[data-auth-tab]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          authMode = btn.getAttribute("data-auth-tab");
+          document.querySelectorAll("[data-auth-tab]").forEach(function (b) {
+            b.classList.toggle("active", b === btn);
+          });
+          document.getElementById("auth-submit-btn").textContent =
+            authMode === "signin" ? "Enter Observatory" : "Create Account & Enter";
+          clearAuthError();
+        });
+      });
+
+      // Auth Form Submit
+      document.getElementById("auth-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        clearAuthError();
+
+        const rawId = document.getElementById("auth-identifier").value.trim();
+        const password = document.getElementById("auth-password").value;
+
+        if (!rawId || !password) {
+          showAuthError("Please enter both your username/email and password.");
+          return;
+        }
+
+        const key = normalizeId(rawId);
+        const accounts = getAccounts();
+
+        if (authMode === "signup") {
+          if (password.length < 4) {
+            showAuthError("Choose a password with at least 4 characters.");
+            return;
+          }
+          accounts[key] = { key: key, displayName: rawId, password: password };
+          saveAccounts(accounts);
+          enterObservatory({ key: key, displayName: rawId, isGuest: false });
+          return;
+        }
+
+        if (accounts[key]) {
+          if (accounts[key].password !== password) {
+            showAuthError("Incorrect password for " + accounts[key].displayName + ".");
+            return;
+          }
+          enterObservatory({ key: key, displayName: accounts[key].displayName, isGuest: false });
+        } else {
+          if (password.length < 4) {
+            showAuthError("Password must be at least 4 characters.");
+            return;
+          }
+          accounts[key] = { key: key, displayName: rawId, password: password };
+          saveAccounts(accounts);
+          enterObservatory({ key: key, displayName: rawId, isGuest: false });
         }
       });
-    }
-  });
-  return Math.max(total, u.watchedNodes.length);
-}
 
-function prefetchUniverseScopes(universes) {
-  var missing = [];
-  universes.forEach(function(u) {
-    (u.collectionIds || []).forEach(function(cid) {
-      if (!cuState.colCache[cid] && missing.indexOf(cid) < 0) missing.push(cid);
-    });
-  });
-  if (!missing.length) return;
-  Promise.all(missing.slice(0, 6).map(function(cid) {
-    return api("collection/" + cid).then(function(d) { cuState.colCache[cid] = d; }).catch(function() {});
-  })).then(function() {
-    if (view === "universes" && cuState.listMode) render(true);
-  });
-}
+      document.getElementById("guest-enter-btn").addEventListener("click", function () {
+        clearAuthError();
+        enterObservatory({ key: "guest_observer", displayName: "Guest Observer", isGuest: true });
+      });
 
-function inspectorHTML() {
-  if (!cuState.selected) return "";
-  var s = cuState.selected;
-  if (s.type === "universe") {
-    return '<div class="cu-insp"><div class="cu-eyebrow">' + esc(s.data.kind) + '</div><h3 style="margin:4px 0 6px">' + esc(s.data.name) + '</h3><p class="dim" style="font-size:12.5px;margin:0 0 12px">' + esc(s.data.desc) + '</p><div style="display:flex;gap:8px"><button class="btn" style="padding:7px 12px;font-size:12px" onclick="openUniverseDashboard('' + esc(s.data.id) + '')">Universe Index</button><button class="ghost" style="padding:7px 10px;font-size:12px" onclick="cuState.selected=null;render(true)">Close</button></div></div>';
-  }
-  if (s.type === "node") {
-    return '<div class="cu-insp"><div class="cu-eyebrow">' + esc(s.data.film.year) + '</div><h3 style="margin:4px 0 6px">' + esc(s.data.film.title) + '</h3><p class="dim" style="font-size:12.5px;margin:0 0 12px">Dir: ' + esc(s.data.film.director || "—") + '</p><div style="display:flex;gap:8px"><button class="btn" style="padding:7px 12px;font-size:12px" onclick="openMovieDetail(' + s.data.film.tid + ')">Open Dossier</button><button class="ghost" style="padding:7px 10px;font-size:12px" onclick="cuState.selected=null;render(true)">Close</button></div></div>';
-  }
-  return "";
-}
+      document.getElementById("logout-btn").addEventListener("click", function () {
+        localStorage.removeItem(STORAGE_KEYS.SESSION);
+        currentUser = null;
+        sharedSnapshot = null;
+        document.getElementById("shared-banner").classList.remove("visible");
+        document.getElementById("app-shell").style.display = "none";
+        document.getElementById("auth-screen").style.display = "flex";
+      });
 
-function universesHTML() {
-  var model = buildConstellationModel();
-  var stampCount = model.universes.length;
-  var h = '<div class="cu-wrap"><div class="cu-head"><div><div class="cu-eyebrow">Personal Cinematic Observatory</div><h1 class="pg" style="margin:0">Cinematic Universes</h1></div>';
-  h += '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-       '<button class="btn" onclick="openPassportModal(0)">🛂 My Passport (' + stampCount + ')</button>' +
-       '<button class="ghost" onclick="goView('cinemography')">See your Cinemography</button>' +
-       '<button class="ghost" onclick="cuState.listMode=!cuState.listMode;render(true)">' + (cuState.listMode ? 'Constellation map' : 'Universe list') + '</button>' +
-       '<button class="ghost" onclick="cuState.zoom=1;cuState.panX=0;cuState.panY=0;cuState.selected=null;render(true)">Reset view</button></div></div>';
-  h += '<div class="cu-prog"><i id="cu-prog-bar" style="width:0%"></i></div><div class="dim" id="cu-prog-lbl" style="font-size:12px;min-height:12px">' + esc(cuState.backfillMsg || "") + '</div>';
-
-  if (cuState.listMode) {
-    prefetchUniverseScopes(model.universes);
-    if (!model.universes.length) {
-      h += '<div class="glass" style="padding:24px"><p class="dim" style="margin:0">No multi-film universes detected yet. Log films from a franchise or collection to map your first universe.</p></div>';
-    } else {
-      h += '<div class="cu-grid-v2">' + model.universes.map(function(u, idx) {
-        var totalScope = getUniverseScopeCount(u);
-        var watchedN = u.watchedNodes.length;
-        var pct = totalScope ? Math.min(100, Math.round((watchedN / totalScope) * 100)) : 100;
-        var isDone = watchedN >= totalScope && totalScope > 0;
-        var sortedWatched = u.watchedNodes.slice().sort(function(a, b) { return (a.film.at || 0) - (b.film.at || 0); });
-        var firstEntry = sortedWatched[0] ? sortedWatched[0].film.title : "";
-        var topDir = mostCommon(u.watchedNodes.map(function(n) { return n.film.director; }).filter(Boolean));
-        var posters = sortedWatched.slice(0, 4).map(function(n) {
-          return n.film.poster ? '<img loading="lazy" alt="" src="' + img(n.film.poster, "w185") + '">' : '<div class="cu-pph"></div>';
-        }).join("");
-        var stampPage = Math.floor(idx / 4) + 2;
-
-        return '<div class="glass cu-card-v2' + (isDone ? ' complete' : '') + '">' +
-          '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px">' +
-            '<span class="cu-status' + (isDone ? ' done' : '') + '">' + (isDone ? '★ Completed' : esc(u.kind)) + '</span>' +
-            '<span class="num" style="font-size:15px;color:' + (isDone ? '#ffd666' : '#e9d5ff') + '">' + watchedN + '/' + totalScope + ' · ' + pct + '%</span>' +
-          '</div>' +
-          '<div><h3 style="font-size:20px;margin-bottom:4px">' + esc(u.name) + '</h3>' +
-          '<div class="dim" style="font-size:12.5px;line-height:1.45">' + esc(u.desc) + '</div></div>' +
-          '<div class="cu-posters">' + posters + '</div>' +
-          '<div class="cu-bar"><i style="width:' + pct + '%"></i></div>' +
-          '<div class="cu-card-meta">' +
-            (firstEntry ? '<span class="cu-pill">Entry: ' + esc(firstEntry) + '</span>' : '') +
-            (topDir ? '<span class="cu-pill">Dir: ' + esc(topDir) + '</span>' : '') +
-          '</div>' +
-          '<div class="cu-card-acts">' +
-            '<button type="button" class="btn" style="padding:7px 14px;font-size:12.5px" onclick="openUniverseDashboard('' + esc(u.id) + '')">Universe Index</button>' +
-            '<button type="button" class="ghost" style="padding:7px 14px;font-size:12.5px" onclick="openPassportModal(' + stampPage + ')">View Stamp</button>' +
-          '</div></div>';
-      }).join("") + '</div>';
-    }
-  } else {
-    h += '<div class="glass cu-stage"><canvas id="cu-canvas" class="cu-canvas" aria-label="Interactive Cinematic Universes constellation map"></canvas>';
-    h += '<div class="cu-hud-tl"><span class="cu-badge">' + films.length + (films.length === 1 ? ' star' : ' stars') + ' · ' + model.universes.length + (model.universes.length === 1 ? ' universe' : ' universes') + ' · ' + model.edges.length + ' verified links</span></div>';
-    h += '<div class="cu-hud-tr"><button class="cu-zbtn" type="button" onclick="cuState.zoom=Math.min(4,cuState.zoom*1.25);drawConstellation()">+</button><button class="cu-zbtn" type="button" onclick="cuState.zoom=Math.max(0.3,cuState.zoom*0.8);drawConstellation()">−</button></div>';
-    h += inspectorHTML();
-    h += '<div class="cu-hud-bl"><div class="cu-legend"><span><i style="background:#fff;box-shadow:0 0 8px #fff"></i>Universe hub</span><span><i style="background:hsl(var(--h) 92% 68%)"></i>Watched film</span><span>— Universe link</span><span>┄ Cast / Crew link</span></div><span class="cu-badge">Click any star, line, or universe hub</span></div>';
-    if (!films.length) h += '<div class="cu-empty"><p class="dim" style="margin:0">Log your first film to ignite the first star in your observatory.</p></div>';
-    h += '</div>';
-  }
-  h += liveEntertainmentHTML();
-  h += '</div>';
-  return h;
-}
-
-var cuHitBoxes = [];
-function bindConstellation() {
-  var cv = $("cu-canvas");
-  if (!cv) return;
-  drawConstellation();
-  var dragging = false, sx = 0, sy = 0, moved = false;
-  cv.onmousedown = function(e) { dragging = true; moved = false; sx = e.clientX; sy = e.clientY; };
-  window.onmousemove = function(e) {
-    if (!dragging) return;
-    if (Math.hypot(e.clientX - sx, e.clientY - sy) > 4) moved = true;
-    cuState.panX += e.clientX - sx;
-    cuState.panY += e.clientY - sy;
-    sx = e.clientX;
-    sy = e.clientY;
-    drawConstellation();
-  };
-  window.onmouseup = function() { dragging = false; };
-  cv.onwheel = function(e) {
-    e.preventDefault();
-    cuState.zoom = Math.max(0.3, Math.min(4, cuState.zoom * (e.deltaY < 0 ? 1.12 : 0.9)));
-    drawConstellation();
-  };
-  cv.onclick = function(e) {
-    if (moved) return;
-    var rect = cv.getBoundingClientRect();
-    var mx = e.clientX - rect.left, my = e.clientY - rect.top;
-    for (var i = 0; i < cuHitBoxes.length; i++) {
-      var hb = cuHitBoxes[i];
-      if (Math.hypot(mx - hb.x, my - hb.y) <= hb.r) {
-        cuState.selected = hb;
-        render(true);
-        return;
+      // Primary Navigation
+      function switchView(target) {
+        document.querySelectorAll("[data-view]").forEach(function (p) {
+          p.classList.toggle("active", p.getAttribute("data-view") === target);
+        });
+        document.querySelectorAll(".view-section").forEach(function (sec) {
+          sec.classList.toggle("active", sec.id === "view-" + target);
+        });
+        if (target === "observatory") {
+          drawConstellation(document.getElementById("constellation-canvas"), getActiveFilms(), false);
+        } else if (target === "universes") {
+          renderPassportBooklet();
+          renderUniverseList();
+        }
       }
-    }
-  };
-}
 
-function drawConstellation() {
-  var cv = $("cu-canvas");
-  if (!cv) return;
-  var rect = cv.getBoundingClientRect();
-  var dpr = window.devicePixelRatio || 1;
-  cv.width = rect.width * dpr;
-  cv.height = rect.height * dpr;
-  var ctx = cv.getContext("2d");
-  ctx.scale(dpr, dpr);
-  var w = rect.width, h = rect.height;
-  ctx.clearRect(0, 0, w, h);
+      document.querySelectorAll("[data-view]").forEach(function (pill) {
+        pill.addEventListener("click", function () {
+          switchView(pill.getAttribute("data-view"));
+        });
+      });
 
-  var model = buildConstellationModel();
-  cuHitBoxes = [];
-  var cx = w / 2 + cuState.panX, cy = h / 2 + cuState.panY, z = cuState.zoom;
+      // Genre Breakdown Calculation
+      function computeGenreStats(list) {
+        const totals = {};
+        Object.keys(UNIVERSE_CATALOG).forEach(function (g) { totals[g] = 0; });
+        list.forEach(function (f) {
+          if (totals[f.universe] === undefined) totals[f.universe] = 0;
+          totals[f.universe] += f.rating;
+        });
+        const sum = Object.values(totals).reduce(function (a, b) { return a + b; }, 0) || 1;
+        return Object.keys(totals)
+          .map(function (genre) {
+            return {
+              genre: genre,
+              weight: totals[genre],
+              pct: Math.round((totals[genre] / sum) * 100),
+              color: (UNIVERSE_CATALOG[genre] && UNIVERSE_CATALOG[genre].color) || "#a855f7"
+            };
+          })
+          .sort(function (a, b) { return b.weight - a.weight; });
+      }
 
-  model.edges.forEach(function(e) {
-    var x1 = cx + e.a.x * z, y1 = cy + e.a.y * z;
-    var x2 = cx + e.b.x * z, y2 = cy + e.b.y * z;
-    ctx.save();
-    ctx.strokeStyle = e.isUniverse ? "rgba(225,197,255,0.48)" : "rgba(255,255,255,0.2)";
-    ctx.lineWidth = e.isUniverse ? 1.6 : 1.1;
-    if (!e.isUniverse) ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    ctx.restore();
-  });
+      // Render Sidebar Me Card + Upgrade 3 (Director Spotlight 3+ Films) + Upgrade 1 (Taste Meter)
+      function renderSidebar() {
+        const list = getActiveFilms();
+        const stats = computeGenreStats(list);
+        const topGenre = stats[0] || { genre: "Sci-Fi Mythos", color: "#d946ef" };
 
-  model.universes.forEach(function(u) {
-    var ux = cx + u.x * z, uy = cy + u.y * z;
-    ctx.save();
-    ctx.fillStyle = "rgba(255,255,255,0.14)";
-    ctx.beginPath(); ctx.arc(ux, uy, 18, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#ffffff";
-    ctx.beginPath(); ctx.arc(ux, uy, 7, 0, Math.PI * 2); ctx.fill();
-    ctx.font = "700 12px 'Plus Jakarta Sans',sans-serif";
-    ctx.fillStyle = "#f5f2fc";
-    ctx.textAlign = "center";
-    ctx.fillText(u.name, ux, uy - 14);
-    ctx.restore();
-    cuHitBoxes.push({ type: "universe", data: u, x: ux, y: uy, r: 20 });
-  });
+        document.documentElement.style.setProperty("--aura-color", topGenre.color);
+        document.documentElement.style.setProperty("--aura-1", topGenre.color + "36");
 
-  model.nodes.forEach(function(n) {
-    var nx = cx + n.x * z, ny = cy + n.y * z;
-    ctx.save();
-    ctx.fillStyle = "hsla(" + n.hue + ",92%,65%,0.25)";
-    ctx.beginPath(); ctx.arc(nx, ny, 12, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "hsl(" + n.hue + ",92%,70%)";
-    ctx.beginPath(); ctx.arc(nx, ny, 5, 0, Math.PI * 2); ctx.fill();
-    ctx.font = "500 11px 'Plus Jakarta Sans',sans-serif";
-    ctx.fillStyle = "rgba(245,242,252,0.86)";
-    ctx.textAlign = "center";
-    ctx.fillText(n.film.title, nx, ny + 17);
-    ctx.restore();
-    cuHitBoxes.push({ type: "node", data: n, x: nx, y: ny, r: 14 });
-  });
-}
+        document.getElementById("me-name").textContent = getActiveDisplayName();
+        document.getElementById("me-archetype").textContent = topGenre.genre + " Auteur";
+        document.getElementById("me-total-films").textContent = list.length;
 
-/* Universe Index Dashboard Modal */
-function openUniverseDashboard(uid) {
-  var model = buildConstellationModel();
-  var u = model.universes.filter(function(x) { return x.id === uid; })[0];
-  if (!u) return;
-  $("panel").innerHTML = '<div class="cu-eyebrow">' + esc(u.kind) + '</div><h2>' + esc(u.name) + ' · Universe Index</h2><p class="dim">Scanning theatrical entries…</p>';
-  show(false);
+        const mean = list.length
+          ? (list.reduce(function (acc, f) { return acc + f.rating; }, 0) / list.length).toFixed(2)
+          : "0.00";
+        document.getElementById("me-mean-score").textContent = mean;
 
-  Promise.all((u.collectionIds || []).map(function(cid) {
-    if (cuState.colCache[cid]) return Promise.resolve(cuState.colCache[cid]);
-    return api("collection/" + cid).then(function(d) { cuState.colCache[cid] = d; return d; }).catch(function() { return null; });
-  })).then(function(cols) {
-    var parts = [], seen = {}, t = today();
-    cols.forEach(function(c) {
-      if (c && Array.isArray(c.parts)) {
-        c.parts.forEach(function(p) {
-          if (p && p.id && !seen[p.id] && (!p.release_date || p.release_date <= t)) {
-            seen[p.id] = 1;
-            parts.push(p);
+        // Upgrade 3: Most-Watched Director Spotlight Selector (3+ Films)
+        const dirMap = {};
+        list.forEach(function (f) {
+          const d = f.director.trim();
+          if (!d) return;
+          if (!dirMap[d]) dirMap[d] = [];
+          dirMap[d].push(f);
+        });
+        const qualifyingDirectors = Object.keys(dirMap)
+          .filter(function (d) { return dirMap[d].length >= 3; })
+          .sort(function (a, b) { return dirMap[b].length - dirMap[a].length; });
+
+        const spotBox = document.getElementById("director-spotlight-box");
+        const switchBtn = document.getElementById("switch-director-btn");
+
+        if (qualifyingDirectors.length > 0) {
+          spotBox.style.display = "block";
+          if (spotlightIndex >= qualifyingDirectors.length) spotlightIndex = 0;
+          const activeDir = qualifyingDirectors[spotlightIndex];
+          const dFilms = dirMap[activeDir];
+          const dAvg = (dFilms.reduce(function (s, x) { return s + x.rating; }, 0) / dFilms.length).toFixed(1);
+
+          document.getElementById("spotlight-director-name").textContent = activeDir;
+          document.getElementById("spotlight-director-meta").textContent =
+            dFilms.length + " films logged · Avg " + dAvg + "★";
+
+          switchBtn.style.display = qualifyingDirectors.length >= 2 ? "inline-block" : "none";
+          switchBtn.onclick = function () {
+            spotlightIndex = (spotlightIndex + 1) % qualifyingDirectors.length;
+            renderSidebar();
+          };
+        } else {
+          spotBox.style.display = "none";
+        }
+
+        // Upgrade 1: Taste Meter Overflow Fix (white-space: nowrap; flex-shrink: 0 + label ellipsis)
+        document.getElementById("taste-bars").innerHTML = stats.map(function (item) {
+          return (
+            '<div class="meter-row">' +
+              '<span class="meter-label" title="' + escapeHtml(item.genre) + '">' + escapeHtml(item.genre) + '</span>' +
+              '<div class="meter-track"><div class="meter-fill" style="width:' + item.pct + '%;background:' + item.color + ';"></div></div>' +
+              '<span class="meter-pct">' + item.pct + '%</span>' +
+            '</div>'
+          );
+        }).join("");
+      }
+
+      // Upgrade 5: Clickable Taste Meter -> Full Genre Circle Breakdown Modal
+      function openGenreCircleModal() {
+        const stats = computeGenreStats(getActiveFilms());
+        const size = 210;
+        const stroke = 26;
+        const radius = (size - stroke) / 2;
+        const circumference = 2 * Math.PI * radius;
+        let offset = 0;
+
+        const circles = stats.map(function (s) {
+          const segLen = (s.pct / 100) * circumference;
+          const el =
+            '<circle r="' + radius + '" cx="' + (size / 2) + '" cy="' + (size / 2) + '" ' +
+            'fill="transparent" stroke="' + s.color + '" stroke-width="' + stroke + '" ' +
+            'stroke-dasharray="' + segLen + ' ' + circumference + '" ' +
+            'stroke-dashoffset="-' + offset + '" />';
+          offset += segLen;
+          return el;
+        }).join("");
+
+        document.getElementById("svg-donut-container").innerHTML =
+          '<svg width="' + size + '" height="' + size + '" viewBox="0 0 ' + size + ' ' + size + '" style="transform:rotate(-90deg);">' +
+            '<circle r="' + radius + '" cx="' + (size / 2) + '" cy="' + (size / 2) + '" fill="transparent" stroke="rgba(255,255,255,0.08)" stroke-width="' + stroke + '" />' +
+            circles +
+          '</svg>';
+
+        document.getElementById("ranked-genre-list").innerHTML = stats.map(function (s, idx) {
+          return (
+            '<div class="index-row">' +
+              '<div style="display:flex;align-items:center;gap:10px;">' +
+                '<span style="width:10px;height:10px;border-radius:50%;background:' + s.color + ';display:inline-block;"></span>' +
+                '<strong>#' + (idx + 1) + ' ' + escapeHtml(s.genre) + '</strong>' +
+              '</div>' +
+              '<span style="font-family:JetBrains Mono,monospace;font-weight:700;">' + s.pct + '%</span>' +
+            '</div>'
+          );
+        }).join("");
+
+        document.getElementById("genre-circle-modal").classList.add("open");
+      }
+
+      document.getElementById("open-genre-circle-btn").addEventListener("click", openGenreCircleModal);
+      document.getElementById("close-genre-circle-btn").addEventListener("click", function () {
+        document.getElementById("genre-circle-modal").classList.remove("open");
+      });
+
+      // Render Film Grid
+      function renderFilmGrid() {
+        const list = getActiveFilms();
+        const query = (document.getElementById("search-films").value || "").toLowerCase();
+        const filtered = list.filter(function (f) {
+          return (
+            f.title.toLowerCase().includes(query) ||
+            f.director.toLowerCase().includes(query) ||
+            f.universe.toLowerCase().includes(query)
+          );
+        });
+
+        document.getElementById("film-count").textContent = filtered.length;
+        document.getElementById("film-grid").innerHTML = filtered.map(function (f) {
+          return (
+            '<article class="film-card">' +
+              '<div>' +
+                '<div class="film-meta"><span>' + escapeHtml(f.director) + '</span><span class="rating-badge">★ ' + f.rating.toFixed(1) + '</span></div>' +
+                '<h3 class="film-title" style="margin-top:6px;">' + escapeHtml(f.title) + '</h3>' +
+                '<p style="font-size:12.5px;color:var(--text-secondary);margin-top:7px;line-height:1.45;">' + escapeHtml(f.note || "") + '</p>' +
+              '</div>' +
+              '<div><span class="tag">' + escapeHtml(f.universe) + '</span></div>' +
+            '</article>'
+          );
+        }).join("");
+      }
+
+      document.getElementById("search-films").addEventListener("input", renderFilmGrid);
+
+      // Constellation Star Map Canvas (used both in Observatory and Passport Mini-Print)
+      function drawConstellation(canvas, list, mini) {
+        if (!canvas) return;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = canvas.getBoundingClientRect();
+        const w = rect.width || (mini ? 280 : 640);
+        const h = rect.height || (mini ? 120 : 320);
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        const ctx = canvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+        ctx.clearRect(0, 0, w, h);
+
+        for (let i = 0; i < (mini ? 24 : 50); i++) {
+          const sx = (i * 173) % w;
+          const sy = (i * 97) % h;
+          ctx.fillStyle = "rgba(255,255,255,0.22)";
+          ctx.beginPath();
+          ctx.arc(sx, sy, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        const nodes = list.map(function (f, idx) {
+          const angle = (idx / Math.max(1, list.length)) * Math.PI * 2;
+          return {
+            x: w / 2 + Math.cos(angle) * (w * 0.31),
+            y: h / 2 + (mini ? 0 : 14) + Math.sin(angle) * (h * 0.28),
+            film: f
+          };
+        });
+
+        for (let i = 0; i < nodes.length; i++) {
+          for (let j = i + 1; j < nodes.length; j++) {
+            if (nodes[i].film.universe === nodes[j].film.universe || i + 1 === j) {
+              ctx.strokeStyle = nodes[i].film.universe === nodes[j].film.universe
+                ? "rgba(217, 70, 239, 0.52)"
+                : "rgba(139, 92, 246, 0.22)";
+              ctx.lineWidth = mini ? 1 : 1.4;
+              ctx.beginPath();
+              ctx.moveTo(nodes[i].x, nodes[i].y);
+              ctx.lineTo(nodes[j].x, nodes[j].y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        nodes.forEach(function (n) {
+          ctx.fillStyle = "#f5d7a0";
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, mini ? 2.8 : (3.5 + n.film.rating * 0.7), 0, Math.PI * 2);
+          ctx.fill();
+
+          if (!mini) {
+            ctx.fillStyle = "#f5f3ff";
+            ctx.font = "600 11.5px Inter, sans-serif";
+            ctx.fillText(n.film.title, n.x + 10, n.y + 4);
           }
         });
       }
-    });
-    if (!parts.length) {
-      parts = u.watchedNodes.map(function(n) { return { id: n.film.tid, title: n.film.title, poster_path: n.film.poster, release_date: n.film.year }; });
-    }
-    parts.sort(function(a, b) { return String(a.release_date || "").localeCompare(String(b.release_date || "")); });
-    var watchedCount = parts.filter(function(p) { return hasFilm(p.id); }).length;
-    var pct = parts.length ? Math.round((watchedCount / parts.length) * 100) : 100;
 
-    $("panel").innerHTML =
-      '<div class="cu-eyebrow">' + esc(u.kind) + ' · Universe Index</div>' +
-      '<h2 style="margin:4px 0 6px">' + esc(u.name) + '</h2>' +
-      '<p class="dim" style="font-size:13.5px;margin:0 0 12px">' + esc(u.desc) + '</p>' +
-      '<div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px"><span>Completion</span><b>' + watchedCount + ' / ' + parts.length + ' (' + pct + '%)</b></div>' +
-      '<div class="cu-bar"><i style="width:' + pct + '%"></i></div>' +
-      '<div class="jv-grid">' + parts.map(function(p) {
-        var w = hasFilm(p.id);
-        return '<button class="jv-item' + (w ? '' : ' unwatched') + '" onclick="openMovieDetail(' + p.id + ')">' +
-          (p.poster_path ? '<img loading="lazy" alt="" src="' + img(p.poster_path, "w185") + '">' : '<div class="ph"></div>') +
-          '<div class="meta"><div class="t" style="font-size:12px">' + esc(p.title) + '</div><div class="y">' + (w ? '✓ Watched' : 'Unwatched') + '</div></div>' +
-        '</button>';
-      }).join("") + '</div>' +
-      '<div class="acts"><button class="ghost" onclick="openPassportModal(2)">Open Passport Stamps</button><button class="btn" data-act="close">Close</button></div>';
-  });
-}
+      // ================= MULTI-PAGE CINEMATIC PASSPORT =================
+      function computeUniverseProgress(list) {
+        return Object.keys(UNIVERSE_CATALOG).map(function (uName) {
+          const cat = UNIVERSE_CATALOG[uName];
+          const loggedInUniverse = list.filter(function (f) { return f.universe === uName; });
+          const loggedTitlesLower = loggedInUniverse.map(function (f) { return f.title.toLowerCase(); });
+          const matchedCount = cat.entries.filter(function (entry) {
+            return loggedTitlesLower.includes(entry.toLowerCase());
+          }).length;
+          const effectiveCount = Math.max(matchedCount, Math.min(cat.entries.length, loggedInUniverse.length));
+          const pct = Math.round((effectiveCount / cat.entries.length) * 100);
+          return {
+            name: uName,
+            color: cat.color,
+            catalogEntries: cat.entries,
+            loggedFilms: loggedInUniverse,
+            completedCount: effectiveCount,
+            totalCount: cat.entries.length,
+            pct: pct,
+            isGold: pct >= 100
+          };
+        });
+      }
 
-/* ---- Multi-Page Cinematic Passport (Cover + Page 1 Identity & Constellation Print + Page 2+ Universe Stamps) ---- */
-var ppState = {
-  page: 0,
-  friendData: null
-};
+      function computeTasteOverlap(myList, otherList) {
+        const myStats = computeGenreStats(myList);
+        const otherStats = computeGenreStats(otherList);
+        let overlap = 0;
+        myStats.forEach(function (m) {
+          const match = otherStats.find(function (o) { return o.genre === m.genre; });
+          if (match) overlap += Math.min(m.pct, match.pct);
+        });
+        return Math.min(100, Math.max(12, overlap));
+      }
 
-function computePassportId(nameStr, count) {
-  var hash = 0, s = String(nameStr || "guest");
-  for (var i = 0; i < s.length; i++) hash = ((hash << 5) - hash + s.charCodeAt(i)) | 0;
-  var code = Math.abs(hash % 9000) + 1000;
-  return "FW-" + String(count).padStart(2, "0") + "-" + code;
-}
+      function renderPassportBooklet() {
+        const container = document.getElementById("passport-book-container");
+        const list = getActiveFilms();
+        const name = getActiveDisplayName();
+        const stats = computeGenreStats(list);
+        const topGenre = stats[0] ? stats[0].genre : "Sci-Fi Mythos";
+        const secondGenre = stats[1] ? stats[1].genre : "Neo-Noir & Crime";
+        const universes = computeUniverseProgress(list);
+        const discovered = universes.filter(function (u) { return u.loggedFilms.length > 0; });
 
-function buildPassportShareURL() {
-  var c = analyzeCinemography();
-  var payload = {
-    u: user || avatar.name,
-    a: avatar.name,
-    t: films.length,
-    g: c.genres.slice(0, 5).map(function(x) { return [x.name, x.count]; }),
-    d: c.directors.slice(0, 3).map(function(x) { return x.name; }),
-    uv: c.universes.map(function(u) { return u.name; }),
-    ids: films.slice(-20).map(function(f) { return f.tid; })
-  };
-  try {
-    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-    var base = window.location.href.split("?")[0].split("#")[0];
-    return base + "?p=" + encodeURIComponent(b64);
-  } catch (e) {
-    return window.location.href.split("?")[0];
-  }
-}
+        // Stamps pagination: 4 stamps per page
+        const STAMPS_PER_PAGE = 4;
+        const totalStampPages = Math.max(1, Math.ceil(discovered.length / STAMPS_PER_PAGE));
+        const maxSpread = totalStampPages; // 0 = Page 1 (Identity/Bio), 1..totalStampPages = Stamps Pages
 
-function copyPassportShareLink(btn) {
-  var url = buildPassportShareURL();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(url).then(function() {
-      if (btn) { btn.textContent = "✓ Link Copied!"; setTimeout(function() { btn.textContent = "Share Passport Link"; }, 2200); }
-    }).catch(function() { prompt("Copy your Cinematic Passport link:", url); });
-  } else {
-    prompt("Copy your Cinematic Passport link:", url);
-  }
-}
+        if (passportSpreadIndex > maxSpread) passportSpreadIndex = maxSpread;
+        if (passportSpreadIndex < 0) passportSpreadIndex = 0;
 
-function drawMiniConstellationOnCanvas(canvas) {
-  if (!canvas) return;
-  var model = buildConstellationModel();
-  var ctx = canvas.getContext("2d");
-  var w = canvas.width, h = canvas.height;
-  ctx.clearRect(0, 0, w, h);
+        document.getElementById("toggle-passport-btn").textContent = passportOpen ? "Close Cover" : "Open Booklet";
 
-  for (var i = 0; i < 24; i++) {
-    ctx.fillStyle = "rgba(255,255,255," + (0.14 + (i % 4) * 0.08) + ")";
-    ctx.beginPath();
-    ctx.arc((i * 37) % w, (i * 53) % h, (i % 2) + 0.7, 0, Math.PI * 2);
-    ctx.fill();
-  }
+        if (!passportOpen) {
+          container.innerHTML =
+            '<div class="passport-cover" id="passport-cover-trigger" role="button" tabindex="0" title="Click or press → to open">' +
+              '<div style="font-size:11px;letter-spacing:0.22em;color:#f5d7a0;">OBSERVATORY CREDENTIAL</div>' +
+              '<div class="emblem-ring">✦</div>' +
+              '<div>' +
+                '<div style="font-family:Cinzel,serif;font-size:21px;font-weight:700;letter-spacing:0.16em;">FOURTH WALL</div>' +
+                '<div style="font-size:12px;color:var(--text-secondary);margin-top:6px;">CINEMATIC PASSPORT · ' + escapeHtml(name.toUpperCase()) + '</div>' +
+              '</div>' +
+              '<div style="font-size:11px;color:var(--accent-cyan);letter-spacing:0.1em;">CLICK OR PRESS → TO OPEN</div>' +
+            '</div>';
 
-  if (!model.nodes.length) {
-    ctx.fillStyle = "rgba(255,255,255,0.45)";
-    ctx.font = "10px sans-serif";
-    ctx.textAlign = "center";
-    ctx.fillText("No stars yet", w / 2, h / 2 + 3);
-    return;
-  }
-
-  var maxR = 40;
-  model.nodes.forEach(function(n) { maxR = Math.max(maxR, Math.hypot(n.x, n.y) + 25); });
-  model.universes.forEach(function(u) { maxR = Math.max(maxR, Math.hypot(u.x, u.y) + 25); });
-  var scale = (Math.min(w, h) * 0.42) / maxR;
-  var cx = w / 2, cy = h / 2;
-
-  model.edges.forEach(function(e) {
-    ctx.strokeStyle = e.isUniverse ? "rgba(225,197,255,0.65)" : "rgba(255,255,255,0.28)";
-    ctx.lineWidth = e.isUniverse ? 1.2 : 0.8;
-    ctx.beginPath();
-    ctx.moveTo(cx + e.a.x * scale, cy + e.a.y * scale);
-    ctx.lineTo(cx + e.b.x * scale, cy + e.b.y * scale);
-    ctx.stroke();
-  });
-
-  model.universes.forEach(function(u) {
-    var ux = cx + u.x * scale, uy = cy + u.y * scale;
-    ctx.fillStyle = "#ffd666";
-    ctx.beginPath(); ctx.arc(ux, uy, 3.6, 0, Math.PI * 2); ctx.fill();
-  });
-
-  model.nodes.forEach(function(n) {
-    var nx = cx + n.x * scale, ny = cy + n.y * scale;
-    ctx.fillStyle = "hsl(" + n.hue + ",92%,70%)";
-    ctx.beginPath(); ctx.arc(nx, ny, 2.5, 0, Math.PI * 2); ctx.fill();
-  });
-}
-
-function getPassportTotalPages() {
-  var model = buildConstellationModel();
-  var stampPages = Math.max(1, Math.ceil(model.universes.length / 4));
-  return 1 + stampPages;
-}
-
-function ppNextPage() {
-  var maxP = getPassportTotalPages();
-  if (ppState.page < maxP) {
-    ppState.page++;
-    renderPassportModal();
-  }
-}
-
-function ppPrevPage() {
-  if (ppState.page > 0) {
-    ppState.page--;
-    renderPassportModal();
-  }
-}
-
-function openPassportCoverAnimated() {
-  var cov = $("pp-cover");
-  if (cov) {
-    cov.classList.add("opening");
-    setTimeout(function() {
-      ppState.page = 1;
-      renderPassportModal();
-    }, 340);
-  } else {
-    ppState.page = 1;
-    renderPassportModal();
-  }
-}
-
-function openPassportModal(startPage) {
-  ppState.page = typeof startPage === "number" ? startPage : 0;
-  renderPassportModal();
-  show(false);
-}
-
-function computeFriendOverlap(friend) {
-  if (!friend || !films.length) return null;
-  var myIds = {}, myGenres = {}, myDirs = {}, myUnivs = {};
-  films.forEach(function(f) {
-    myIds[f.tid] = f;
-    (f.genres || []).forEach(function(g) { myGenres[g] = (myGenres[g] || 0) + 1; });
-    if (f.director) myDirs[f.director] = 1;
-  });
-  var model = buildConstellationModel();
-  model.universes.forEach(function(u) { myUnivs[u.name] = 1; });
-
-  var sharedIds = (friend.ids || []).filter(function(id) { return !!myIds[id]; });
-  var sharedGenres = (friend.g || []).filter(function(pair) { return !!myGenres[pair[0]]; }).map(function(pair) { return pair[0]; });
-  var sharedDirs = (friend.d || []).filter(function(d) { return !!myDirs[d]; });
-  var sharedUnivs = (friend.uv || []).filter(function(u) { return !!myUnivs[u]; });
-
-  var gScore = (friend.g && friend.g.length) ? (sharedGenres.length / friend.g.length) * 45 : 15;
-  var fScore = (friend.ids && friend.ids.length) ? Math.min(35, (sharedIds.length / Math.min(friend.ids.length, films.length)) * 70) : 0;
-  var dScore = sharedDirs.length ? 10 : 0;
-  var uScore = sharedUnivs.length ? 10 : 0;
-  var totalPct = Math.min(99, Math.max(12, Math.round(gScore + fScore + dScore + uScore)));
-
-  return {
-    pct: totalPct,
-    sharedFilms: sharedIds.map(function(id) { return myIds[id].title; }),
-    sharedGenres: sharedGenres,
-    sharedDirs: sharedDirs,
-    sharedUnivs: sharedUnivs
-  };
-}
-
-function renderPassportModal() {
-  var c = analyzeCinemography();
-  var model = buildConstellationModel();
-  var totalPages = getPassportTotalPages();
-  var holderName = user || avatar.name;
-  var passId = computePassportId(holderName, films.length);
-
-  var topControls =
-    '<div class="pp-topbar">' +
-      '<div style="display:flex;align-items:center;gap:8px">' +
-        '<span class="cu-eyebrow">Cinematic Travel Document</span>' +
-        (ppState.page > 0 ? '<span class="cu-badge" style="padding:3px 10px">Page ' + ppState.page + ' of ' + totalPages + '</span>' : '<span class="cu-badge" style="padding:3px 10px">Cover</span>') +
-      '</div>' +
-      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
-        '<button type="button" class="ghost" style="padding:6px 14px;font-size:12.5px" onclick="copyPassportShareLink(this)">Share Passport Link</button>' +
-        '<button type="button" class="ghost" style="padding:6px 14px;font-size:12.5px" data-act="close">Close</button>' +
-      '</div>' +
-    '</div>';
-
-  var friendHtml = "";
-  if (ppState.friendData) {
-    var fd = ppState.friendData;
-    var ov = computeFriendOverlap(fd);
-    friendHtml = '<div class="pp-overlap" style="width:100%">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">' +
-        '<div><div class="cu-eyebrow">Shared Friend Passport</div><strong>' + esc(fd.a || fd.u) + '</strong> <span class="dim" style="font-size:12px">· ' + (fd.t || 0) + ' films logged</span></div>' +
-        (ov ? '<span class="cu-status done">Taste Overlap: ' + ov.pct + '%</span>' : '<span class="cu-status">Log films to compare taste</span>') +
-      '</div>' +
-      (ov ? '<div class="dim" style="font-size:12px;margin-top:6px">' +
-        (ov.sharedGenres.length ? 'Shared genres: ' + esc(ov.sharedGenres.join(", ")) + '. ' : '') +
-        (ov.sharedFilms.length ? 'Both watched: ' + esc(ov.sharedFilms.slice(0, 3).join(", ")) + '.' : 'Explore their universes to build overlap.') +
-      '</div>' : '') +
-    '</div>';
-  }
-
-  var bodyHtml = "";
-  if (ppState.page === 0) {
-    bodyHtml =
-      '<div class="pp-cover" id="pp-cover" onclick="openPassportCoverAnimated()" role="button" tabindex="0" aria-label="Open Cinematic Passport">' +
-        '<div class="pp-cover-top">FOURTH WALL · OBSERVATORY</div>' +
-        '<div class="pp-emblem"><img src="logo.png" alt="Fourth Wall Emblem" onerror="this.parentNode.innerHTML='<span style=&quot;font:800 28px Cinzel,serif;color:#f7e7c4&quot;>FW</span>'"></div>' +
-        '<div>' +
-          '<div class="pp-cover-title">Cinematic<br>Passport</div>' +
-          '<div class="pp-cover-sub" style="margin-top:8px">' + esc(holderName.toUpperCase()) + ' · ' + model.universes.length + (model.universes.length === 1 ? ' STAMP' : ' STAMPS') + '</div>' +
-        '</div>' +
-        '<div class="cu-badge" style="border-color:rgba(245,215,142,.4);color:#f7e7c4">Tap cover or press → to open</div>' +
-      '</div>';
-  } else if (ppState.page === 1) {
-    var topFilms = sorted().slice(0, 4);
-    var stripHtml = topFilms.length
-      ? '<div class="pp-films-strip">' + topFilms.map(function(f) {
-          return f.poster ? '<img alt="" title="' + esc(f.title) + '" src="' + img(f.poster, "w185") + '">' : '<div class="pp-fph"></div>';
-        }).join("") + '</div>'
-      : '';
-    var mrzLine1 = ("P<FW<" + holderName.toUpperCase().replace(/[^A-Z0-9]/g, "<") + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<").slice(0, 38);
-    var mrzLine2 = (passId + "<" + (c.genres[0] ? c.genres[0].name.toUpperCase().slice(0, 8) : "CINEMA") + "<" + films.length + "F<" + model.universes.length + "U<<<<<<<<<<<<<<<<<<<").slice(0, 38);
-
-    bodyHtml =
-      '<div class="pp-book">' +
-        '<div class="pp-hdr">' +
-          '<div style="display:flex;align-items:center;gap:12px">' +
-            '<div class="face" style="width:54px;height:54px">' + avatarGraphic() + '</div>' +
-            '<div><div class="cu-eyebrow">Passport Holder · ' + esc(passId) + '</div>' +
-            '<h3 style="font-size:21px;margin:2px 0">' + esc(holderName) + '</h3>' +
-            '<div class="dim" style="font-size:12px">Mood: ' + esc(avatar.name) + ' · ' + films.length + ' films · ' + c.countries.length + ' countries</div></div>' +
-          '</div>' +
-          '<span class="cu-status">' + model.universes.length + ' Visas</span>' +
-        '</div>' +
-        '<div class="pp-id-grid">' +
-          '<div>' +
-            '<div class="cu-eyebrow" style="margin-bottom:4px">Cinematic Taste Profile</div>' +
-            '<div class="pp-bio">' + esc(c.portrait) + '</div>' +
-            '<div class="cu-eyebrow" style="margin-top:8px">Signature Reel</div>' +
-            stripHtml +
-          '</div>' +
-          '<div class="pp-const-box">' +
-            '<canvas id="pp-mini-const" width="145" height="145" aria-label="Personal constellation print"></canvas>' +
-            '<div class="pp-const-lbl">Constellation Print</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="pp-mrz">' + esc(mrzLine1) + '<br>' + esc(mrzLine2) + '</div>' +
-      '</div>';
-  } else {
-    var stampPageIdx = ppState.page - 2;
-    var sliceStart = stampPageIdx * 4;
-    var pageUniverses = model.universes.slice(sliceStart, sliceStart + 4);
-    var rots = [-2.2, 1.8, -1.4, 2.4];
-
-    var stampsHtml = pageUniverses.length
-      ? '<div class="pp-stamps">' + pageUniverses.map(function(u, i) {
-          var totalScope = getUniverseScopeCount(u);
-          var watchedN = u.watchedNodes.length;
-          var isDone = watchedN >= totalScope && totalScope > 0;
-          var sortedW = u.watchedNodes.slice().sort(function(a, b) { return (a.film.at || 0) - (b.film.at || 0); });
-          var entryDate = sortedW[0] && sortedW[0].film.date ? sortedW[0].film.date : today();
-          var shapeCls = (u.id === "mcu" || u.id === "dceu" || u.id === "monsterverse") ? " hex" : "";
-          return '<div class="pp-stamp' + (isDone ? ' gold' : '') + shapeCls + '" style="--sc:' + u.hue + ';--rot:' + rots[i % 4] + 'deg">' +
-            '<div class="pp-stamp-top"><span>' + (isDone ? '★ FULL CLEARANCE' : 'UNIVERSE VISA') + '</span><span>' + watchedN + '/' + totalScope + ' LOGGED</span></div>' +
-            '<div class="pp-stamp-name">' + esc(u.name) + '</div>' +
-            '<div class="pp-stamp-meta">First Entry: ' + esc(entryDate) + '</div>' +
-            '<div class="pp-stamp-meta">Anchor: ' + esc(sortedW[0] ? sortedW[0].film.title : u.name) + '</div>' +
-          '</div>';
-        }).join("") + '</div>'
-      : '<div style="padding:32px 12px;text-align:center"><p class="dim">No universe stamps inked yet. Log films from any cinematic universe or franchise to earn your first visa stamp.</p></div>';
-
-    bodyHtml =
-      '<div class="pp-book">' +
-        '<div class="pp-hdr">' +
-          '<div><div class="cu-eyebrow">Official Entry Visas</div><h3 style="font-size:20px;margin:2px 0">Discovered Universes</h3></div>' +
-          '<span class="cu-badge">Stamps Page ' + (stampPageIdx + 1) + '</span>' +
-        '</div>' +
-        stampsHtml +
-        '<p class="dim" style="font-size:11.5px;margin:16px 0 0;text-align:center">Use ← and → arrows to flip through your passport pages.</p>' +
-      '</div>';
-  }
-
-  $("panel").innerHTML =
-    '<div class="pp-shell" id="pp-booklet">' +
-      topControls +
-      friendHtml +
-      '<div class="pp-stage">' +
-        '<button type="button" class="pp-arrow" onclick="ppPrevPage()" ' + (ppState.page <= 0 ? 'disabled' : '') + ' aria-label="Previous passport page">←</button>' +
-        bodyHtml +
-        '<button type="button" class="pp-arrow" onclick="ppNextPage()" ' + (ppState.page >= totalPages ? 'disabled' : '') + ' aria-label="Next passport page">→</button>' +
-      '</div>' +
-    '</div>';
-
-  if (ppState.page === 1) {
-    var mc = $("pp-mini-const");
-    if (mc) drawMiniConstellationOnCanvas(mc);
-  }
-}
-
-(function checkSharedPassportParam() {
-  try {
-    var params = new URLSearchParams(window.location.search);
-    var raw = params.get("p");
-    if (!raw) return;
-    var parsed = JSON.parse(decodeURIComponent(escape(atob(raw))));
-    if (parsed && (parsed.u || parsed.a)) {
-      ppState.friendData = parsed;
-      setTimeout(function() {
-        if (!document.body.classList.contains("locked")) {
-          openPassportModal(0);
+          document.getElementById("passport-cover-trigger").addEventListener("click", function () {
+            passportOpen = true;
+            passportSpreadIndex = 0;
+            renderPassportBooklet();
+          });
+          return;
         }
-      }, 450);
-    }
-  } catch (e) {}
-})();
 
-/* Live Entertainment & Upcoming Releases Flash Cards (Auto-refreshes every 30 min) */
-var newsCache = { items: [], at: 0 };
-function fetchLiveEntertainment(force) {
-  if (!force && newsCache.items.length && Date.now() - newsCache.at < 1800000) return;
-  Promise.all([
-    api("movie/upcoming", { region: "IN" }).catch(function() { return { results: [] }; }),
-    api("trending/movie/day").catch(function() { return { results: [] }; })
-  ]).then(function(res) {
-    var up = (res[0].results || []).slice(0, 3).map(function(m) {
-      return { id: m.id, title: m.title, poster: m.poster_path, tag: "Upcoming · " + (m.release_date || "TBA"), sub: m.overview || "" };
-    });
-    var tr = (res[1].results || []).slice(0, 3).map(function(m) {
-      return { id: m.id, title: m.title, poster: m.poster_path, tag: "Trending Today", sub: m.overview || "" };
-    });
-    newsCache = { items: up.concat(tr).slice(0, 4), at: Date.now() };
-    if (view === "universes") render(true);
-  });
-}
-setInterval(function() { fetchLiveEntertainment(true); }, 1800000);
+        const passportId = "FW-" + name.replace(/[^a-zA-Z0-9]/g, "").toUpperCase().slice(0, 6).padEnd(6, "X") + "-2026";
+        const bioParagraph =
+          name + " navigates cinema through a primary lens of " + topGenre +
+          " interwoven with " + secondGenre +
+          ". Across " + list.length + " logged transmissions, their observatory prioritizes atmospheric immersion, deliberate pacing, and sonic architecture.";
+        const mrzLine1 = ("P<FW<" + name.toUpperCase().replace(/[^A-Z]/g, "<")).padEnd(36, "<").slice(0, 36);
+        const mrzLine2 = (passportId + "<" + topGenre.toUpperCase().replace(/[^A-Z]/g, "")).padEnd(36, "<").slice(0, 36);
 
-function liveEntertainmentHTML() {
-  fetchLiveEntertainment(false);
-  var h = '<div class="glass news-wrap"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">' +
-    '<div><div class="cu-eyebrow">Live Observatory Feed</div><h3 style="margin:3px 0 0">Upcoming Releases & Cinema Pulse</h3></div>' +
-    '<button class="ghost" style="padding:6px 12px;font-size:12px" onclick="fetchLiveEntertainment(true)">Refresh Pulse</button></div>';
-  if (!newsCache.items.length) {
-    h += '<p class="dim" style="font-size:13px;margin:12px 0 0">Syncing live releases…</p>';
-  } else {
-    h += '<div class="news-grid">' + newsCache.items.map(function(it) {
-      return '<button class="news-card" onclick="openMovieDetail(' + it.id + ')">' +
-        (it.poster ? '<img loading="lazy" alt="" src="' + img(it.poster, "w185") + '">' : '') +
-        '<div><div class="cu-eyebrow" style="font-size:10px">' + esc(it.tag) + '</div><div class="t" style="margin:4px 0">' + esc(it.title) + '</div><div class="dim" style="font-size:11.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + esc(it.sub) + '</div></div>' +
-      '</button>';
-    }).join("") + '</div>';
-  }
-  return h + '</div>';
-}
+        if (passportSpreadIndex === 0) {
+          // PAGE 1: Identity, Constellation Print & Taste Bio + MRZ Signature Strip
+          container.innerHTML =
+            '<div class="passport-spread">' +
+              '<div class="spread-grid">' +
+                '<div class="passport-leaf">' +
+                  '<div>' +
+                    '<div style="font-size:10.5px;letter-spacing:0.16em;color:#f59e0b;font-weight:700;">PAGE 01 · OBSERVER IDENTITY</div>' +
+                    '<div style="display:flex;align-items:center;gap:12px;margin-top:14px;">' +
+                      '<div class="mood-avatar">🎬</div>' +
+                      '<div>' +
+                        '<div style="font-size:17px;font-weight:700;">' + escapeHtml(name) + '</div>' +
+                        '<div style="font-family:JetBrains Mono,monospace;font-size:11.5px;color:#22d3ee;">ID: ' + passportId + '</div>' +
+                      '</div>' +
+                    '</div>' +
+                    '<div style="margin-top:14px;">' +
+                      '<div style="font-size:11px;color:var(--text-secondary);margin-bottom:6px;">CONSTELLATION MINI-PRINT</div>' +
+                      '<canvas id="passport-mini-canvas" style="width:100%;height:115px;background:#090811;border-radius:10px;border:1px solid rgba(255,255,255,0.08);"></canvas>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div class="mrz-strip">' + mrzLine1 + '<br>' + mrzLine2 + '</div>' +
+                '</div>' +
 
-/* Cinemography Analysis & Shareable Card */
-function analyzeCinemography() {
-  var gMap = {}, dMap = {}, cMap = {};
-  films.forEach(function(f) {
-    (f.genres || ["Drama"]).forEach(function(g) { gMap[g] = (gMap[g] || 0) + 1; });
-    if (f.director) dMap[f.director] = (dMap[f.director] || 0) + 1;
-    (f.countries || []).forEach(function(c) { cMap[c] = (cMap[c] || 0) + 1; });
-  });
-  var genres = Object.keys(gMap).map(function(k) { return { name: k, count: gMap[k] }; }).sort(function(a, b) { return b.count - a.count; });
-  var directors = Object.keys(dMap).map(function(k) { return { name: k, count: dMap[k] }; }).sort(function(a, b) { return b.count - a.count; });
-  var countries = Object.keys(cMap);
-  var model = buildConstellationModel();
+                '<div class="passport-leaf">' +
+                  '<div>' +
+                    '<div style="font-size:10.5px;letter-spacing:0.16em;color:#f59e0b;font-weight:700;">TASTE ANALYSIS BIO</div>' +
+                    '<p style="font-size:13.5px;line-height:1.65;color:#e5e7eb;margin-top:14px;">' + escapeHtml(bioParagraph) + '</p>' +
+                    '<div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap;">' +
+                      '<span class="tag">Primary: ' + escapeHtml(topGenre) + '</span>' +
+                      '<span class="tag">Discovered: ' + discovered.length + ' Universes</span>' +
+                    '</div>' +
+                  '</div>' +
+                  '<div style="font-size:11.5px;color:var(--text-secondary);border-top:1px dashed rgba(255,255,255,0.12);padding-top:10px;">' +
+                    'Flip to Page 02 → to inspect inked Universe Visa Stamps.' +
+                  '</div>' +
+                '</div>' +
+              '</div>' +
 
-  var portrait = !films.length
-    ? "Your cinema profile is a blank canvas. Log a few favorite films to reveal your signature genres, recurring auteurs, and universe footprint."
-    : "Drawn strongly toward " + (genres[0] ? genres[0].name : "cinema") +
-      (genres[1] ? " and " + genres[1].name : "") + ", your log spans " + films.length +
-      (films.length === 1 ? " film" : " films") + " across " + Math.max(1, countries.length) +
-      (countries.length === 1 ? " country." : " countries.") +
-      (directors[0] ? " " + directors[0].name + " stands out as a recurring voice behind the camera." : "") +
-      (model.universes.length ? " You have charted " + model.universes.length + (model.universes.length === 1 ? " cinematic universe." : " cinematic universes.") : " You lean toward standalone stories over sprawling franchises.");
+              '<div class="passport-nav">' +
+                '<button type="button" id="pp-prev-btn" class="chip-btn">← Close Cover</button>' +
+                '<span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--text-secondary);">Page 1 of ' + (maxSpread + 1) + '</span>' +
+                '<button type="button" id="pp-next-btn" class="chip-btn">Visa Stamps →</button>' +
+              '</div>' +
+            '</div>';
 
-  return { genres: genres, directors: directors, countries: countries, universes: model.universes, portrait: portrait };
-}
+          drawConstellation(document.getElementById("passport-mini-canvas"), list, true);
+        } else {
+          // PAGE 2+: Discovered Universe Visa Stamps (Rotated Ink & Gold at 100%)
+          const pageIdx = passportSpreadIndex - 1;
+          const slice = discovered.slice(pageIdx * STAMPS_PER_PAGE, (pageIdx + 1) * STAMPS_PER_PAGE);
+          const rotations = [-3.5, 2.8, -2.2, 3.4];
 
-function cinematographyHTML() {
-  var c = analyzeCinemography();
-  return '<div class="cg-wrap"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px"><button class="ghost" onclick="goView('universes')">← Back to Universes</button><button class="btn" onclick="openPassportModal(0)">Open Cinematic Passport</button></div>' +
-    '<div class="glass cg-sheet">' +
-      '<div class="cu-eyebrow">Fourth wall · Cinemography</div>' +
-      '<h1 class="pg" style="margin:6px 0">' + esc(user || avatar.name) + '</h1>' +
-      '<p class="dim" style="margin:0 0 14px">Mood: ' + esc(avatar.name) + '</p>' +
-      '<div class="cg-stats">' +
-        '<div class="cg-box"><small class="dim">Films</small><div class="num" style="font-size:28px">' + films.length + '</div></div>' +
-        '<div class="cg-box"><small class="dim">Top Genre</small><div class="num" style="font-size:20px;margin-top:6px">' + esc(c.genres[0] ? c.genres[0].name : "—") + '</div></div>' +
-        '<div class="cg-box"><small class="dim">Universes</small><div class="num" style="font-size:28px">' + c.universes.length + '</div></div>' +
-      '</div>' +
-      '<p style="line-height:1.65">' + esc(c.portrait) + '</p>' +
-    '</div></div>';
-}
+          const stampsHtml = slice.length
+            ? slice.map(function (u, i) {
+                const rot = rotations[i % rotations.length];
+                return (
+                  '<div class="visa-stamp ' + (u.isGold ? 'gold' : '') + '" style="transform:rotate(' + rot + 'deg);">' +
+                    '<div style="font-size:9.5px;letter-spacing:0.14em;font-weight:700;">' + (u.isGold ? '★ 100% GOLD VISA ★' : 'UNIVERSE ENTRY VISA') + '</div>' +
+                    '<div style="font-family:Cinzel,serif;font-size:13.5px;font-weight:700;margin:6px 0;">' + escapeHtml(u.name) + '</div>' +
+                    '<div style="font-family:JetBrains Mono,monospace;font-size:11px;">' + u.completedCount + '/' + u.totalCount + ' LOGGED (' + u.pct + '%)</div>' +
+                  '</div>'
+                );
+              }).join("")
+            : '<p style="color:var(--text-secondary);font-size:13px;">Log films to earn your first Universe Visa Stamp.</p>';
 
-/* Keyboard Shortcuts Modal & Global Key Listener */
-function openShortcuts() {
-  var rows = [
-    [["Tab", "/", "K"], "Toggle Quick-Log Arcade (+)"],
-    [["W", "A", "S", "D"], "Move selection cursor in Arcade"],
-    [["Space"], "Log selected film immediately"],
-    [["Shift"], "Inspect selected film dossier"],
-    [["R"], "Shuffle new genre batch in Arcade"],
-    [["←", "→"], "Flip Passport pages (when open)"],
-    [["Esc"], "Close active modal"]
-  ];
-  $("panel").innerHTML = '<h2>Observatory Controls</h2>' +
-    rows.map(function(r) {
-      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.09)"><div>' + r[0].map(function(k) { return '<span class="kbd">' + k + '</span>'; }).join(" ") + '</div><span class="dim">' + r[1] + '</span></div>';
-    }).join("") +
-    '<div class="acts"><button class="btn" data-act="close">Got it</button></div>';
-  show(false);
-}
+          container.innerHTML =
+            '<div class="passport-spread">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">' +
+                '<span style="font-size:10.5px;letter-spacing:0.16em;color:#f59e0b;font-weight:700;">PAGE 0' + (passportSpreadIndex + 1) + ' · DISCOVERED UNIVERSE VISA STAMPS</span>' +
+                '<span style="font-size:11px;color:var(--text-secondary);">Gold Stamp unlocks at 100% completion</span>' +
+              '</div>' +
+              '<div class="stamps-grid" style="min-height:240px;align-content:start;">' + stampsHtml + '</div>' +
+              '<div class="passport-nav">' +
+                '<button type="button" id="pp-prev-btn" class="chip-btn">← Previous Page</button>' +
+                '<span style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--text-secondary);">Page ' + (passportSpreadIndex + 1) + ' of ' + (maxSpread + 1) + '</span>' +
+                '<button type="button" id="pp-next-btn" class="chip-btn" ' + (passportSpreadIndex >= maxSpread ? 'disabled style="opacity:0.45;"' : '') + '>Next Page →</button>' +
+              '</div>' +
+            '</div>';
+        }
 
-window.addEventListener("keydown", function(e) {
-  if (document.body.classList.contains("locked")) return;
-  var tag = (e.target && e.target.tagName) || "";
-  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (e.target && e.target.isContentEditable)) {
-    if (e.key === "Escape") { e.target.blur(); hide(); }
-    return;
-  }
-  if (e.metaKey || e.ctrlKey || e.altKey) return;
+        document.getElementById("pp-prev-btn").addEventListener("click", function () {
+          if (passportSpreadIndex === 0) {
+            passportOpen = false;
+          } else {
+            passportSpreadIndex--;
+          }
+          renderPassportBooklet();
+        });
 
-  var k = e.key, kl = k.toLowerCase();
+        document.getElementById("pp-next-btn").addEventListener("click", function () {
+          if (passportSpreadIndex < maxSpread) {
+            passportSpreadIndex++;
+            renderPassportBooklet();
+          }
+        });
+      }
 
-  if (k === "Tab") {
-    e.preventDefault();
-    if (inArcade) hide();
-    else openSearch();
-    return;
-  }
+      document.getElementById("toggle-passport-btn").addEventListener("click", function () {
+        passportOpen = !passportOpen;
+        passportSpreadIndex = 0;
+        renderPassportBooklet();
+      });
 
-  if (ovOn && $("pp-booklet")) {
-    if (k === "ArrowRight") { e.preventDefault(); ppNextPage(); return; }
-    if (k === "ArrowLeft") { e.preventDefault(); ppPrevPage(); return; }
-  }
+      // Shareable Passport Link (?p=...)
+      document.getElementById("share-passport-btn").addEventListener("click", function () {
+        const payload = {
+          displayName: getActiveDisplayName(),
+          films: getActiveFilms().map(function (f) {
+            return { title: f.title, director: f.director, universe: f.universe, rating: f.rating, note: f.note };
+          })
+        };
+        const encoded = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+        const url = new URL(window.location.href);
+        url.searchParams.set("p", encoded);
+        window.history.replaceState({}, "", url.toString());
 
-  if (k === "Escape" && ovOn) { e.preventDefault(); hide(); return; }
-  if (k === "?" ) { e.preventDefault(); openShortcuts(); return; }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url.toString()).catch(function () {});
+        }
+        const btn = document.getElementById("share-passport-btn");
+        btn.textContent = "✓ Passport URL Copied!";
+        setTimeout(function () { btn.textContent = "🔗 Share Passport Link"; }, 2400);
+      });
 
-  if (!ovOn && (k === "/" || kl === "k")) {
-    e.preventDefault();
-    openSearch();
-    return;
-  }
+      // Upgrade 4: Upgraded Universe List View + Universe Index Modal
+      function renderUniverseList() {
+        const list = getActiveFilms();
+        const universes = computeUniverseProgress(list);
 
-  if (inArcade) {
-    if (k === "/") { e.preventDefault(); if ($("arc-q")) $("arc-q").focus(); return; }
-    if (kl === "r") { e.preventDefault(); cycleArcadeGenre(); return; }
-    if (k === " " || k === "Enter") { e.preventDefault(); quickLogArcadeSelected(); return; }
-    if (k === "Shift") {
-      e.preventDefault();
-      var item = arcItems[arcSel];
-      if (item) openMovieDetail(item.id);
-      return;
-    }
-    var cols = window.innerWidth <= 760 ? 2 : 4;
-    if (kl === "d" || k === "ArrowRight") { e.preventDefault(); arcSel = Math.min(arcItems.length - 1, arcSel + 1); paintArcadeGrid(); }
-    else if (kl === "a" || k === "ArrowLeft") { e.preventDefault(); arcSel = Math.max(0, arcSel - 1); paintArcadeGrid(); }
-    else if (kl === "s" || k === "ArrowDown") { e.preventDefault(); arcSel = Math.min(arcItems.length - 1, arcSel + cols); paintArcadeGrid(); }
-    else if (kl === "w" || k === "ArrowUp") { e.preventDefault(); arcSel = Math.max(0, arcSel - cols); paintArcadeGrid(); }
-  }
-});
+        document.getElementById("universe-list-grid").innerHTML = universes.map(function (u) {
+          const directors = Array.from(new Set(u.loggedFilms.map(function (f) { return f.director; })));
+          const posters = u.catalogEntries.map(function (entry) {
+            const isLogged = u.loggedFilms.some(function (f) { return f.title.toLowerCase() === entry.toLowerCase(); });
+            const bg = isLogged
+              ? "linear-gradient(145deg, " + u.color + "aa, #1e1b2e)"
+              : "rgba(255,255,255,0.04)";
+            return '<div class="poster-tile" style="background:' + bg + ';opacity:' + (isLogged ? '1' : '0.45') + ';">' + escapeHtml(entry) + '</div>';
+          }).join("");
 
-/* Navigation & Master Render */
-function goView(v) {
-  view = v;
-  ["home", "log", "universes", "me"].forEach(function(id) {
-    var btn = $("n-" + id);
-    if (btn) btn.classList.toggle("on", id === v || (v === "cinemography" && id === "universes"));
-  });
-  render(true);
-}
+          return (
+            '<div class="u-card">' +
+              '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                '<h3 style="font-family:Cinzel,serif;font-size:15.5px;color:' + u.color + ';">' + escapeHtml(u.name) + '</h3>' +
+                '<span style="font-family:JetBrains Mono,monospace;font-size:12px;font-weight:700;">' + u.pct + '%</span>' +
+              '</div>' +
+              '<div class="poster-strip">' + posters + '</div>' +
+              '<div class="u-progress-track"><div class="u-progress-fill" style="width:' + u.pct + '%;background:' + u.color + ';"></div></div>' +
+              '<div class="pill-row">' +
+                '<span class="stat-pill">' + u.completedCount + '/' + u.totalCount + ' Entries</span>' +
+                '<span class="stat-pill">' + directors.length + ' Director' + (directors.length === 1 ? '' : 's') + '</span>' +
+              '</div>' +
+              '<div class="u-actions">' +
+                '<button type="button" class="chip-btn" data-open-index="' + escapeHtml(u.name) + '">Universe Index</button>' +
+                '<button type="button" class="chip-btn" data-view-stamp="' + escapeHtml(u.name) + '">View Stamp</button>' +
+              '</div>' +
+            '</div>'
+          );
+        }).join("");
 
-function render(scrollTop) {
-  applyAura();
-  side();
-  var vEl = $("view");
-  if (view === "home") vEl.innerHTML = homeHTML();
-  else if (view === "log") vEl.innerHTML = logHTML();
-  else if (view === "universes") {
-    vEl.innerHTML = universesHTML();
-    if (!cuState.listMode) bindConstellation();
-  }
-  else if (view === "cinemography") vEl.innerHTML = cinematographyHTML();
-  else if (view === "me") vEl.innerHTML = meHTML();
-  if (scrollTop) window.scrollTo({ top: 0, behavior: "smooth" });
-}
+        document.querySelectorAll("[data-open-index]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            openUniverseIndex(btn.getAttribute("data-open-index"));
+          });
+        });
 
-/* Boot Session */
-(function boot() {
-  var saved = null;
-  try { saved = localStorage.getItem("fw_session"); } catch (e) {}
-  if (saved) {
-    enterSession(saved, false);
-  } else {
-    document.body.classList.add("locked");
-    side();
-  }
-})();
-</script>
+        document.querySelectorAll("[data-view-stamp]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            passportOpen = true;
+            passportSpreadIndex = 1;
+            renderPassportBooklet();
+            document.getElementById("passport-book-container").scrollIntoView({ behavior: "smooth" });
+          });
+        });
+      }
+
+      function openUniverseIndex(universeName) {
+        const list = getActiveFilms();
+        const universes = computeUniverseProgress(list);
+        const u = universes.find(function (item) { return item.name === universeName; });
+        if (!u) return;
+
+        document.getElementById("u-index-title").textContent = u.name;
+        document.getElementById("u-index-subtitle").textContent =
+          u.completedCount + " of " + u.totalCount + " canonical entries logged (" + u.pct + "% completion)";
+
+        document.getElementById("u-index-list").innerHTML = u.catalogEntries.map(function (entry) {
+          const match = u.loggedFilms.find(function (f) { return f.title.toLowerCase() === entry.toLowerCase(); });
+          return (
+            '<div class="index-row ' + (match ? 'logged' : '') + '">' +
+              '<span>' + escapeHtml(entry) + '</span>' +
+              '<span style="font-family:JetBrains Mono,monospace;font-size:12px;color:' + (match ? '#34d399' : 'var(--text-secondary)') + ';">' +
+                (match ? '✓ ' + match.rating.toFixed(1) + '★' : 'Unlogged') +
+              '</span>' +
+            '</div>'
+          );
+        }).join("");
+
+        document.getElementById("universe-index-modal").classList.add("open");
+      }
+
+      document.getElementById("close-u-index-btn").addEventListener("click", function () {
+        document.getElementById("universe-index-modal").classList.remove("open");
+      });
+
+      // Flash Ticker
+      document.getElementById("next-flash-btn").addEventListener("click", function () {
+        flashIndex++;
+        document.getElementById("flash-news-text").textContent = FLASH_NEWS[flashIndex % FLASH_NEWS.length];
+      });
+
+      function renderAll() {
+        document.getElementById("flash-news-text").textContent = FLASH_NEWS[flashIndex % FLASH_NEWS.length];
+        renderSidebar();
+        renderFilmGrid();
+        drawConstellation(document.getElementById("constellation-canvas"), getActiveFilms(), false);
+        renderPassportBooklet();
+        renderUniverseList();
+      }
+
+      // Quick-Log Arcade Modal
+      const arcadeModal = document.getElementById("arcade-modal");
+      const ratingSlider = document.getElementById("arc-rating");
+
+      function openArcade() {
+        if (sharedSnapshot) return;
+        arcadeModal.classList.add("open");
+        document.getElementById("arc-title").focus();
+      }
+
+      function closeArcade() {
+        arcadeModal.classList.remove("open");
+      }
+
+      function toggleArcade() {
+        if (arcadeModal.classList.contains("open")) closeArcade();
+        else openArcade();
+      }
+
+      document.getElementById("open-arcade-btn").addEventListener("click", toggleArcade);
+      document.getElementById("close-arcade-btn").addEventListener("click", closeArcade);
+      ratingSlider.addEventListener("input", function () {
+        document.getElementById("arc-rating-val").textContent = parseFloat(ratingSlider.value).toFixed(1);
+      });
+
+      document.getElementById("arcade-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        const title = document.getElementById("arc-title").value.trim();
+        const director = document.getElementById("arc-director").value.trim();
+        if (!title || !director) return;
+
+        films.unshift({
+          id: Date.now(),
+          title: title,
+          director: director,
+          universe: document.getElementById("arc-universe").value,
+          rating: parseFloat(ratingSlider.value),
+          note: document.getElementById("arc-note").value.trim() || "Logged via Quick-Log Arcade."
+        });
+
+        saveUserFilms();
+        renderAll();
+        e.target.reset();
+        ratingSlider.value = "4.5";
+        document.getElementById("arc-rating-val").textContent = "4.5";
+        closeArcade();
+      });
+
+      // Upgrade 2: Instant Tab Toggle + Passport ArrowLeft / ArrowRight Navigation
+      document.addEventListener("keydown", function (e) {
+        if (!currentUser && !sharedSnapshot) return;
+        const tag = document.activeElement && document.activeElement.tagName;
+        const inInput = tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT";
+
+        if (e.key === "Tab" && !inInput) {
+          e.preventDefault();
+          toggleArcade();
+          return;
+        }
+
+        if (e.key === "Escape") {
+          closeArcade();
+          closeTour();
+          document.getElementById("universe-index-modal").classList.remove("open");
+          document.getElementById("genre-circle-modal").classList.remove("open");
+          return;
+        }
+
+        // Passport ArrowLeft / ArrowRight when on Universes view and not typing
+        const universesActive = document.getElementById("view-universes").classList.contains("active");
+        if (universesActive && !inInput && !arcadeModal.classList.contains("open")) {
+          if (e.key === "ArrowRight") {
+            if (!passportOpen) {
+              passportOpen = true;
+              passportSpreadIndex = 0;
+            } else {
+              passportSpreadIndex++;
+            }
+            renderPassportBooklet();
+          } else if (e.key === "ArrowLeft") {
+            if (passportOpen) {
+              if (passportSpreadIndex === 0) passportOpen = false;
+              else passportSpreadIndex--;
+              renderPassportBooklet();
+            }
+          }
+        }
+
+        if (arcadeModal.classList.contains("open") && !inInput) {
+          if (e.key.toLowerCase() === "a") {
+            ratingSlider.value = Math.max(1, parseFloat(ratingSlider.value) - 0.5);
+            document.getElementById("arc-rating-val").textContent = parseFloat(ratingSlider.value).toFixed(1);
+          } else if (e.key.toLowerCase() === "d") {
+            ratingSlider.value = Math.min(5, parseFloat(ratingSlider.value) + 0.5);
+            document.getElementById("arc-rating-val").textContent = parseFloat(ratingSlider.value).toFixed(1);
+          } else if (e.key.toLowerCase() === "r") {
+            const samples = [
+              { t: "Blade Runner 2049", d: "Denis Villeneuve", u: "Sci-Fi Mythos", n: "Atmospheric synth textures and rain-soaked scale." },
+              { t: "Hereditary", d: "Ari Aster", u: "Folk & Psychological", n: "Grief transmuted into architectural dread." },
+              { t: "Inception", d: "Christopher Nolan", u: "Neo-Noir & Crime", n: "Layered temporal heist and thunderous brass." }
+            ];
+            const pick = samples[Math.floor(Math.random() * samples.length)];
+            document.getElementById("arc-title").value = pick.t;
+            document.getElementById("arc-director").value = pick.d;
+            document.getElementById("arc-universe").value = pick.u;
+            document.getElementById("arc-note").value = pick.n;
+          }
+        }
+      });
+
+      // Onboarding Tour
+      const tourModal = document.getElementById("tour-modal");
+      function openTour() {
+        tourStep = 0;
+        updateTourUI();
+        tourModal.classList.add("open");
+      }
+      function closeTour() {
+        tourModal.classList.remove("open");
+        localStorage.setItem(STORAGE_KEYS.TOUR_DONE, "1");
+      }
+      function updateTourUI() {
+        const s = TOUR_STEPS[tourStep];
+        document.getElementById("tour-step-label").textContent = "STEP " + (tourStep + 1) + " OF " + TOUR_STEPS.length;
+        document.getElementById("tour-title").textContent = s.title;
+        document.getElementById("tour-body").textContent = s.body;
+        document.getElementById("next-tour-btn").textContent = tourStep === TOUR_STEPS.length - 1 ? "Launch Observatory" : "Next";
+      }
+      document.getElementById("open-tour-btn").addEventListener("click", openTour);
+      document.getElementById("skip-tour-btn").addEventListener("click", closeTour);
+      document.getElementById("next-tour-btn").addEventListener("click", function () {
+        if (tourStep < TOUR_STEPS.length - 1) {
+          tourStep++;
+          updateTourUI();
+        } else {
+          closeTour();
+        }
+      });
+
+      window.addEventListener("resize", function () {
+        drawConstellation(document.getElementById("constellation-canvas"), getActiveFilms(), false);
+      });
+
+      // Check for ?p=... Shared Passport URL parameter
+      const params = new URLSearchParams(window.location.search);
+      const sharedParam = params.get("p");
+      if (sharedParam) {
+        try {
+          const decoded = JSON.parse(decodeURIComponent(escape(atob(sharedParam))));
+          if (decoded && Array.isArray(decoded.films)) {
+            sharedSnapshot = decoded;
+            const mySavedFilms = DEFAULT_FILMS;
+            const overlapPct = computeTasteOverlap(mySavedFilms, decoded.films);
+
+            document.getElementById("shared-banner-text").textContent =
+              "Viewing " + decoded.displayName + "'s Shared Cinematic Passport · Taste Overlap: " + overlapPct + "%";
+            document.getElementById("shared-banner").classList.add("visible");
+
+            document.getElementById("auth-screen").style.display = "none";
+            document.getElementById("app-shell").style.display = "block";
+            document.getElementById("active-user-label").textContent = "Shared Passport: " + decoded.displayName;
+            passportOpen = true;
+            renderAll();
+            switchView("universes");
+          }
+        } catch (e) {}
+      }
+
+      document.getElementById("exit-shared-btn").addEventListener("click", function () {
+        const cleanUrl = new URL(window.location.href);
+        cleanUrl.searchParams.delete("p");
+        window.history.replaceState({}, "", cleanUrl.toString());
+        sharedSnapshot = null;
+        document.getElementById("shared-banner").classList.remove("visible");
+
+        try {
+          const savedSession = JSON.parse(localStorage.getItem(STORAGE_KEYS.SESSION));
+          if (savedSession && savedSession.key) {
+            enterObservatory(savedSession);
+            return;
+          }
+        } catch (e) {}
+
+        document.getElementById("app-shell").style.display = "none";
+        document.getElementById("auth-screen").style.display = "flex";
+      });
+
+      // Restore normal session if not in shared passport mode
+      if (!sharedSnapshot) {
+        try {
+          const savedSession = JSON.parse(localStorage.getItem(STORAGE_KEYS.SESSION));
+          if (savedSession && savedSession.key) {
+            enterObservatory(savedSession);
+          }
+        } catch (e) {}
+      }
+    })();
+  </script>
 </body>
 </html>
