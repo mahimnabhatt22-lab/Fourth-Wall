@@ -10,7 +10,7 @@ module.exports = async function handler(req, res) {
 
   const q = req.query || {};
   const p = String(q.p || q.endpoint || "").replace(/^\/+/, "");
-  const allowed = /^(search\/(movie|keyword|person)|discover\/movie|trending\/movie\/(day|week)|movie\/(upcoming|now_playing|popular|top_rated)|movie\/\d+(\/(recommendations|similar))?|collection\/\d+)$/;
+  const allowed = /^(search\/(movie|keyword|person)|discover\/movie|trending\/movie\/(day|week)|movie\/(upcoming|now_playing|popular|top_rated)|movie\/\d+(\/(recommendations|similar))?|collection\/\d+|person\/\d+(\/movie_credits)?)$/;
   if (!allowed.test(p)) return res.status(400).json({ error: "Not allowed" });
 
   const params = new URLSearchParams({ language: "en-US", include_adult: "false" });
