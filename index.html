@@ -475,6 +475,29 @@ body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility
 @keyframes fabArrive{0%{transform:translate(-8px,12px) scale(.94);opacity:.35;filter:blur(8px)}65%{transform:translate(0,0) scale(1.025);opacity:1;filter:blur(0)}100%{transform:none}}
 @media(prefers-reduced-motion:reduce){.arc-card.arc-exit-left,.arc-card.arc-exit-right,.fab-arrive{animation:none!important;transition:none!important}}
 
+
+/* Mobile Arcade: floating cylindrical poster gallery */
+.arc-mobile-tools{display:none}
+@media (max-width:680px){
+  #ov:has(#arc-grid){padding:0;background:rgba(3,4,12,.76);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+  #panel:has(#arc-grid){position:relative;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important;transform:none!important}
+  #panel:has(#arc-grid) .arc-top,#panel:has(#arc-grid) .arc-hud,#panel:has(#arc-grid) .arc-status,#panel:has(#arc-grid) #arc-mobile-actions{display:none!important}
+  #panel:has(#arc-grid) #q{display:none;position:absolute;z-index:40;top:calc(18px + env(safe-area-inset-top,0px));left:18px;right:78px;width:auto;margin:0;padding:13px 15px;border:1px solid rgba(255,255,255,.23);border-radius:15px;background:rgba(12,14,24,.48);color:#fff;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);font-size:16px}
+  #panel.arc-search-open #q{display:block}
+  .arc-mobile-tools{position:absolute;z-index:50;top:calc(18px + env(safe-area-inset-top,0px));right:18px;display:flex;gap:10px}
+  .arc-mobile-tools button{width:43px;height:43px;display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.055);color:rgba(255,255,255,.9);font:300 27px/1 system-ui;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 5px 22px rgba(0,0,0,.16)}
+  .arc-mobile-tools svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+  #panel:has(#arc-grid) .arc-grid{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden;padding:0;margin:0;perspective:1050px;perspective-origin:50% 48%;transform-style:preserve-3d;touch-action:pan-y}
+  #panel:has(#arc-grid) .arc-grid:before{content:"";position:absolute;left:50%;top:50%;width:min(82vw,430px);height:min(78vh,690px);transform:translate(-50%,-50%);border-radius:34px;background:linear-gradient(145deg,rgba(255,255,255,.075),rgba(255,255,255,.018));border:1px solid rgba(255,255,255,.17);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),0 25px 90px rgba(0,0,0,.2);backdrop-filter:blur(17px) saturate(135%);-webkit-backdrop-filter:blur(17px) saturate(135%);pointer-events:none}
+  #panel:has(#arc-grid) .arc-card{display:flex!important;position:absolute;left:50%;top:50%;width:min(55vw,245px);height:auto;max-height:72vh;padding:0;border:1px solid rgba(255,255,255,.24);border-radius:13px;overflow:hidden;background:rgba(255,255,255,.035);box-shadow:0 16px 45px rgba(0,0,0,.35);transform:translate(-50%,-50%) rotateY(var(--arc-angle)) translateZ(var(--arc-depth));transform-style:preserve-3d;transform-origin:50% 50%;opacity:calc(1 - (var(--arc-distance) * .13));filter:blur(calc(var(--arc-distance) * .48px));transition:transform .48s cubic-bezier(.2,.75,.2,1),opacity .4s ease,filter .4s ease;will-change:transform,filter,opacity;backface-visibility:hidden}
+  #panel:has(#arc-grid) .arc-card.active{width:min(59vw,265px);border-color:rgba(255,255,255,.38);box-shadow:0 25px 70px rgba(0,0,0,.52),0 0 38px rgba(255,255,255,.07);opacity:1;filter:none;z-index:30}
+  #panel:has(#arc-grid) .arc-card img,#panel:has(#arc-grid) .arc-card .ph{display:block;width:100%;height:auto;aspect-ratio:2/3;max-height:72vh;object-fit:cover;background:rgba(0,0,0,.2)}
+  #panel:has(#arc-grid) .arc-card .arc-t,#panel:has(#arc-grid) .arc-card .arc-badge{display:none!important}
+  #panel:has(#arc-grid) .arc-card.arc-moving{transform:translate(-50%,-50%) translate3d(var(--swipe-x,0),0,0) rotateY(var(--arc-angle)) rotateZ(var(--swipe-tilt,0));filter:blur(var(--swipe-blur,0))}
+  #panel:has(#arc-grid) .arc-card.arc-exit-right{transform:translate(-50%,-50%) translate3d(125vw,-12px,0) rotateZ(17deg);opacity:0;filter:blur(9px)}
+  #panel:has(#arc-grid) .arc-card.arc-exit-left{transform:translate(-50%,-50%) translate3d(-125vw,-12px,0) rotateZ(-17deg);opacity:0;filter:blur(9px)}
+}
+
 </style>
 </head>
 <body class="locked">
@@ -1103,19 +1126,24 @@ function renderArcadeGrid() {
     return;
   }
   if (arcade.cursor >= arcade.items.length) arcade.cursor = Math.max(0, arcade.items.length - 1);
-  var list = mobile ? [arcade.items[arcade.cursor]] : arcade.items;
+  var list = mobile
+    ? arcade.items.slice(Math.max(0, arcade.cursor - 3), Math.min(arcade.items.length, arcade.cursor + 4))
+    : arcade.items;
+  var startIndex = mobile ? Math.max(0, arcade.cursor - 3) : 0;
   grid.innerHTML = list.map(function(m, idx) {
-    var actualIdx = mobile ? arcade.cursor : idx;
+    var actualIdx = startIndex + idx;
+    var offset = actualIdx - arcade.cursor;
     var act = actualIdx === arcade.cursor ? " active" : "";
     var yr = m.release_date ? " (" + m.release_date.slice(0, 4) + ")" : "";
-    var badge = m._tag ? '<span class="arc-badge">' + esc(m._tag) + '</span>' : "";
-    return '<button type="button" class="arc-card' + act + '" data-arcidx="' + actualIdx + '" aria-label="' + esc(m.title) + '">' + badge +
+    var badge = (!mobile && m._tag) ? '<span class="arc-badge">' + esc(m._tag) + '</span>' : "";
+    var spatial = mobile ? ' style="--arc-angle:' + (offset * 27) + 'deg;--arc-depth:250px;--arc-distance:' + Math.abs(offset) + ';z-index:' + (20 - Math.abs(offset)) + '"' : '';
+    return '<button type="button" class="arc-card' + act + '" data-arcidx="' + actualIdx + '" aria-label="' + esc(m.title) + '"' + spatial + '>' + badge +
       (m.poster_path ? '<img loading="lazy" decoding="async" alt="" src="' + img(m.poster_path, "w500") + '">' : '<div class="ph">' + esc(m.title) + '</div>') +
       '<span class="arc-t">' + esc(m.title + yr) + '</span></button>';
   }).join("");
   if (mobile) {
     var actions = document.getElementById("arc-mobile-actions");
-    if (actions) actions.innerHTML = '<button type="button" data-arc-skip>← Skip</button><button type="button" data-arc-log>Log film</button><button type="button" data-arc-details>Details</button>';
+    if (actions) actions.innerHTML = '';
   }
   var activeEl = grid.querySelector(".arc-card.active");
   if (activeEl && !mobile) activeEl.scrollIntoView({ block: "nearest", behavior: "smooth" });
@@ -1307,9 +1335,19 @@ function arcadeInstantLog(idx) {
   });
 }
 
+function toggleArcadeSearch() {
+  var panel = $("panel"), input = $("q");
+  if (!panel || !input) return;
+  panel.classList.toggle("arc-search-open");
+  if (panel.classList.contains("arc-search-open")) input.focus();
+  else { input.value = ""; loadArcadeBatch(false); }
+}
+
 function openSearch(preserveState) {
   arcade.returnToArcade = false;
+  $("panel").classList.remove("arc-search-open");
   $("panel").innerHTML =
+    '<div class="arc-mobile-tools" aria-label="Arcade controls"><button type="button" onclick="loadArcadeBatch(true)" aria-label="Refresh movies" title="Refresh movies">↻</button><button type="button" onclick="toggleArcadeSearch()" aria-label="Search movies" title="Search movies"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg></button></div>' +
     '<div class="arc-top"><h2 style="margin:0">Quick-Log Arcade</h2>' +
     '<div style="display:flex;gap:8px"><button type="button" class="ghost" onclick="loadArcadeBatch(true)">↻ New Genre (R)</button><button type="button" class="ghost" data-act="close">Done</button></div></div>' +
     '<div class="arc-hud">' +
@@ -1424,7 +1462,7 @@ document.addEventListener("click",function(e){
  if(t.closest("[data-arc-skip]")){arcadeSkipCurrent();return}
  if(t.closest("[data-arc-log]")){arcadeInstantLog(arcade.cursor);return}
  if(t.closest("[data-arc-details]")){arcadeShowCurrentDetails();return}
- var acard=t.closest("[data-arcidx]");if(acard){if(arcade.suppressCardClick)return;var aidx=+acard.dataset.arcidx;if(window.matchMedia&&window.matchMedia("(max-width: 680px)").matches){arcadeShowCurrentDetails()}else if(arcade.cursor===aidx)arcadeInstantLog(aidx);else{arcade.cursor=aidx;renderArcadeGrid()}return}
+ var acard=t.closest("[data-arcidx]");if(acard){if(arcade.suppressCardClick)return;var aidx=+acard.dataset.arcidx;if(window.matchMedia&&window.matchMedia("(max-width: 680px)").matches){if(arcade.cursor===aidx)arcadeShowCurrentDetails();else{arcade.cursor=aidx;renderArcadeGrid()}}else if(arcade.cursor===aidx)arcadeInstantLog(aidx);else{arcade.cursor=aidx;renderArcadeGrid()}return}
  var d=t.closest("[data-id]");if(d)openDetail(+d.dataset.id)});
 
 /* ---- Global Keyboard Shortcuts ---- */
