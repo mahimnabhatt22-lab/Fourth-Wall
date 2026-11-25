@@ -195,6 +195,10 @@ button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid #fff;
 body.locked main,body.locked .dock,body.locked .fab,body.locked .side{visibility:hidden}
 .logo{display:block;height:clamp(56px,9vw,84px);width:auto;max-width:100%;flex:none}
 .brandrow{display:flex;align-items:center;gap:16px;margin:4px 0 26px}.brandrow .brand{margin:0}
+#authbox .or{display:flex;align-items:center;gap:10px;color:var(--dim);font-size:13px;margin:14px 0 12px}#authbox .or::before,#authbox .or::after{content:"";flex:1;height:1px;background:var(--edge)}
+#g-btn{display:flex;justify-content:center;min-height:44px}
+.adm-row{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border:1px solid var(--edge);border-radius:14px;margin-bottom:8px;background:rgba(255,255,255,.05)}
+#authbox .hint{color:var(--dim);font-size:12px;margin:-8px 0 12px;text-align:left}
 #authbox .logo{height:120px;margin:0 auto 10px}
 #auth{position:fixed;inset:0;z-index:20;display:none;align-items:center;justify-content:center;padding:20px}
 #auth.on{display:flex}
@@ -668,8 +672,8 @@ PRESET_AVATARS.forEach(function(p){if(p.id==="clapper")p.cat=CG});
 var films=[],view="home",period="month",cur=null,timer=null,avTimer=null,rows=null,rowsKey="__",ex={country:"",genre:null,sub:null,showSubs:false,page:1,items:[],more:false,loading:false};
 var avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
 var user=null;function ukey(k){return"fw_u_"+user+"_"+k}
-function save(){if(!user)return;try{localStorage.setItem(ukey("films"),JSON.stringify(films))}catch(e){}}
-function saveAv(){if(!user)return;try{localStorage.setItem(ukey("avatar"),JSON.stringify(avatar))}catch(e){}}
+function save(){if(!user)return;try{localStorage.setItem(ukey("films"),JSON.stringify(films))}catch(e){}pushData()}
+function saveAv(){if(!user)return;try{localStorage.setItem(ukey("avatar"),JSON.stringify(avatar))}catch(e){}pushData()}
 function $(i){return document.getElementById(i)}
 function esc(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
 function today(){return new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10)}
@@ -925,7 +929,7 @@ function render(noAnim){
  else if(view==="cinemography"){h=cinematographyHTML()}
  else{
   var pf=films.filter(inPeriod),pg=mostCommon([].concat.apply([],pf.map(function(f){return f.genres})));
-  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap"><button class="ghost" onclick="openOnboarding(0)">Replay Tutorial</button><button class="ghost" data-signout="1">Sign out</button></div></div>';
+  h='<div class="me"><button class="face avatar-trigger" data-avopen="1" title="Change avatar">'+avatarGraphic()+'</button><div><h2>'+esc(avatar.name)+'</h2><span class="dim">'+esc(avatar.tag||"Everything you’ve logged")+' · Tap avatar to change</span></div><div style="margin-left:auto;display:flex;gap:8px;flex-wrap:wrap">'+(userRole==="admin"?'<button class="ghost" data-admin="1">Admin</button>':'')+'<button class="ghost" onclick="openOnboarding(0)">Replay Tutorial</button><button class="ghost" data-signout="1">Sign out</button></div></div>';
   h+='<div class="seg glass" role="group" aria-label="Time period">'+[["month","This month"],["quarter","This quarter"],["year","This year"]].map(function(p){return'<button data-p="'+p[0]+'" aria-pressed="'+(period===p[0])+'">'+p[1]+'</button>'}).join("")+'</div>';
   h+='<div class="stats"><div class="stat glass"><small>Films logged</small><div class="num">'+pf.length+'</div></div><div class="stat glass"><small>Most-watched genre</small><div class="num">'+esc(pg||"—")+'</div></div>'+dirBox()+'</div>';
   h+='<div class="rs wrap">'+(films.length?sorted().map(function(f){return pc(f.tid,f.title,f.poster)}).join(""):'<p class="dim">Nothing logged yet.</p>')+'</div>'}
@@ -977,34 +981,89 @@ function openCreator(){
 function cvSet(b){var p=b.dataset.cv.split(":");cvd[p[0]]=+p[1];[].forEach.call(b.parentNode.children,function(x){x.setAttribute("aria-pressed",x===b)});$("cv-prev").innerHTML=customSVG(cvd)}
 function cvSave(){var n=($("cvname").value||"").trim()||"My avatar";avatar={type:"custom",id:"custom",name:n,tag:"Custom · "+MOODS[cvd.mood],img:"",cfg:cvd};saveAv();hide();render(true)}
 
-/* ---- Accounts (stored in this browser) ---- */
-var authMode="in";
+/* ---- Accounts: real online accounts (saved to the server) with a local fallback ---- */
+var authMode="in",serverMode=false,authCfg={dbReady:false,google:""},userRole="user",userPhoto="",pushT=0,gsiLoaded=false,gsiInit=false;
 function logoHTML(){return'<img class="logo" src="logo.png" alt="" onerror="this.remove()">'}
 function accts(){try{return JSON.parse(localStorage.getItem("fw_accounts")||"{}")}catch(e){return{}}}
-function sha(t){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t)).then(function(d){return[].map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}
-function drawAuth(err,keep){
+function sha(t){return Promise.resolve().then(function(){return crypto.subtle.digest("SHA-256",new TextEncoder().encode(t))}).then(function(d){return[].map.call(new Uint8Array(d),function(x){return("0"+x.toString(16)).slice(-2)}).join("")})}
+function authFetch(action,body){
+ var opt={credentials:"same-origin"};
+ if(body){opt.method="POST";opt.headers={"Content-Type":"application/json"};opt.body=JSON.stringify(Object.assign({action:action},body))}
+ return fetch("/api/auth"+(body?"":"?action="+action),opt).then(function(r){return r.json().catch(function(){return{}}).then(function(j){j._status=r.status;return j})})}
+function pushData(){if(!serverMode||!user||user==="guest_viewer")return;clearTimeout(pushT);pushT=setTimeout(flushData,900)}
+function flushData(){
+ if(!serverMode||!user||user==="guest_viewer")return;
+ var ob=false;try{ob=localStorage.getItem(ukey("ob_done"))==="1"}catch(e){}
+ var body=JSON.stringify({action:"save",films:films,avatar:avatar,ob:ob});
+ fetch("/api/auth",{method:"POST",credentials:"same-origin",keepalive:body.length<60000,headers:{"Content-Type":"application/json"},body:body}).catch(function(){})}
+window.addEventListener("pagehide",flushData);
+document.addEventListener("visibilitychange",function(){if(document.visibilityState==="hidden")flushData()});
+function drawAuthBase(err,keep){
  var up=authMode==="up";
  $("authbox").innerHTML=logoHTML()+'<h1 class="brand" style="margin:0 0 10px;font-size:30px">Fourth wall</h1><h2>'+(up?"Create your account":"Welcome back")+'</h2><p class="dim" style="margin:6px 0 18px;font-size:14px">'+(up?"You start with an empty sky. Everything you log stays in your account.":"Sign in to see the films you have logged.")+'</p>'+
   '<form id="authf"><input id="au" class="inp" placeholder="Username" autocomplete="username" maxlength="40" aria-label="Username"><input id="ap" class="inp" type="password" placeholder="Password" autocomplete="'+(up?"new-password":"current-password")+'" aria-label="Password"><div class="err" role="alert">'+esc(err||"")+'</div><button class="btn" type="submit" style="width:100%">'+(up?"Create account":"Sign in")+'</button></form>'+
   '<button class="ghost" data-authmode="1" style="margin-top:12px;width:100%">'+(up?"I already have an account":"Create a new account")+'</button>';
  var u=$("au");u.value=keep||"";(keep?$("ap"):u).focus()}
-function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");authMode=Object.keys(accts()).length?"in":"up";drawAuth("")}
-function start(name,isNew){
- user=name;try{localStorage.setItem("fw_session",name)}catch(e){}
+function drawAuth(err,keep){
+ drawAuthBase(err,keep);
+ if(!serverMode)return;
+ var f=$("authf"),up=authMode==="up";
+ if(up){var u=$("au");if(u)u.insertAdjacentHTML("afterend",'<div class="hint">3 to 24 letters, numbers, dot, dash or underscore. Each name must be unique.</div>');
+  var p=$("ap");if(p)p.insertAdjacentHTML("afterend",'<div class="hint">At least 8 characters. Your password is stored scrambled (hashed), never as plain text.</div>')}
+ if(f&&authCfg.google){f.insertAdjacentHTML("afterend",'<div class="or">or</div><div id="g-btn"></div>');gLoad()}}
+function gRender(){
+ var box=$("g-btn");if(!box||!authCfg.google||!window.google||!google.accounts)return;
+ if(!gsiInit){google.accounts.id.initialize({client_id:authCfg.google,callback:onGoogle});gsiInit=true}
+ box.innerHTML="";google.accounts.id.renderButton(box,{theme:"filled_black",size:"large",shape:"pill",text:"continue_with",width:300})}
+function gLoad(){
+ if(window.google&&window.google.accounts){gRender();return}
+ if(gsiLoaded)return;gsiLoaded=true;
+ var sc=document.createElement("script");sc.src="https://accounts.google.com/gsi/client";sc.async=true;sc.onload=gRender;document.head.appendChild(sc)}
+function onGoogle(resp){
+ authFetch("google",{credential:resp&&resp.credential}).then(function(j){
+  if(j.user)signedIn(j);else drawAuth(j.error||"Google sign-in failed. Try again.")
+ }).catch(function(){drawAuth("Couldn’t reach the server. Check your connection.")})}
+function signedIn(j){
+ try{localStorage.setItem("fw_has_acct","1")}catch(x){}
+ userRole=j.user.role||"user";userPhoto=j.user.photo||"";
+ start(String(j.user.username).toLowerCase(),!!j.isNew,j.data||{})}
+function showAuth(){document.body.classList.add("locked");$("auth").classList.add("on");
+ var seen=false;try{seen=!!localStorage.getItem("fw_has_acct")}catch(e){}
+ authMode=serverMode?(seen?"in":"up"):(Object.keys(accts()).length?"in":"up");drawAuth("")}
+function start(name,isNew,srv){
+ user=name;if(!srv){try{localStorage.setItem("fw_session",name)}catch(e){}}
  films=[];avatar={type:"preset",id:"stormtrooper",name:"Stormtrooper",tag:"Imperial Mood",img:""};
- try{films=JSON.parse(localStorage.getItem(ukey("films"))||"[]")}catch(e){films=[]}
- try{var sa=JSON.parse(localStorage.getItem(ukey("avatar"))||"null");if(sa&&sa.name)avatar=sa}catch(e){}
+ var seenOb=false;
+ if(srv){
+  films=Array.isArray(srv.films)?srv.films:[];
+  if(srv.avatar&&srv.avatar.name)avatar=srv.avatar;
+  seenOb=!!srv.ob;
+  if(!films.length){try{var lf=JSON.parse(localStorage.getItem(ukey("films"))||"[]");if(lf.length){films=lf;pushData()}}catch(e){}}
+  try{localStorage.setItem(ukey("films"),JSON.stringify(films));localStorage.setItem(ukey("avatar"),JSON.stringify(avatar))}catch(e){}
+ }else{
+  try{films=JSON.parse(localStorage.getItem(ukey("films"))||"[]")}catch(e){films=[]}
+  try{var sa=JSON.parse(localStorage.getItem(ukey("avatar"))||"null");if(sa&&sa.name)avatar=sa}catch(e){}
+ }
  view="home";period="month";rows=null;rowsKey="__";ex.genre=null;ex.sub=null;ex.items=[];ex.showSubs=false;cur=null;
  document.body.classList.remove("locked");$("auth").classList.remove("on");hide();window.scrollTo(0,0);render(false);loadRows();
- var seenOb=false;try{seenOb=localStorage.getItem(ukey("ob_done"))==="1"}catch(e){}
+ try{seenOb=seenOb||localStorage.getItem(ukey("ob_done"))==="1"}catch(e){}
  if(isNew||!seenOb){setTimeout(function(){openOnboarding(0)},260)}}
-function signOut(){try{localStorage.removeItem("fw_session")}catch(e){}user=null;films=[];hide();$("app").innerHTML="";paint();showAuth()}
+function signOut(){
+ flushData();
+ var go=function(){try{localStorage.removeItem("fw_session")}catch(e){}user=null;userRole="user";films=[];hide();$("app").innerHTML="";paint();showAuth()};
+ if(serverMode)authFetch("logout",{}).then(go,go);else go()}
 document.addEventListener("submit",function(e){
  if(e.target.id!=="authf")return;e.preventDefault();
- var n=$("au").value.trim().toLowerCase(),p=$("ap").value,all=accts(),up=authMode==="up";
- function bad(m){drawAuth(m,n)}
+ var raw=$("au").value.trim(),n=raw.toLowerCase(),p=$("ap").value,all=accts(),up=authMode==="up";
+ function bad(m){drawAuth(m,raw)}
  if(!n)return bad("Enter a username.");
  if(!p)return bad("Enter a password.");
+ if(serverMode){
+  var btn=e.target.querySelector("button[type=submit]");if(btn){btn.disabled=true;btn.textContent="One moment…"}
+  authFetch(up?"register":"login",{username:raw,password:p}).then(function(j){
+   if(j.user)signedIn(j);else bad(j.error||"Something went wrong. Try again.")
+  }).catch(function(){bad("Couldn’t reach the server. Check your connection.")});
+  return}
  if(up&&all[n])return bad("That username is taken. Sign in instead.");
  if(!up&&!all[n])return bad("No account with that username. Create one instead.");
  var salt=up?Math.random().toString(36).slice(2)+Date.now().toString(36):all[n].s;
@@ -1012,6 +1071,21 @@ document.addEventListener("submit",function(e){
   if(up){all[n]={s:salt,h:h};try{localStorage.setItem("fw_accounts",JSON.stringify(all))}catch(x){return bad("Your browser blocked saving the account. Allow site storage and try again.")}start(n,true)}
   else if(all[n].h===h)start(n);else bad("Wrong password.")
  }).catch(function(){bad("Sign in needs a secure (https) connection.")})});
+
+/* ---- Admin: fetch the user list from the database ---- */
+var admUsers=[];
+function openAdmin(){
+ $("panel").innerHTML='<h2>Admin · Users</h2><p class="dim" id="adm-sum">Loading…</p><input id="adm-q" class="inp" placeholder="Search by username or email…" autocomplete="off" aria-label="Search users"><div id="adm-list"></div><div class="acts"><button class="ghost" data-admrefresh="1">Refresh</button><button class="ghost" data-act="close">Close</button></div>';
+ show(false);$("adm-q").oninput=admDraw;admLoad()}
+function admLoad(){
+ fetch("/api/auth?action=users",{credentials:"same-origin"}).then(function(r){return r.json().catch(function(){return{}}).then(function(j){if(!r.ok)throw new Error(j.error||("server answered "+r.status));return j})})
+ .then(function(j){admUsers=j.users||[];admDraw()})
+ .catch(function(e){var el=$("adm-sum");if(el)el.textContent="Couldn’t load users: "+e.message})}
+function admDraw(){
+ var q=(($("adm-q")||{}).value||"").toLowerCase(),rows=admUsers.filter(function(u){return !q||u.username.toLowerCase().indexOf(q)>=0||(u.email||"").toLowerCase().indexOf(q)>=0});
+ var sum=$("adm-sum");if(sum)sum.textContent=admUsers.length+(admUsers.length===1?" user":" users")+(q?" · "+rows.length+" shown":"");
+ var list=$("adm-list");if(!list)return;
+ list.innerHTML=rows.map(function(u){return'<div class="adm-row"><div><b>'+esc(u.username)+'</b>'+(u.role==="admin"?' <span class="chip" style="padding:1px 8px;font-size:11px">admin</span>':"")+'<small class="dim" style="display:block">'+esc(u.email||"no email")+' · '+esc(u.provider)+'</small></div><div class="dim" style="text-align:right;font-size:12px">'+u.films+' films<br>joined '+new Date(u.created).toLocaleDateString()+'<br>last seen '+(u.last?new Date(u.last).toLocaleDateString():"—")+'</div></div>'}).join("")||'<p class="dim">No users found.</p>'}
 
 /* ---- Smooth view switching ---- */
 var swT=0;
@@ -1078,7 +1152,7 @@ var ONBOARDING_STEPS = [
 ];
 
 function finishOnboarding() {
-  try { if (user) localStorage.setItem(ukey("ob_done"), "1"); } catch (e) {}
+  try { if (user) localStorage.setItem(ukey("ob_done"), "1"); } catch (e) {} pushData();
   hide();
 }
 
@@ -1453,6 +1527,8 @@ document.addEventListener("click",function(e){
  if(t.closest("[data-cvsave]")){cvSave();return}
  if(t.closest("[data-authmode]")){authMode=authMode==="in"?"up":"in";drawAuth("");return}
  if(t.closest("[data-signout]")){signOut();return}
+ if(t.closest("[data-admin]")){openAdmin();return}
+ if(t.closest("[data-admrefresh]")){admLoad();return}
  
  var v=t.closest("[data-v]");if(v){if(view!==v.dataset.v)goView(v.dataset.v);return}
  var p=t.closest("[data-p]");if(p){period=p.dataset.p;render(true);return}
@@ -2783,12 +2859,17 @@ function exportCinemographyStory() {
   }
  }catch(e){}
  var ss=null;try{ss=localStorage.getItem("fw_session")}catch(e){}
- var a=accts();
- if(ss&&a[ss]){start(ss);if(ppState.shared)goView("universes");}
- else if(ppState.shared){
-  user="guest_viewer";films=[];document.body.classList.remove("locked");$("auth").classList.remove("on");goView("universes");
- }
- else{paint();showAuth()}
+ function viewerOrAuth(){
+  if(ppState.shared){user="guest_viewer";films=[];document.body.classList.remove("locked");$("auth").classList.remove("on");goView("universes")}
+  else{paint();showAuth()}}
+ function legacyBoot(){var a=accts();if(ss&&a[ss]){start(ss);if(ppState.shared)goView("universes")}else viewerOrAuth()}
+ authFetch("config").then(function(c){
+  if(c&&c.dbReady){
+   serverMode=true;authCfg=c;
+   return authFetch("me").then(function(m){
+    if(m&&m.user){userRole=m.user.role||"user";userPhoto=m.user.photo||"";start(String(m.user.username).toLowerCase(),false,m.data||{});if(ppState.shared)goView("universes")}
+    else viewerOrAuth()})}
+  legacyBoot()}).catch(legacyBoot);
 })();
 
 
